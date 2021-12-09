@@ -1,0 +1,94 @@
+<h1>Registrarse</h1>
+<p>¿Ya estas registrado? <a [href]="['/auth/login']">Inicia sesión</a></p>
+
+<form [formGroup]="signupForm"
+      (ngSubmit)="signup()"
+      autocomplete="on">
+
+  <!-- <mat-spinner></mat-spinner> -->
+
+  <!-- N° Documento -->
+  <mat-form-field>
+    <mat-label>N° Documento</mat-label>
+    <mat-icon matSuffix>badge</mat-icon>
+    <input matInput
+          type="text"
+          formControlName="doc_num">
+  </mat-form-field>
+
+  <br>
+  <!-- First Name -->
+  <mat-form-field>
+    <mat-label>Nombre(s)</mat-label>
+    <mat-icon matSuffix>person</mat-icon>
+    <input matInput
+          type="text"
+          formControlName="first_name">
+  </mat-form-field>
+
+  <!-- Last Name -->
+  <mat-form-field>
+    <mat-label>Apellido(s)</mat-label>
+    <mat-icon matSuffix>person</mat-icon>
+    <input matInput
+          type="text"
+          formControlName="last_name">
+  </mat-form-field>
+
+  <br>
+
+  <!-- Fecha de nacimiento -->
+  <mat-form-field>
+    <mat-label>Fecha de nacimiento</mat-label>
+    <input matInput
+           [matDatepicker]="picker"
+           formControlName="date_of_birth">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <br>
+  <!-- Sexo -->
+  <mat-label>Sexo</mat-label>
+  <mat-radio-group aria-labelledby="example-radio-group-label"
+                   formControlName="sex" required>
+    <mat-radio-button value="M" required>Masculino</mat-radio-button>
+    <mat-radio-button value="F" required>Femenino</mat-radio-button>
+
+  </mat-radio-group>
+  <br>
+  <!-- Email -->
+  <mat-form-field>
+    <mat-label>Correo Electrónico</mat-label>
+    <mat-icon matPrefix>email</mat-icon>
+    <input matInput
+           type="email"
+           formControlName="email"
+           placeholder="Ingrese correo">
+  </mat-form-field>
+  <br>
+  <!-- Password -->
+  <mat-form-field>
+    <mat-label>Contraseña</mat-label>
+    <mat-icon matPrefix>key</mat-icon>
+    <input matInput
+           type="password"
+           formControlName="password"
+           placeholder="Ingrese contraseña">
+  </mat-form-field>
+  <!-- Password -->
+  <mat-form-field>
+    <mat-label>Repetir Contraseña</mat-label>
+    <mat-icon matPrefix>key</mat-icon>
+    <input matInput
+           type="password"
+           formControlName="password2"
+           placeholder="Ingrese contraseña">
+  </mat-form-field>
+  <br>
+  <!-- Iniciar sesion -->
+  <button mat-flat-button
+          color="primary">
+    Registrarse
+  </button>
+
+</form>

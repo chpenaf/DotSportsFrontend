@@ -1,0 +1,38 @@
+<h1>Iniciar sesión</h1>
+<p>¿No estas inscrito aún? <a [href]="['/auth/signup']">Registrate acá</a></p>
+
+<form [formGroup]="signinForm"
+      (ngSubmit)="signin()"
+      autocomplete="on">
+
+  <!-- <mat-spinner></mat-spinner> -->
+
+  <!-- Email -->
+  <mat-form-field>
+    <mat-label>Correo Electrónico</mat-label>
+    <mat-icon matPrefix>email</mat-icon>
+    <input matInput
+           type="email"
+           formControlName="email"
+           placeholder="Ingrese correo">
+  </mat-form-field>
+  <br>
+  <!-- Password -->
+  <mat-form-field>
+    <mat-label>Contraseña</mat-label>
+    <mat-icon matPrefix>key</mat-icon>
+    <input matInput
+           type="password"
+           formControlName="password"
+           placeholder="Ingrese contraseña">
+  </mat-form-field>
+
+  <p><a [href]="['/auth/forgot-password']">¿Olvidaste tu contraseña?</a></p>
+
+  <!-- Iniciar sesion -->
+  <button mat-flat-button
+          color="primary">
+    Iniciar sesión
+  </button>
+
+</form>
