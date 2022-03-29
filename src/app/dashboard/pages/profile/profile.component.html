@@ -1,0 +1,31 @@
+<div fxLayout="row"
+     fxLayoutAlign="space-between"
+     fxLayoutGap="25px">
+
+  <div fxFlex="100" class="header">
+
+    <h1>Perfil</h1>
+
+    <mat-divider></mat-divider>
+
+  </div>
+
+  <div fxFlex="100"
+        fxLayout="row"
+        fxLayout.gt-xs="column">
+
+    <div fxFlex=100
+         fxLayout="row"
+         fxLayoutAlign="center center">
+      <img class="image-profile center" [src]="current | avatar">
+      <form (ngSubmit)="cambiarFoto()">
+        <button mat-stroked-button
+                class="center">Cambiar foto</button>
+      </form>
+    </div>
+
+
+
+  </div>
+
+</div>

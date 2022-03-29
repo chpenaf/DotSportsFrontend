@@ -1,94 +1,171 @@
-<h1>Registrarse</h1>
-<p>¿Ya estas registrado? <a [href]="['/auth/login']">Inicia sesión</a></p>
+<app-header
+  title="Registrarse"
+  subtitle="¿Tienes ya una cuenta?"
+  link="Inicia sesión"
+  route="/auth/login">
+</app-header>
 
-<form [formGroup]="signupForm"
-      (ngSubmit)="signup()"
-      autocomplete="on">
+<mat-card-content>
+  <mat-stepper linear orientation="vertical" #stepper>
 
-  <!-- <mat-spinner></mat-spinner> -->
+    <!-- PASO 1 -->
+    <mat-step [stepControl]="firstStepForm">
+      <form [formGroup]="firstStepForm"
+            fxLayout="column">
+        <ng-template matStepLabel>Identificación</ng-template>
+        <mat-form-field appearance="fill">
+          <mat-label>N° Documento</mat-label>
+          <input matInput formControlName="doc_num" placeholder="Sin puntos y con guión" required>
+          <button *ngIf="this.doc_num.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.doc_num.setValue('')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="doc_numErrorMsg">
+            {{ this.doc_numErrorMsg }}
+          </mat-error>
+        </mat-form-field>
+        <mat-progress-bar *ngIf="firstStepForm.pending" mode="indeterminate">
+        </mat-progress-bar>
+        <div>
+          <button mat-button
+                  matStepperNext
+                  [disabled]="firstStepForm.pending || firstStepForm.invalid"
+                  color="primary">
+                  Siguiente
+          </button>
+        </div>
+      </form>
+    </mat-step>
 
-  <!-- N° Documento -->
-  <mat-form-field>
-    <mat-label>N° Documento</mat-label>
-    <mat-icon matSuffix>badge</mat-icon>
-    <input matInput
-          type="text"
-          formControlName="doc_num">
-  </mat-form-field>
+    <!-- PASO 2 -->
+    <mat-step [stepControl]="secondStepForm">
+      <form [formGroup]="secondStepForm" fxLayout="column">
+        <ng-template matStepLabel>Datos personales</ng-template>
 
-  <br>
-  <!-- First Name -->
-  <mat-form-field>
-    <mat-label>Nombre(s)</mat-label>
-    <mat-icon matSuffix>person</mat-icon>
-    <input matInput
-          type="text"
-          formControlName="first_name">
-  </mat-form-field>
+        <!-- First Name -->
+        <mat-form-field appearance="fill">
+          <mat-label>Nombre(s)</mat-label>
+          <input matInput
+                type="text"
+                formControlName="first_name">
+          <button *ngIf="this.first_name.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.first_name.setValue('')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="this.secondStepForm.controls['first_name'].hasError">
+            Nombre es obligatorio.
+          </mat-error>
+        </mat-form-field>
 
-  <!-- Last Name -->
-  <mat-form-field>
-    <mat-label>Apellido(s)</mat-label>
-    <mat-icon matSuffix>person</mat-icon>
-    <input matInput
-          type="text"
-          formControlName="last_name">
-  </mat-form-field>
+        <!-- Last Name -->
+        <mat-form-field appearance="fill">
+        <mat-label>Apellido(s)</mat-label>
+          <input matInput
+                 type="text"
+                 formControlName="last_name">
+          <button *ngIf="this.last_name.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.last_name.setValue('')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="this.secondStepForm.controls['last_name'].hasError">
+            Apellido es obligatorio.
+          </mat-error>
+        </mat-form-field>
 
-  <br>
 
-  <!-- Fecha de nacimiento -->
-  <mat-form-field>
-    <mat-label>Fecha de nacimiento</mat-label>
-    <input matInput
-           [matDatepicker]="picker"
-           formControlName="date_of_birth">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  <br>
-  <!-- Sexo -->
-  <mat-label>Sexo</mat-label>
-  <mat-radio-group aria-labelledby="example-radio-group-label"
-                   formControlName="sex" required>
-    <mat-radio-button value="M" required>Masculino</mat-radio-button>
-    <mat-radio-button value="F" required>Femenino</mat-radio-button>
 
-  </mat-radio-group>
-  <br>
-  <!-- Email -->
-  <mat-form-field>
-    <mat-label>Correo Electrónico</mat-label>
-    <mat-icon matPrefix>email</mat-icon>
-    <input matInput
-           type="email"
-           formControlName="email"
-           placeholder="Ingrese correo">
-  </mat-form-field>
-  <br>
-  <!-- Password -->
-  <mat-form-field>
-    <mat-label>Contraseña</mat-label>
-    <mat-icon matPrefix>key</mat-icon>
-    <input matInput
-           type="password"
-           formControlName="password"
-           placeholder="Ingrese contraseña">
-  </mat-form-field>
-  <!-- Password -->
-  <mat-form-field>
-    <mat-label>Repetir Contraseña</mat-label>
-    <mat-icon matPrefix>key</mat-icon>
-    <input matInput
-           type="password"
-           formControlName="password2"
-           placeholder="Ingrese contraseña">
-  </mat-form-field>
-  <br>
-  <!-- Iniciar sesion -->
-  <button mat-flat-button
-          color="primary">
-    Registrarse
-  </button>
+          <!-- Fecha de nacimiento -->
+          <mat-form-field appearance="fill">
+            <mat-label>Fecha de nacimiento</mat-label>
+            <input matInput
+                  [matDatepicker]="picker"
+                  formControlName="date_of_birth">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
 
-</form>
+            <mat-error *ngIf="this.secondStepForm.controls['date_of_birth'].hasError">
+            Fecha de nacimiento es obligatoria.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Sexo -->
+          <mat-label>Sexo</mat-label>
+          <mat-radio-group aria-labelledby="example-radio-group-label"
+                        formControlName="sex" required>
+          <mat-radio-button value="M" required>Masculino</mat-radio-button>
+          <mat-radio-button value="F" required>Femenino</mat-radio-button>
+
+          </mat-radio-group>
+
+
+          <!-- Email -->
+          <mat-form-field appearance="fill">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput
+                type="email"
+                formControlName="email"
+                placeholder="Ingrese correo">
+          <button *ngIf="this.email.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.email.setValue('')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="this.email">
+          {{ emailErrorMsg }}
+          </mat-error>
+          </mat-form-field>
+
+          <mat-progress-bar *ngIf="secondStepForm.pending" mode="indeterminate">
+          </mat-progress-bar>
+
+        <div>
+          <button mat-button matStepperPrevious>Volver</button>
+          <button mat-button
+                  matStepperNext
+                  color="primary"
+                  [disabled]="this.secondStepForm.pending || this.secondStepForm.invalid">Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- PASO 3 -->
+    <mat-step [stepControl]="thirdStepForm">
+      <form [formGroup]="thirdStepForm"
+            (ngSubmit)="signup()"
+            fxLayout="column">
+        <ng-template matStepLabel>Credencial de acceso</ng-template>
+        <!-- Password -->
+        <mat-form-field appearance="fill">
+          <mat-label>Contraseña</mat-label>
+          <input matInput
+                type="password"
+                formControlName="password"
+                placeholder="Ingrese contraseña">
+          <button *ngIf="this.password.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.password.setValue('')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="this.password">
+            {{ passwordErrorMsg }}
+          </mat-error>
+          </mat-form-field>
+          <!-- Password 2 -->
+          <mat-form-field appearance="fill">
+          <mat-label>Repetir Contraseña</mat-label>
+          <input matInput
+                type="password"
+                formControlName="password2"
+                placeholder="Ingrese contraseña">
+          <button *ngIf="this.password2.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.password2.setValue('')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="this.password2">
+            {{ password2ErrorMsg }}
+          </mat-error>
+          </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Volver</button>
+          <button mat-button
+                  matStepperNext
+                  color="primary"
+                  [disabled]="this.thirdStepForm.invalid">Confirmar</button>
+        </div>
+      </form>
+    </mat-step>
+
+  </mat-stepper>
+</mat-card-content>

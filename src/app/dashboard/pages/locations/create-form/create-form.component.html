@@ -1,0 +1,163 @@
+<div class="content">
+
+  <h2 mat-dialog-title>Nueva sede</h2>
+
+  <!-- Contenido -->
+  <mat-dialog-content fxLayout="row">
+
+    <form [formGroup]="locationForm"
+          fxLayout="column">
+
+      <!-- Nombre -->
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput placeholder="Sede Parque"
+               formControlName="name"
+               autocomplete="no">
+        <button *ngIf="name.value"  matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="name.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="name.hasError">
+          Campo obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Direccion -->
+      <mat-form-field appearance="fill">
+        <mat-label>Dirección</mat-label>
+        <input matInput
+               placeholder="Av. Matta 1000"
+               formControlName="address"
+               autocomplete="no">
+        <button *ngIf="address.value"  matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="address.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="address.hasError">
+          Campo obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Region -->
+      <mat-form-field appearance="fill">
+        <mat-label>Región</mat-label>
+        <input type="text"
+               matInput
+               formControlName="region"
+               [matAutocomplete]="autoRegion">
+        <button *ngIf="region.value"  matSuffix
+               mat-icon-button
+               aria-label="Clear"
+               (click)="clearRegion()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-autocomplete #autoRegion="matAutocomplete" [displayWith]="displayRegion">
+          <mat-option *ngFor="let selected of filteredRegionOptions | async"
+                      [value]="selected"
+                      (onSelectionChange)="regionChange(selected)">
+            {{selected.nombre}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="region.hasError">
+          Campo obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Comuna -->
+      <mat-form-field appearance="fill">
+        <mat-label>Comuna</mat-label>
+        <input type="text"
+               matInput
+               formControlName="city"
+               [matAutocomplete]="autoCity">
+        <button *ngIf="city.value"  matSuffix
+               mat-icon-button
+               aria-label="Clear"
+               (click)="city.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="displayComuna">
+          <mat-option *ngFor="let selected of filteredComunaOptions | async"
+                      [value]="selected"
+                      (onSelectionChange)="comunaChange(selected)">
+            {{selected.nombre}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="city.hasError">
+          Campo obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Telefono -->
+      <mat-form-field appearance="fill">
+        <mat-label>Teléfono</mat-label>
+        <input matInput
+               placeholder="+56 22482 1466"
+               formControlName="phone"
+               autocomplete="no">
+        <button *ngIf="phone.value"  matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="phone.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="phone.hasError">
+          Campo obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Seleccionar Imagen -->
+      <mat-form-field appearance="fill">
+            <mat-label>Imágen</mat-label>
+            <input matInput
+                   type="text"
+                   formControlName="image"
+                   placeholder="Seleccionar imagen"
+                   readonly>
+            <button mat-stroked-button
+                    type="button"
+                    color="primary"
+                    class="browseButton"
+                    (click)="browseImage()">
+              Buscar
+            </button>
+      </mat-form-field>
+
+      <input id="fileControlInput"
+             type="file"
+             #fileInput
+             (change)="onFileChange($event)"
+              name="fileControlInput">
+
+    </form>
+
+    <!-- Muestra Imagen -->
+    <div fxLayout="column">
+      <img *ngIf="!imgTmp"  src="/assets/img/no-image.jpg" />
+      <img *ngIf="imgTmp"  [src]="imgTmp" />
+    </div>
+
+
+  </mat-dialog-content>
+
+  <!-- Botones para cerrar y guardar -->
+  <mat-dialog-actions align="end">
+      <button mat-stroked-button
+              mat-dialog-close>
+              Cerrar
+      </button>
+      <button mat-flat-button
+              [mat-dialog-close]="true"
+              [disabled]="locationForm.invalid"
+              color="primary"
+              (click)="submit()">
+              Guardar
+      </button>
+  </mat-dialog-actions>
+
+</div>

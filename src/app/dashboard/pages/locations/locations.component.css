@@ -1,0 +1,21 @@
+#new {
+  margin: 10px 0 10px 0;
+  width: 150px;
+  font-weight: 100;
+}
+
+mat-card {
+  width: 300px;
+  margin: 10px;
+}
+
+mat-card img {
+  background-size: cover;
+  height: 200px;
+}
+
+mat-card-actions {
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-left: 10px;
+}

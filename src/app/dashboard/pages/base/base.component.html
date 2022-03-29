@@ -1,0 +1,70 @@
+<!-- Toolbar -->
+<mat-toolbar>
+  <button mat-icon-button
+          (click)="sidenav.toggle()" color="primary">
+      <!-- <mat-icon>menu</mat-icon> -->
+      <span class="material-icons-outlined">menu</span>
+  </button>
+  <img class="logo" src="/assets/img/logo-web-color.png">
+  <span class="spacer"></span>
+  <mat-label *ngIf="sizeScreen.match('PC')"><h4>{{ current.full_name }}</h4></mat-label>
+  <button mat-button [matMenuTriggerFor]="menu" >
+      <img class="img_profile_toolbar" [src]=" current | avatar ">
+  </button>
+  <mat-menu #menu="matMenu">
+      <button mat-menu-item [routerLink]="(['/dashboard/profile'])">
+          <!-- <mat-icon>account_circle</mat-icon> -->
+          <span class="material-icons-outlined">account_circle</span>
+          Perfil
+      </button>
+      <!-- <button mat-menu-item>
+          <mat-icon>dark_mode</mat-icon>
+          Dark Mode
+      </button> -->
+      <button mat-menu-item>
+        <span class="material-icons-outlined">password</span>
+        Cambiar clave
+    </button>
+      <button mat-menu-item class="rojo"
+              (click)="signout()">
+          <!-- <mat-icon>logout</mat-icon> -->
+          <span class="material-icons-outlined">logout</span>
+          Salir
+      </button>
+  </mat-menu>
+</mat-toolbar>
+
+<!-- Sidenav -->
+<mat-sidenav-container class="example-container" >
+
+  <mat-sidenav #sidenav
+               [opened]="sizeScreen.match('SM') ? false : true"
+               [mode]="sizeScreen.match('SM') ? 'push' : 'side'"
+               class="example-sidenav" >
+
+    <mat-nav-list>
+
+      <a  mat-list-item
+          *ngFor="let app of apps"
+          [routerLink]="app.path"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true}"
+          (click)="sizeScreen.match('SM') ? sidenav.toggle() : null">
+          <!-- <mat-icon mat-list-icon>{{ app.icon }}</mat-icon> -->
+          <span class="material-icons-outlined">{{ app.icon }}</span>
+          <span>{{ app.text | titlecase }}</span>
+        </a>
+
+    </mat-nav-list>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+

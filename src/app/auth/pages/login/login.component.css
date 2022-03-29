@@ -1,0 +1,16 @@
+.logo {
+  width: 150px;
+  height: 37px;
+  display: block;
+  margin-left: auto;
+  padding-bottom: 15px;
+}
+
+a {
+  text-decoration: none !important;
+  color: #3f51b5 !important;
+}
+
+#forgot {
+  text-align: right;
+}

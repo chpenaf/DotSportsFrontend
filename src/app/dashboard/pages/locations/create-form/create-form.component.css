@@ -1,0 +1,36 @@
+.content {
+  min-width: 800px;
+  max-width: 800px;
+}
+
+mat-dialog-content {
+  width:100%;
+  margin: 0;
+}
+
+mat-dialog-content form {
+  width: 50%;
+}
+
+mat-dialog-content div {
+  width: 50%;
+}
+
+mat-dialog-content div img {
+  width: 320px;
+  height: 340px;
+  padding: 10px;
+  display: block;
+  margin: 0px auto;
+}
+
+.browseButton {
+  width: 100px;
+  top: -15px;
+  right: 0px;
+  position: absolute;
+}
+
+#fileControlInput {
+  display: none;
+}

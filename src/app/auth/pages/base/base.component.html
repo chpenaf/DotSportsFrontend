@@ -1,1 +1,16 @@
-<router-outlet></router-outlet>
+<div class="container">
+  <div fxLayout="row"
+      fxLayout.xs="column"
+      fxFlexFill
+      fxLayoutAlign="center center">
+    <div >
+      <mat-card class="form-container">
+        <router-outlet>
+        </router-outlet>
+        <mat-card-footer>
+          <h5>Powered by DotSports®</h5>
+        </mat-card-footer>
+      </mat-card>
+    </div>
+  </div>
+</div>

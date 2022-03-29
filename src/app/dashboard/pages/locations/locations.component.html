@@ -1,0 +1,42 @@
+<div fxLayout="column">
+
+  <div>
+    <h1>Sedes</h1>
+    <mat-divider></mat-divider>
+  </div>
+
+  <div>
+    <button id="new" mat-raised-button color="primary" (click)="openCreateLocationDialog()">
+      Nueva sede
+    </button>
+  </div>
+
+  <div fxLayout="row"
+       fxLayout.lt-sm="column"
+       fxFlexAlign="center center">
+    <mat-card *ngFor="let location of locations">
+      <mat-card-header>
+        <mat-card-title>
+          {{ location.name }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{ location.city }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image class="center" [src]="location.image" alt="Photo of a Shiba Inu">
+      <mat-card-content>
+
+      </mat-card-content>
+        <p><mat-icon>place</mat-icon>{{ location.full_address }}</p>
+        <p><mat-icon>phone</mat-icon>{{ location.phone }}</p>
+      <mat-card-footer>
+        <mat-card-actions>
+          <button mat-flat-button color="warn">Anular</button>
+          <button mat-button>Editar</button>
+        </mat-card-actions>
+      </mat-card-footer>
+
+    </mat-card>
+  </div>
+
+</div>

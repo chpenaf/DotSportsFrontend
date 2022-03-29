@@ -16,3 +16,17 @@ export interface SignupForm {
   email: string;
   password: string;
 }
+
+export interface Response {
+  message: string;
+}
+
+export interface SetNewPasswordResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface Response2 {
+  code: string;
+  message: string;
+}

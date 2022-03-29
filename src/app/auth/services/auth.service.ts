@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs';
+import { tap, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
-import { Token, SignupForm, Refresh } from '../interfaces/auth.interface';
+import { Token, SignupForm, Refresh, Response, SetNewPasswordResponse, Response2 } from '../interfaces/auth.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,13 @@ export class AuthService {
 
   get Token(){
     return this._token;
+  }
+
+  get IsAuthenticated(): boolean {
+    if ( localStorage.getItem('access') ) {
+      return true;
+    }
+    return false;
   }
 
   constructor(
@@ -38,15 +46,39 @@ export class AuthService {
       );
   }
 
-  refresh(){
+  refresh(): Observable<boolean> {
+
+    if ( !localStorage.getItem('access') ) {
+      return of(false);
+    }
+
     const url = `${ this._backend }/auth/token/refresh/`;
-    const body = localStorage.getItem('refresh');
+    const body = { refresh: localStorage.getItem('refresh') };
 
     return this._http.post<Refresh>(url, body)
       .pipe(
-        tap( resp => this.Token.access = resp.access ),
-        tap( resp => localStorage.setItem('access',resp.access))
-      )
+        map( resp => {
+          this.Token.access = resp.access;
+          localStorage.setItem('access',resp.access);
+          console.log(true);
+          return true;
+        } )
+      );
+
+  }
+
+  checkDocnumExists( doc_num: string ){
+    const url = `${ this._backend }/auth/check-docnum-exists/`;
+    const body = { doc_num }
+
+    return this._http.post<Response2>(url,body);
+  }
+
+  checkEmailExists( email: string ){
+    const url = `${ this._backend }/auth/check-email-exists/`;
+    const body = { email }
+
+    return this._http.post<Response2>(url,body);
   }
 
   signup( form: SignupForm ){
@@ -54,6 +86,45 @@ export class AuthService {
     const body = form;
 
     return this._http.post<SignupForm>(url, body);
+  }
+
+  signout(){
+    this._token = {
+      access: '',
+      refresh: ''
+    };
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+  }
+
+  sendRequestResetPassword( email: string ){
+    const url = `${ this._backend }/auth/request-reset-email/`;
+    const body = { email };
+
+    return this._http.post<Response>(url,body);
+  }
+
+  setNewPassword( password: string, token: string, uidb64: string ){
+    const url = `${ this._backend }/auth/password-reset-complete/`;
+    const body = { password, token, uidb64 }
+    return this._http.patch<SetNewPasswordResponse>(url,body);
+
+  }
+
+
+
+  getAuthorization(){
+    const access = localStorage.getItem('access') || '';
+    const token = `Bearer ${ access }`;
+    return token;
+  }
+
+  getHttpOptions(){
+    return {
+      headers: new HttpHeaders({
+        Authorization: this.getAuthorization()
+      })
+    };
   }
 
 }

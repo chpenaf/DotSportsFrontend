@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 import { AuthService } from '../../services/auth.service';
 
@@ -17,9 +20,32 @@ export class LoginComponent implements OnInit {
     }
   )
 
+  get email() {
+    return this.signinForm.controls['email'];
+  }
+
+  get password() {
+    return this.signinForm.controls['password'];
+  }
+
+  get emailErrorMsg(): string {
+
+    const errors = this.email.errors;
+
+    if ( errors?.['required'] ) {
+      return 'Debe ingresar correo electrónico';
+    } else if ( errors?.['email'] ) {
+      return 'Correo electrónico no válido';
+    }
+
+    return '';
+  }
+
   constructor(
     private _fb: FormBuilder,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _router: Router,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -37,10 +63,20 @@ export class LoginComponent implements OnInit {
 
     this._authService.signin(email,password)
       .subscribe(
-        resp => console.log(resp),
-        err => console.log(err)
-      )
+        resp => {
+          this._router.navigate(['/dashboard/home/']);
+        },
+        error => {
+          this.openSnackBar();
+        }
+      );
 
+  }
+
+  openSnackBar() {
+    this._snackBar.open('Usuario y/o Contraseña incorrectos','Cerrar',{
+      duration: 5000,
+    });
   }
 
 }
