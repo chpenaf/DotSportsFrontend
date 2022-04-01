@@ -14,6 +14,9 @@ import { UserComponent } from './pages/user/user.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { AvatarPipe } from './pipes/avatar.pipe';
 import { CreateFormComponent } from './pages/locations/create-form/create-form.component';
+import { DialogToConfirmComponent } from './components/dialog-to-confirm/dialog-to-confirm.component';
+import { FilenamePipe } from './pipes/filename.pipe';
+import { FormComponent } from './pages/employees/form/form.component';
 
 
 @NgModule({
@@ -26,7 +29,10 @@ import { CreateFormComponent } from './pages/locations/create-form/create-form.c
     UserComponent,
     ProfileComponent,
     AvatarPipe,
-    CreateFormComponent
+    CreateFormComponent,
+    DialogToConfirmComponent,
+    FilenamePipe,
+    FormComponent
   ],
   imports: [
     CommonModule,

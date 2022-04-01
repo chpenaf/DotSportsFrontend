@@ -1,0 +1,173 @@
+<div class="content">
+
+  <h2 mat-dialog-title>{{ data.title }}</h2>
+
+  <mat-dialog-content>
+
+      <form [formGroup]="employeeForm"
+            fxLayout="column">
+
+        <div fxLayout="row">
+
+          <div class="col"
+              fxLayout="column">
+
+            <!-- N° Documento -->
+            <mat-form-field appearance="fill">
+              <mat-label>N° Documento</mat-label>
+              <input matInput placeholder="N° de documento"
+                      formControlName="doc_num"
+                      autocomplete="no">
+              <button *ngIf="doc_num.value" matSuffix
+                      mat-icon-button
+                      aria-label="Clear"
+                      (click)="doc_num.setValue('')">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error *ngIf="doc_num.hasError">
+                Campo obligatorio
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Nombres -->
+            <mat-form-field appearance="fill">
+              <mat-label>Nombres</mat-label>
+              <input matInput placeholder="Nombres"
+                      formControlName="first_name"
+                      autocomplete="no">
+              <button *ngIf="first_name.value" matSuffix
+                      mat-icon-button
+                      aria-label="Clear"
+                      (click)="first_name.setValue('')">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error *ngIf="first_name.hasError">
+                Campo obligatorio
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Apellidos -->
+            <mat-form-field appearance="fill">
+              <mat-label>Apellidos</mat-label>
+              <input matInput placeholder="Apellidos"
+                      formControlName="last_name"
+                      autocomplete="no">
+              <button *ngIf="last_name.value" matSuffix
+                      mat-icon-button
+                      aria-label="Clear"
+                      (click)="last_name.setValue('')">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error *ngIf="last_name.hasError">
+                Campo obligatorio
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Fecha de nacimiento -->
+            <mat-form-field appearance="fill">
+              <mat-label>Fecha de nacimiento</mat-label>
+              <input matInput
+                    [matDatepicker]="picker"
+                    formControlName="date_of_birth">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+
+              <mat-error *ngIf="date_of_birth.hasError">
+              Fecha de nacimiento es obligatoria.
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Sexo -->
+            <mat-label>Sexo</mat-label>
+            <mat-radio-group aria-labelledby="example-radio-group-label"
+                          formControlName="sex" required>
+            <mat-radio-button value="M" required>Masculino</mat-radio-button>
+            <mat-radio-button value="F" required>Femenino</mat-radio-button>
+
+            </mat-radio-group>
+
+          </div>
+
+          <div class="col">
+            <img src="/assets/img/no-user-image-icon-23.jpg" />
+            <button mat-stroked-button
+                    color="primary"
+                    (click)="browseImage()">
+              Seleccionar Imagen
+            </button>
+            <input id="fileControlInput"
+             type="file"
+             #fileInput
+             (change)="onFileChange($event)"
+              name="fileControlInput">
+          </div>
+
+        </div>
+
+        <div fxLayout="row">
+
+          <div class="col"
+               fxLayout="column">
+
+            <!-- Trabajo -->
+            <mat-form-field appearance="fill">
+              <mat-label>Trabajo</mat-label>
+              <input matInput placeholder="Trabajo"
+                      formControlName="job"
+                      autocomplete="no">
+              <button *ngIf="job.value" matSuffix
+                      mat-icon-button
+                      aria-label="Clear"
+                      (click)="job.setValue('')">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error *ngIf="job.hasError">
+                Campo obligatorio
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Fecha de contratacion -->
+            <mat-form-field appearance="fill">
+              <mat-label>Fecha de contratación</mat-label>
+              <input matInput
+                    [matDatepicker]="picker2"
+                    formControlName="hire_date">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+
+              <mat-error *ngIf="hire_date.hasError">
+              Fecha de contrato es obligatoria.
+              </mat-error>
+            </mat-form-field>
+
+          </div>
+
+          <div class="col"
+               fxLayout="column">
+
+
+
+          </div>
+
+        </div>
+
+      </form>
+
+  </mat-dialog-content>
+
+  <!-- Botones para cerrar y guardar -->
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button
+            [mat-dialog-close]="false">
+            Cerrar
+    </button>
+    <button mat-flat-button
+            [mat-dialog-close]="true"
+            [disabled]="employeeForm.invalid"
+            color="primary"
+            (click)="submit()">
+            Guardar
+    </button>
+  </mat-dialog-actions>
+
+</div>

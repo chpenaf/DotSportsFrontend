@@ -1,1 +1,20 @@
-<p>employees works!</p>
+<div fxLayout="column">
+
+  <div>
+    <h1>Empleados</h1>
+    <mat-divider></mat-divider>
+  </div>
+
+  <div>
+    <button id="new" mat-raised-button color="primary" (click)="createEmployee()">
+      Nuevo empleado
+    </button>
+  </div>
+
+  <div fxLayout="row wrap"
+       fxLayout.lt-sm="column"
+       fxFlexAlign="center center">
+
+  </div>
+
+</div>

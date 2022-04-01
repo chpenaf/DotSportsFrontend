@@ -1,12 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, tap } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { DpaService } from '../../../../shared/services/dpa.service';
 import { Region, Comuna } from '../../../../shared/interfaces/dpa.interface';
-import { Location } from '../../../interfaces/location.interface';
+import { Location, LocationForm } from '../../../interfaces/location.interface';
 import { LocationService } from '../../../services/location.service';
+import { LocationsComponent } from '../locations.component';
 
 @Component({
   selector: 'app-create-form',
@@ -33,18 +35,24 @@ export class CreateFormComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _dpaService: DpaService,
-    private _locationService: LocationService
+    private _locationService: LocationService,
+    public dialogRef: MatDialogRef<LocationsComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: LocationForm,
   ) {
     this.city.disable();
    }
 
+  get location(){
+    return this.data.location;
+  }
+
   locationForm: FormGroup = this._fb.group(
     {
-      name: [ , [ Validators.required ] ],
-      address: [ , [ Validators.required ] ],
+      name: [ this.location?.name, [ Validators.required ] ],
+      address: [ this.location?.address, [ Validators.required ] ],
       region: [ , [ Validators.required ] ],
       city: [ , [ Validators.required ] ],
-      phone: [ , [ Validators.required ] ],
+      phone: [ this.location?.phone, [ Validators.required ] ],
       image: [ , [ ] ]
     }
   );
@@ -70,10 +78,11 @@ export class CreateFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this._dpaService.getRegions()
       .subscribe(
-        resp => {
-          this.regions = resp;
+        data => {
+          this.regions = data;
           this.filteredRegionOptions = this.region.valueChanges.pipe(
             startWith(''),
             map(value => ( typeof value === 'string' ? value : value.nombre ) ),
@@ -81,6 +90,19 @@ export class CreateFormComponent implements OnInit {
           )
         }
       )
+
+    if(this.location?.region && this.location.city){
+      const region: Region = {
+        codigo: this.location.id_region,
+        nombre: this.location?.region
+      }
+      const comuna: Comuna = {
+        codigo: this.location.id_city,
+        nombre: this.location.city
+      }
+      this.regionChange(region);
+      this.comunaChange(comuna);
+    }
   }
 
   displayRegion(region: Region): string {
@@ -190,15 +212,24 @@ export class CreateFormComponent implements OnInit {
       image: this.file
     }
 
-    this._locationService.createLocation( location )
-      .subscribe(
-        resp => {
-          console.log(resp);
-        }, err => {
-          console.log(err);
-        }
-      )
+    if (this.data.create) {
+      this._locationService.createLocation( location )
+        .subscribe(
+          resp => {
+            return true;
+          }
+        )
+    }
 
+    if (this.data.update){
+
+      this._locationService.updateLocation( location, this.location?.id! )
+        .subscribe(
+          resp => {
+            return true;
+          }
+        )
+    }
   }
 
 }

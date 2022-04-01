@@ -1,6 +1,6 @@
 <div class="content">
 
-  <h2 mat-dialog-title>Nueva sede</h2>
+  <h2 mat-dialog-title>{{ data.title }}</h2>
 
   <!-- Contenido -->
   <mat-dialog-content fxLayout="row">
@@ -138,7 +138,8 @@
 
     <!-- Muestra Imagen -->
     <div fxLayout="column">
-      <img *ngIf="!imgTmp"  src="/assets/img/no-image.jpg" />
+      <img *ngIf="!imgTmp && !location?.image"  src="/assets/img/no-image.jpg" />
+      <img *ngIf="location?.image && !imgTmp"  [src]="location?.image" />
       <img *ngIf="imgTmp"  [src]="imgTmp" />
     </div>
 
@@ -148,7 +149,7 @@
   <!-- Botones para cerrar y guardar -->
   <mat-dialog-actions align="end">
       <button mat-stroked-button
-              mat-dialog-close>
+              [mat-dialog-close]="false">
               Cerrar
       </button>
       <button mat-flat-button

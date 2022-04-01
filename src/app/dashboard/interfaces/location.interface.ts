@@ -41,3 +41,10 @@ export interface LocationResponse {
   message: string;
   data: Location;
 }
+
+export interface LocationForm {
+  title: string;
+  create: boolean;
+  update: boolean;
+  location?: Location;
+}

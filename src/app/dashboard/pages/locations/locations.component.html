@@ -11,10 +11,14 @@
     </button>
   </div>
 
-  <div fxLayout="row"
+  <div fxLayout="row wrap"
        fxLayout.lt-sm="column"
        fxFlexAlign="center center">
-    <mat-card *ngFor="let location of locations">
+    <mat-card *ngFor="let location of locations"
+              fxFlex.xs = "100"
+              fxFlex.sm = "40"
+              fxFlex.md = "30"
+              fxFlex.gt-md = "20">
       <mat-card-header>
         <mat-card-title>
           {{ location.name }}
@@ -23,7 +27,7 @@
           {{ location.city }}
         </mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image class="center" [src]="location.image" alt="Photo of a Shiba Inu">
+      <img mat-card-image class="center" [src]="location.image" [alt]="location.name">
       <mat-card-content>
 
       </mat-card-content>
@@ -31,8 +35,18 @@
         <p><mat-icon>phone</mat-icon>{{ location.phone }}</p>
       <mat-card-footer>
         <mat-card-actions>
-          <button mat-flat-button color="warn">Anular</button>
-          <button mat-button>Editar</button>
+
+          <button mat-flat-button
+                  color="warn"
+                  (click)="cancel(location)">
+            Anular
+          </button>
+
+          <button mat-button
+                  (click)="update(location)">
+            Editar
+          </button>
+
         </mat-card-actions>
       </mat-card-footer>
 
