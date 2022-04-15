@@ -19,6 +19,11 @@ export interface Location {
   pools?: Pool[]
 }
 
+export interface LocationSelect {
+  id: number;
+  name: string;
+}
+
 export interface Pool {
   id?: number;
   name: string;

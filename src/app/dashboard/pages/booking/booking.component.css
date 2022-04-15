@@ -1,0 +1,30 @@
+#location {
+  width: 400px;
+  margin-top: 10px;
+}
+
+#search {
+  width: 400px;
+}
+
+.img_search {
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+}
+
+.calendar-card {
+  width: 330px;
+  margin: 10px;
+}
+
+#member-card {
+  width: 400px;
+}
+
+.img_card {
+  width: 120px;
+  height: 120px;
+  border-radius: 15px;
+}
+

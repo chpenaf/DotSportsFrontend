@@ -7,6 +7,9 @@ import { HomeComponent } from './pages/home/home.component';
 import { LocationsComponent } from './pages/locations/locations.component';
 import { MembersComponent } from './pages/members/members.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { BookingComponent } from './pages/booking/booking.component';
+import { ScheduleComponent } from './pages/schedule/schedule.component';
+import { ApplicationsComponent } from './pages/applications/applications.component';
 
 const routes: Routes = [
   {
@@ -16,6 +19,10 @@ const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent
       },
       {
         path: 'members',
@@ -30,8 +37,16 @@ const routes: Routes = [
         component: LocationsComponent
       },
       {
-        path: 'profile',
-        component: ProfileComponent
+        path: 'booking',
+        component: BookingComponent
+      },
+      {
+        path: 'schedule',
+        component: ScheduleComponent
+      },
+      {
+        path: 'applications',
+        component: ApplicationsComponent
       }
     ]
   }

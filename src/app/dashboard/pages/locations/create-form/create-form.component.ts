@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -184,7 +184,7 @@ export class CreateFormComponent implements OnInit {
 
     this.file = file;
 
-     reader.readAsDataURL( this.file );
+    reader.readAsDataURL( this.file );
     reader.onloadend = () => {
       this.imgTmp = reader.result;
     }

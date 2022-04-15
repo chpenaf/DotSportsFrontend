@@ -17,7 +17,11 @@ import { CreateFormComponent } from './pages/locations/create-form/create-form.c
 import { DialogToConfirmComponent } from './components/dialog-to-confirm/dialog-to-confirm.component';
 import { FilenamePipe } from './pipes/filename.pipe';
 import { FormComponent } from './pages/employees/form/form.component';
-
+import { FormComponent as FormMemberComponent} from './pages/members/components/form/form.component';
+import { ListMembersComponent } from './pages/members/components/list-members/list-members.component';
+import { BookingModule } from './pages/booking/booking.module';
+import { ScheduleModule } from './pages/schedule/schedule.module';
+import { ApplicationsModule } from './pages/applications/applications.module';
 
 @NgModule({
   declarations: [
@@ -32,14 +36,22 @@ import { FormComponent } from './pages/employees/form/form.component';
     CreateFormComponent,
     DialogToConfirmComponent,
     FilenamePipe,
-    FormComponent
+    FormComponent,
+    ListMembersComponent,
+    FormMemberComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    ApplicationsModule,
+    BookingModule,
+    ScheduleModule,
     DashboardRoutingModule,
     MaterialModule,
     FlexLayoutModule
+  ],
+  exports: [
+    AvatarPipe
   ]
 })
 export class DashboardModule { }

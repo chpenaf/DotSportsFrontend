@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -119,11 +119,12 @@ export class AuthService {
     return token;
   }
 
-  getHttpOptions(){
+  getHttpOptions(params?:HttpParams){
     return {
       headers: new HttpHeaders({
         Authorization: this.getAuthorization()
-      })
+      }),
+      params: params
     };
   }
 

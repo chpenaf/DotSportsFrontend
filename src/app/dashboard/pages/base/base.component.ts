@@ -4,6 +4,10 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../auth/services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../interfaces/user.interface';
+import { MembersService } from '../../services/members.service';
+import { EmployeeService } from '../../services/employee.service';
+import { ApplicationsService } from '../../services/applications.service';
+import { App } from '../../interfaces/application.interface';
 
 @Component({
   selector: 'app-base',
@@ -23,32 +27,7 @@ export class BaseComponent implements OnInit {
     this.screenWidth  = window.innerWidth;
   }
 
-  apps = [
-    {
-      path: './',
-      name: 'home',
-      icon: 'home',
-      text: 'Home',
-    },
-    {
-      path: './locations',
-      name: 'location',
-      icon: 'business',
-      text: 'Sedes'
-    },
-    {
-      path: './employees',
-      name: 'employees',
-      icon: 'group',
-      text: 'Empleados'
-    },
-    {
-      path: './members',
-      name: 'members',
-      icon: 'group',
-      text: 'Miembros',
-    }
-  ]
+  apps: App[] = [];
 
   current: User = {
     first_name: '',
@@ -68,20 +47,30 @@ export class BaseComponent implements OnInit {
 
   constructor(
     private _router: Router,
+    private _applicationsService: ApplicationsService,
     private _authService: AuthService,
+    private _employeeService: EmployeeService,
+    private _memberService: MembersService,
     private _userService: UserService
   ) {
     this.onWindowsResize();
+    this._userService.getCurretUser()
+      .subscribe(
+        resp => {
+          this.current = resp;
+        }
+      );
+    this._applicationsService.getApps()
+      .subscribe(
+        resp => {
+          this.apps = resp;
+        }
+      )
    }
 
   ngOnInit(): void {
     this.screenHeight = window.innerHeight;
     this.screenWidth  = window.innerWidth;
-
-     this._userService.getCurretUser()
-       .subscribe(
-         resp => this.current = resp
-       );
   }
 
   signout(){

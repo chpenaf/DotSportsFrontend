@@ -4,7 +4,10 @@ import { tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
-import { Location, LocationResponse, ListLocations } from '../interfaces/location.interface';
+import { Location,
+         LocationResponse,
+         ListLocations,
+         LocationSelect } from '../interfaces/location.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -87,6 +90,13 @@ export class LocationService {
         })
       );
 
+  }
+
+  getLocationToSelect() {
+
+    const url  = `${ this._backend }/locations/select/`;
+
+    return this._http.get<LocationSelect[]>( url, this._authService.getHttpOptions() );
   }
 
 }

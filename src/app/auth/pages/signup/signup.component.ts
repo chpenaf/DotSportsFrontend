@@ -120,6 +120,8 @@ export class SignupComponent {
 
     if ( errors?.['required'] ) {
       return 'Contraseña es oblitagoria';
+    } else if ( errors?.['minlength'] ) {
+      return 'Contraseña debe tener al menos 8 caracteres'
     } else if ( errors?.['passwordStrength'] ) {
       return 'La contraseña debe contener mayúsculas, minúsculas y números';
     }

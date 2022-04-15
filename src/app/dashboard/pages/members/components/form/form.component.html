@@ -4,7 +4,7 @@
 
   <mat-dialog-content>
 
-      <form [formGroup]="employeeForm"
+      <form [formGroup]="memberForm"
             fxLayout="column">
 
         <div fxLayout="row">
@@ -94,8 +94,8 @@
           </div>
 
           <div class="col" fxLayoutAlign="center center" fxLayout="column">
-            <img *ngIf="!imgTmp && !employee?.user?.avatar"  src="/assets/img/no-user-image-icon-23.jpg" />
-            <img *ngIf="employee?.user?.avatar && !imgTmp"  [src]="employee?.user?.avatar" />
+            <img *ngIf="!imgTmp && !member?.user?.avatar"  src="/assets/img/no-user-image-icon-23.jpg" />
+            <img *ngIf="member?.user?.avatar && !imgTmp"  [src]="member?.user?.avatar" />
             <img *ngIf="imgTmp"  [src]="imgTmp" />
             <mat-label *ngIf="imgName; else noImage">{{ imgName }}</mat-label>
             <ng-template #noImage><br></ng-template>
@@ -118,29 +118,16 @@
           <div class="col"
                fxLayout="column">
 
-            <!-- Cargo -->
+            <!-- Status -->
             <mat-form-field appearance="fill">
-              <mat-label>Cargo</mat-label>
-              <mat-select formControlName="job">
-                <mat-option value="RE">Recepcionista</mat-option>
-                <mat-option value="AD">Administrador</mat-option>
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option value="AC">Activo</mat-option>
+                <mat-option value="PE">Pendiente</mat-option>
+                <mat-option value="IN">Inactivo</mat-option>
               </mat-select>
-              <mat-error *ngIf="job.hasError">
-                Cargo es obligatorio
-              </mat-error>
-            </mat-form-field>
-
-
-            <!-- Sede -->
-            <mat-form-field appearance="fill">
-              <mat-label>Sede</mat-label>
-              <mat-select formControlName="location">
-                <mat-option *ngFor="let list of listLocations" [value]="list.id">
-                  {{ list.name }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="location.hasError">
-                Sede es obligatoria
+              <mat-error *ngIf="status.hasError">
+                Status es obligatorio
               </mat-error>
             </mat-form-field>
 
@@ -163,20 +150,6 @@
 
           <div class="col"
                fxLayout="column">
-
-            <!-- Fecha de contratacion -->
-            <mat-form-field appearance="fill">
-              <mat-label>Fecha de contratación</mat-label>
-              <input matInput
-                    [matDatepicker]="picker2"
-                    formControlName="hire_date">
-              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-              <mat-datepicker #picker2></mat-datepicker>
-
-              <mat-error *ngIf="hire_date.hasError">
-              Fecha de contrato es obligatoria.
-              </mat-error>
-            </mat-form-field>
 
              <!-- Email -->
             <mat-form-field appearance="fill">
@@ -224,7 +197,7 @@
     </button>
     <button mat-flat-button
             [mat-dialog-close]="true"
-            [disabled]="employeeForm.invalid"
+            [disabled]="memberForm.invalid"
             color="primary"
             (click)="submit()">
             Guardar

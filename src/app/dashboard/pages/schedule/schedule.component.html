@@ -1,0 +1,208 @@
+<h1>Horario</h1>
+<mat-divider></mat-divider>
+
+<!-- Contenido -->
+<div fxLayout="column">
+
+  <!-- Filtros superiores -->
+  <form [formGroup]="searchForm"
+        class="top_filter"
+        fxLayout="row"
+        fxLayoutGap="10px">
+
+      <!-- Sede -->
+      <mat-form-field appearance="fill" id="location">
+        <mat-label>Sede</mat-label>
+        <mat-select formControlName="location">
+          <mat-option *ngFor="let list of listLocations" [value]="list.id">
+            {{ list.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Inicio Vigencia -->
+      <mat-form-field appearance="fill">
+        <mat-label>Vigencia</mat-label>
+        <input matInput
+              [matDatepicker]="picker_ini"
+              formControlName="ini_vig">
+        <mat-datepicker-toggle matSuffix [for]="picker_ini"></mat-datepicker-toggle>
+        <mat-datepicker #picker_ini></mat-datepicker>
+
+        <mat-error *ngIf="ini_vig.hasError">
+        Inicio de vigencia es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+
+      <button mat-flat-button
+              color="primary"
+              (click)="searchSchedule()">
+        Buscar
+      </button>
+
+      <button mat-strocked-button
+              (click)="clearSearchForm()">
+        Limpiar
+      </button>
+
+  </form>
+
+  <mat-divider></mat-divider>
+  <mat-progress-bar *ngIf="searching" mode="indeterminate"></mat-progress-bar>
+  <div *ngIf="searched" fxLayout="column">
+    <br>
+    <div fxLayout="row">
+      <span class="spacer"></span>
+      <button mat-flat-button
+              color="primary"
+              (click)="addSchedule()">
+        Nuevo horario
+      </button>
+    </div>
+    <br>
+    <div *ngIf="listSchedules.length == 0 && !showForm"
+         fxLayout="row" fxLayoutAlign="center">
+      <p>No se encontraron horarios registrados</p>
+    </div>
+
+    <table *ngIf="listSchedules.length > 0">
+      <thead>
+        <tr fxLayout="row wrap">
+          <th fxFlex="30" scope="col">Sede</th>
+          <th fxFlex="25" scope="col">Inicio Vigencia</th>
+          <th fxFlex="25" scope="col">Fin Vigencia</th>
+          <th fxFlex="20" scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listSchedules; let rb = index;"
+            fxLayout="row wrap">
+          <td fxFlex="30" >{{ item.location.name }}</td>
+          <td fxFlex="25" >{{ item.begin_validity | date: 'dd/MM/YYYY' }}</td>
+          <td fxFlex="25">{{ item.end_validity | date: 'dd/MM/YYYY' }}</td>
+          <td fxFlex="20">
+            <button mat-icon-button
+                    class="btn_forward"
+                    (click)="selectSchedule(item)">
+              <mat-icon class="materials-icons-outlined">
+                arrow_forward
+              </mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- Container table -->
+  <form [formGroup]="scheduleForm" *ngIf="showForm">
+    <div *ngIf="schedule?.days">
+      <h2 *ngIf="schedule.location.name">{{ schedule.location.name }}</h2>
+      <div fxLayout="row wrap" fxLayoutGap="10px" class="top_filter">
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Vigencia desde</mat-label>
+          <input matInput
+                 [matDatepicker]="picker_beg"
+                 formControlName="begin_validity">
+          <mat-datepicker-toggle matSuffix [for]="picker_beg"></mat-datepicker-toggle>
+          <mat-datepicker #picker_beg></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Vigencia hasta</mat-label>
+          <input matInput
+                 [matDatepicker]="picker_end"
+                 formControlName="end_validity">
+          <mat-datepicker-toggle matSuffix [for]="picker_end"></mat-datepicker-toggle>
+          <mat-datepicker #picker_end></mat-datepicker>
+        </mat-form-field>
+
+        <span class="spacer"></span>
+
+        <button mat-flat-button
+                color="primary"
+                (click)="submit()">
+          Guardar
+        </button>
+
+      </div>
+
+      <mat-accordion multi>
+        <ng-container formArrayName="days">
+          <ng-container *ngFor="let dayForm of days.controls; let i = index;">
+
+            <mat-expansion-panel [formGroupName]="i">
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{ getTitle(i) }}</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <div fxLayout="row">
+                <mat-checkbox formControlName="is_open">
+                  Abierto
+                </mat-checkbox>
+                <span class="spacer"></span>
+                <button mat-stroked-button
+                        color="primary"
+                        *ngIf="getOpen(i)"
+                        (click)="addSlot(i)">
+                        Agregar bloque
+                </button>
+              </div>
+              <table *ngIf="getOpen(i)">
+                <thead>
+                  <tr fxLayout="row wrap">
+                    <th fxFlex="20" scope="col">#</th>
+                    <th fxFlex="30" scope="col">Inicio</th>
+                    <th fxFlex="30" scope="col">Fin</th>
+                    <th fxFlex="20" scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container formArrayName="slots">
+                    <ng-container *ngFor="let slotForm of getSlotsControls(dayForm); let j = index;">
+                      <tr [formGroupName]="j" fxLayout="row wrap">
+                        <td fxFlex="20">
+                          <mat-form-field appearance="outline">
+                            <input matInput formControlName="slot" autocomplete="no">
+                          </mat-form-field>
+                        </td>
+                        <td fxFlex="30">
+                          <mat-form-field appearance="outline">
+                            <input matInput
+                                   formControlName="starttime"
+                                   autocomplete="no">
+                          </mat-form-field>
+                        </td>
+                        <td fxFlex="30">
+                          <mat-form-field appearance="outline">
+                            <input matInput formControlName="endtime" autocomplete="no">
+                          </mat-form-field>
+                        </td>
+                        <td fxFlex="20">
+                          <button mat-icon-button class="btn_delete">
+                            <mat-icon class="material-icons-outlined"
+                                      aria-label="eliminar"
+                                      (click)="deleteSlot(i,j)">delete_forever</mat-icon>
+                          </button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-container>
+                </tbody>
+              </table>
+            </mat-expansion-panel>
+          </ng-container>
+        </ng-container>
+      </mat-accordion>
+
+    </div>
+  </form>
+  <br>
+  <code>
+    <pre>{{ scheduleForm.value  | json }}</pre>
+  </code>
+
+</div>

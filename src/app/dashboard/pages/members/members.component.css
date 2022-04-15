@@ -1,0 +1,55 @@
+#new {
+  margin: 10px 0 10px 0;
+  width: 150px;
+  font-weight: 100;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 400px;
+}
+
+td, th {
+  overflow: hidden;
+  width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row_img {
+  margin-top: 10px;
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+}
+
+.col-img {
+  width: 100px;
+}
+
+.col-action {
+  width: 80px;
+}
+
+.status {
+  border-radius: 5px;
+  padding: 10px;
+  width: 50px;
+  text-align: center;
+}
+
+.is_active {
+  border: 1px #c9e8d0 solid;
+  background-color: #d4edda;
+  color: #1b5c2a;
+}
+
+.is_canceled {
+  border: 1px #f8dbde solid;
+  background-color: #f8d7da;
+  color: #7a272f;
+}

@@ -1,0 +1,41 @@
+.top_filter {
+  margin-top: 10px;
+}
+
+.top_filter mat-form-field {
+  width: 300px;
+}
+
+.top_filter button {
+  height: 50px;
+  width: 200px;
+}
+
+table {
+  width: 100%;
+}
+
+th, td {
+  text-align: center;
+}
+
+td mat-form-field {
+  width: 100%;
+  text-align: center;
+}
+
+td button {
+  margin-left: 20px;
+}
+
+.btn_forward {
+  font-size: 20px;
+  margin-left: 10px;
+}
+
+.btn_delete {
+  font-size: 30px;
+  margin-top: 10px;
+}
+
+

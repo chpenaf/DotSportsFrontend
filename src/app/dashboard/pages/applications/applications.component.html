@@ -1,0 +1,98 @@
+<div fxLayout="row wrap">
+  <h1>Aplicaciones</h1>
+  <span class="spacer"></span>
+  <button mat-flat-button
+          class="btnSubmit"
+          color="primary"
+          (click)="save()">
+    Guardar
+  </button>
+</div>
+<mat-divider></mat-divider>
+<form fxLayout="column"
+      [formGroup]="appsForm">
+
+  <div fxLayout="row wrap">
+    <span class="spacer"></span>
+    <button mat-stroked-button
+            class="btnAdd"
+            color="primary"
+            (click)="addApp()">
+      Agregar Aplicacion
+      <!-- <mat-icon matSuffix>add</mat-icon> -->
+    </button>
+  </div>
+
+  <table class="mat-elevation-z8">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Título</th>
+        <th scope="col">Nombre Técnico</th>
+        <th scope="col">Ruta</th>
+        <th scope="col">Icono</th>
+        <th scope="col">Admin</th>
+        <th scope="col">Empleado</th>
+        <th scope="col">Miembro</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody cdkDropList (cdkDropListDropped)="onDrop($event)">
+      <ng-container formArrayName="apps">
+        <ng-container *ngFor="let appForm of apps.controls; let i = index;">
+          <tr [formGroupName]="i" cdkDrag cdkDragLockAxis="y">
+            <th class="col-xs">
+              <div class="drag-handle">
+                <ng-container [ngTemplateOutlet]="dragHandleTmpl">
+                </ng-container>
+              </div>
+            </th>
+            <td class="col-md">
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="text" autocomplete="no">
+              </mat-form-field>
+            </td>
+            <td class="col-md">
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="name" autocomplete="no">
+              </mat-form-field>
+            </td>
+            <td class="col-md">
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="path" autocomplete="no">
+              </mat-form-field>
+            </td>
+            <td class="col-md">
+              <mat-form-field appearance="outline">
+                <mat-icon class="material-icons-outlined" matSuffix>
+                  {{ icon(appForm) }}
+                </mat-icon>
+                <input matInput formControlName="icon" autocomplete="no">
+              </mat-form-field>
+            </td>
+            <td class="col-sm">
+              <mat-checkbox class="v-align-middle"
+                            formControlName="admin"></mat-checkbox>
+            </td>
+            <td class="col-sm">
+              <mat-checkbox formControlName="staff"></mat-checkbox>
+            </td>
+            <td class="col-sm">
+              <mat-checkbox formControlName="member"></mat-checkbox>
+            </td>
+            <td class="col-xs">
+              <button mat-icon-button (click)="deleteApp(i)">
+                <mat-icon class="material-icons-outlined">delete_forever</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+  <ng-template #dragHandleTmpl>
+    <button mat-icon-button>
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </ng-template>
+</form>

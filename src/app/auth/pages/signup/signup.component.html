@@ -97,17 +97,17 @@
 
           <!-- Email -->
           <mat-form-field appearance="fill">
-          <mat-label>Correo Electrónico</mat-label>
-          <input matInput
-                type="email"
-                formControlName="email"
-                placeholder="Ingrese correo">
-          <button *ngIf="this.email.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.email.setValue('')">
-            <mat-icon>close</mat-icon>
-          </button>
-          <mat-error *ngIf="this.email">
-          {{ emailErrorMsg }}
-          </mat-error>
+            <mat-label>Correo Electrónico</mat-label>
+            <input matInput
+                  type="email"
+                  formControlName="email"
+                  placeholder="Ingrese correo">
+            <button *ngIf="this.email.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.email.setValue('')">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="this.email">
+            {{ emailErrorMsg }}
+            </mat-error>
           </mat-form-field>
 
           <mat-progress-bar *ngIf="secondStepForm.pending" mode="indeterminate">
