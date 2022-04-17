@@ -1,0 +1,107 @@
+<div class="content" fxLayout="column">
+
+  <div>
+    <h2 mat-dialog-title>{{ data.title }}</h2>
+  </div>
+
+  <mat-dialog-content fxLayout="column">
+
+    <div fxLayout="row wrap">
+      <span class="spacer"></span>
+      <button mat-flat-button
+              color="primary"
+              (click)="addPool()">
+        Agregar
+      </button>
+    </div>
+
+    <div *ngIf="pools.length == 0">
+      <p>No se han creado piscinas para esta sede</p>
+    </div>
+
+    <form *ngIf="pools.length"
+          [formGroup]="poolsForm">
+      <table>
+        <thead>
+          <tr fxLayout="row wrap">
+            <th fxFlex="10" scope="col">#</th>
+            <th fxFlex="30" scope="col">Nombre</th>
+            <th fxFlex="10" scope="col">Pistas</th>
+            <th fxFlex="10" scope="col">Ancho</th>
+            <th fxFlex="10" scope="col">Largo</th>
+            <th fxFlex="10" scope="col">Prof.Min</th>
+            <th fxFlex="10" scope="col">Prof.Max</th>
+            <th fxFlex="10" scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container formArrayName="pools">
+            <ng-container *ngFor="let poolForm of pools.controls; let i = index;">
+              <tr fxLayout="row wrap"
+                  [formGroupName]="i">
+                <td fxFlex="10">
+                  <mat-form-field appearance="outline">
+                    <input matInput formControlName="id">
+                  </mat-form-field>
+                </td>
+                <td fxFlex="30">
+                  <mat-form-field appearance="outline">
+                    <input matInput formControlName="name">
+                  </mat-form-field>
+                </td>
+                <td fxFlex="10">
+                  <mat-form-field appearance="outline">
+                    <input matInput formControlName="lanes">
+                  </mat-form-field>
+                </td>
+                <td fxFlex="10">
+                  <mat-form-field appearance="outline">
+                    <input matInput formControlName="width">
+                  </mat-form-field>
+                </td>
+                <td fxFlex="10">
+                  <mat-form-field appearance="outline">
+                    <input matInput formControlName="length">
+                  </mat-form-field>
+                </td>
+                <td fxFlex="10">
+                  <mat-form-field appearance="outline">
+                    <input matInput formControlName="min_depth">
+                  </mat-form-field>
+                </td>
+                <td fxFlex="10">
+                  <mat-form-field appearance="outline">
+                    <input matInput formControlName="max_depth">
+                  </mat-form-field>
+                </td>
+                <td fxFlex="10">
+                  <button mat-icon-button
+                          (click)="removePool(i)">
+                    <mat-icon class="material-icons-outlined">
+                      delete_forever
+                    </mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+      <button mat-stroked-button
+              [mat-dialog-close]="false">
+              Cerrar
+      </button>
+      <button mat-flat-button
+              [disabled]="poolsForm.invalid || pools.length == 0"
+              [mat-dialog-close]="true"
+              color="primary"
+              (click)="submit()">
+              Guardar
+      </button>
+  </mat-dialog-actions>
+
+</div>

@@ -22,6 +22,8 @@ import { ListMembersComponent } from './pages/members/components/list-members/li
 import { BookingModule } from './pages/booking/booking.module';
 import { ScheduleModule } from './pages/schedule/schedule.module';
 import { ApplicationsModule } from './pages/applications/applications.module';
+import { CalendarModule } from './pages/calendar/calendar.module';
+import { PoolFormComponent } from './pages/locations/pool-form/pool-form.component';
 
 @NgModule({
   declarations: [
@@ -38,13 +40,15 @@ import { ApplicationsModule } from './pages/applications/applications.module';
     FilenamePipe,
     FormComponent,
     ListMembersComponent,
-    FormMemberComponent
+    FormMemberComponent,
+    PoolFormComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     ApplicationsModule,
     BookingModule,
+    CalendarModule,
     ScheduleModule,
     DashboardRoutingModule,
     MaterialModule,

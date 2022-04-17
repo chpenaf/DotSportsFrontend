@@ -45,9 +45,9 @@ export class ApplicationsComponent implements OnInit {
         path: [ app.path, Validators.required ],
         text: [ app.text, Validators.required ],
         icon: [ app.icon, Validators.required ],
-        admin: [ app.admin, Validators.required ],
-        staff: [ app.staff, Validators.required ],
-        member: [ app.member, Validators.required ],
+        admin: [ app.admin, ],
+        staff: [ app.staff, ],
+        member: [ app.member, ],
       })
       this.apps.push(appForm);
     }
@@ -120,7 +120,7 @@ export class ApplicationsComponent implements OnInit {
   }
 
   save(){
-
+    console.log(this.appsForm);
     if( this.appsForm.invalid){
       this.appsForm.markAllAsTouched();
       return;

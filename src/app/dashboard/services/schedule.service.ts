@@ -52,8 +52,8 @@ export class ScheduleService {
   }
 
   save(body: Schedule) {
-    const baseUrl = `${ this._backend }/schedules/save/`;
-    const url = baseUrl;
+    const url = `${ this._backend }/schedules/save/`;
+    console.log(body);
     return this._http.post<ScheduleResponse>(url,body,this._authService.getHttpOptions());
 
   }
@@ -66,6 +66,7 @@ export class ScheduleService {
 
   saveDay(days: DayType[]){
     const url = `${ this._backend }/schedules/day/`;
+    console.log(days)
     return this._http.post<DayType[]>(url, days, this._authService.getHttpOptions());
   }
 

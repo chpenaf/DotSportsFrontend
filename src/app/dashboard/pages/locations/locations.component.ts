@@ -6,6 +6,7 @@ import { LocationService } from '../../services/location.service';
 import { Location } from '../../interfaces/location.interface';
 import { DialogToConfirmComponent } from '../../components/dialog-to-confirm/dialog-to-confirm.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PoolFormComponent } from './pool-form/pool-form.component';
 
 @Component({
   selector: 'app-locations',
@@ -106,6 +107,29 @@ export class LocationsComponent implements OnInit {
         }
       }
     );
+  }
+
+  pool(location: Location){
+
+    const dialogRef = this._dialog.open(PoolFormComponent,
+      {
+        data: {
+          title: 'Piscinas',
+          location: location
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if(result){
+          this.openSnackBar('Cambios guardados correctamente','Cerrar');
+        } else {
+          this.openSnackBar('Acción cancelada','Cerrar');
+        }
+      }
+    );
+
   }
 
   refreshLocations() {

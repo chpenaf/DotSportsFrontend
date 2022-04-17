@@ -61,8 +61,8 @@ export class ScheduleComponent implements OnInit {
     {
       id: [],
       location: [],
-      begin_validity: [],
-      end_validity: [],
+      begin_validity: [ new Date(), Validators.required ],
+      end_validity: [ '9999-12-31', Validators.required ],
       days: this._fb.array([]),
     }
   )
@@ -165,7 +165,7 @@ export class ScheduleComponent implements OnInit {
       return;
     }
 
-    this.resetScheduleForm();
+    this.clearSearchForm();
 
     this.searching = true;
 
@@ -207,8 +207,11 @@ export class ScheduleComponent implements OnInit {
     const idLocation = this.searchForm.controls['location'].value
 
     this.location.setValue(idLocation);
+    this.begin_validity.setValue(new Date());
+    this.end_validity.setValue('9999-12-31');
 
-    this.schedule.location = this.listLocations.find( x => x.id == idLocation )!;
+    this.schedule.location = this.listLocations
+                              .find( x => x.id == idLocation )!;
 
     this.dayTypeList.forEach(item => {
       const dayTypeForm = this._fb.group(
@@ -296,9 +299,9 @@ export class ScheduleComponent implements OnInit {
     const slotNo = slots.length + 1;
     const slotForm = this._fb.group(
       {
-        slot: [ slotNo ],
-        starttime: [ ],
-        endtime: [ ]
+        slot: [ slotNo, Validators.required ],
+        starttime: [ , Validators.required ],
+        endtime: [ , Validators.required ]
       }
     );
     slotForm.controls['slot'].disable();
@@ -340,43 +343,14 @@ export class ScheduleComponent implements OnInit {
       days: form.days
     }
 
-    if( schedule.id ){
-      this._scheduleService.update(schedule)
-        .subscribe(
-          resp => {
-            this.searchSchedule();
-            this.selectSchedule(schedule);
-          }
-        )
-    } else {
-      this._scheduleService.save(schedule)
-        .subscribe(
-          resp => {
-            schedule.days.forEach(item =>{
-              item.schedule = resp.id
-            });
-            this._scheduleService.saveDay(schedule.days)
-              .subscribe(
-                resp => {
-                  schedule.days.forEach(day =>{
-                    day.slots.forEach(slot =>{
-                      // if(resp.){
-                      //   slot.schedule_day = day.id;
-                      // }
-                    });
-                    this._scheduleService.saveSlots(day.slots)
-                      .subscribe(
-                        resp =>{
-                          console.log(resp);
-                        }
-                      );
-                  });
-                }
-              )
-          }
-        )
-    }
+    console.log(form);
 
+    this._scheduleService.save(schedule)
+      .subscribe(
+        resp => {
+          console.log(resp);
+        }
+      )
 
   }
 

@@ -24,6 +24,7 @@ export interface DayTypeKey {
 }
 
 export interface Slot {
+  id?: number;
   schedule_day?: number;
   slot?: number;
   starttime?: Time;

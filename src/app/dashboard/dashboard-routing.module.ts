@@ -10,6 +10,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { BookingComponent } from './pages/booking/booking.component';
 import { ScheduleComponent } from './pages/schedule/schedule.component';
 import { ApplicationsComponent } from './pages/applications/applications.component';
+import { CalendarComponent } from './pages/calendar/calendar.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent
+      },
+      {
+        path: 'calendar',
+        component: CalendarComponent
       },
       {
         path: 'profile',

@@ -27,7 +27,7 @@ export interface LocationSelect {
 export interface Pool {
   id?: number;
   name: string;
-  id_location: number;
+  location: number;
   lanes: number;
   width: number;
   length: number;
@@ -52,4 +52,9 @@ export interface LocationForm {
   create: boolean;
   update: boolean;
   location?: Location;
+}
+
+export interface PoolForm {
+  title: string;
+  location: Location;
 }

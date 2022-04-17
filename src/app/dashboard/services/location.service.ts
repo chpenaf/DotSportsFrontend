@@ -7,7 +7,8 @@ import { AuthService } from '../../auth/services/auth.service';
 import { Location,
          LocationResponse,
          ListLocations,
-         LocationSelect } from '../interfaces/location.interface';
+         LocationSelect,
+         Pool} from '../interfaces/location.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -64,10 +65,8 @@ export class LocationService {
   }
 
   updateLocation(location:Location, id:number) {
-
     const url  = `${ this._backend }/locations/update/${ id }/`;
     const body = location;
-
     return this._http.put<Location>( url, body, this._authService.getHttpOptions() )
       .pipe(
         tap(resp => {
@@ -79,9 +78,7 @@ export class LocationService {
   }
 
   cancelLocation(location:Location) {
-
     const url  = `${ this._backend }/locations/cancel/${ location.id }/`;
-
     return this._http.delete<LocationResponse>( url, this._authService.getHttpOptions() )
       .pipe(
         tap(resp => {
@@ -89,14 +86,26 @@ export class LocationService {
           this.locations.splice(index, 1);
         })
       );
-
   }
 
   getLocationToSelect() {
-
     const url  = `${ this._backend }/locations/select/`;
-
     return this._http.get<LocationSelect[]>( url, this._authService.getHttpOptions() );
+  }
+
+  getPools(location:Location){
+    const url = `${ this._backend }/locations/${ location.id }/pools/`;
+    return this._http.get<Pool[]>(url, this._authService.getHttpOptions());
+  }
+
+  savePool(pools:Pool[]){
+    const url = `${ this._backend }/locations/pool/`
+    return this._http.post<any>(url,pools,this._authService.getHttpOptions());
+  }
+
+  removePool(id: number){
+    const url = `${ this._backend }/locations/pool/${ id }/`
+    return this._http.delete<any>(url,this._authService.getHttpOptions());
   }
 
 }
