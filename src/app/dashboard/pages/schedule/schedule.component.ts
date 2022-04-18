@@ -10,6 +10,7 @@ import { LocationService } from '../../services/location.service';
 import { ScheduleService } from '../../services/schedule.service';
 import { Schedule, Slot, DayType, DayTypeKey } from '../../interfaces/schedule.interface';
 import * as moment from 'moment';
+import { Time } from '@angular/common';
 
 @Component({
   selector: 'app-schedule',
@@ -352,6 +353,18 @@ export class ScheduleComponent implements OnInit {
         }
       )
 
+  }
+
+  getStartTime(i:number,j:number){
+    const slotForm = this.getSlots(i).at(j) as FormGroup;
+    const starttime = slotForm.controls['starttime'].value;
+    const oneTime = moment(starttime,'HH:mm:ss');
+
+    const time: Time = {
+      hours: Number(oneTime.format('HH')),
+      minutes: Number(oneTime.format('mm'))
+    }
+    return time;
   }
 
 }

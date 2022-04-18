@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { ScheduleComponent } from './schedule.component';
 import { MaterialModule } from '../../../material/material.module';
+import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { MaterialModule } from '../../../material/material.module';
     CommonModule,
     FlexLayoutModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    PipesModule
   ],
   exports: [ ]
 })

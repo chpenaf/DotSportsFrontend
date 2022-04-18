@@ -10,6 +10,8 @@ import { ListMembers } from '../../interfaces/member.interface';
 import { LocationService } from '../../services/location.service';
 import { LocationSelect } from '../../interfaces/location.interface';
 import { MembersService } from '../../services/members.service';
+import { Slot } from '../../interfaces/calendar.interface';
+import { CalendarService } from '../../services/calendar.service';
 
 @Component({
   selector: 'app-booking',
@@ -35,8 +37,11 @@ export class BookingComponent implements OnInit, AfterViewInit {
 
   dateSelected: Date = new Date()
 
+  listSlots: Slot[] = [];
+
   constructor(
     private _fb: FormBuilder,
+    private _calendarService: CalendarService,
     private _locationService: LocationService,
     private _employeeService: EmployeeService,
     private _memberService: MembersService
@@ -117,6 +122,19 @@ export class BookingComponent implements OnInit, AfterViewInit {
       email: '',
       status: ''
     }
+  }
+
+  searchSlots(){
+
+    const location = this.bookingForm.controls['location'].value;
+
+    this._calendarService.getSlots(location,this.dateSelected)
+      .subscribe(
+        resp => {
+          console.log(resp);
+          this.listSlots = resp;
+        }
+      );
   }
 
 }

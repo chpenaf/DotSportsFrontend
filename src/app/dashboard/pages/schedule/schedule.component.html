@@ -173,6 +173,7 @@
                           <mat-form-field appearance="outline">
                             <input matInput
                                    formControlName="starttime"
+                                   [value]=" getStartTime(i,j) | time"
                                    autocomplete="no">
                           </mat-form-field>
                         </td>

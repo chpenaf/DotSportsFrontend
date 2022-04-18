@@ -106,8 +106,27 @@
       <mat-card class="calendar-card right">
         <mat-calendar [(selected)]="dateSelected"></mat-calendar>
       </mat-card>
+      <button mat-flat-button
+              color="primary"
+              (click)="searchSlots()">
+      Buscar
+      </button>
     </div>
 
   </form>
+
+  <!-- Contenedor de horas disponibles -->
+  <div fxLayout="row wrap"
+       fxLayoutGap="20px">
+
+    <div *ngFor="let slot of listSlots" fxFlex="15">
+      <button mat-stroked-button
+              class="btn_slot"
+              color="primary">
+        {{ slot.starttime | time }}
+      </button>
+    </div>
+
+  </div>
 
 </div>

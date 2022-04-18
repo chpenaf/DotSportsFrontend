@@ -24,6 +24,8 @@ import { ScheduleModule } from './pages/schedule/schedule.module';
 import { ApplicationsModule } from './pages/applications/applications.module';
 import { CalendarModule } from './pages/calendar/calendar.module';
 import { PoolFormComponent } from './pages/locations/pool-form/pool-form.component';
+import { TimePipe } from './pipes/time.pipe';
+import { PipesModule } from './pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -34,10 +36,8 @@ import { PoolFormComponent } from './pages/locations/pool-form/pool-form.compone
     LocationsComponent,
     UserComponent,
     ProfileComponent,
-    AvatarPipe,
     CreateFormComponent,
     DialogToConfirmComponent,
-    FilenamePipe,
     FormComponent,
     ListMembersComponent,
     FormMemberComponent,
@@ -52,10 +52,12 @@ import { PoolFormComponent } from './pages/locations/pool-form/pool-form.compone
     ScheduleModule,
     DashboardRoutingModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    PipesModule
   ],
   exports: [
-    AvatarPipe
+  ],
+  providers: [
   ]
 })
 export class DashboardModule { }

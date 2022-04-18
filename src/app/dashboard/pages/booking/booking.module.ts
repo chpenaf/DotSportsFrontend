@@ -5,6 +5,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { BookingComponent } from './booking.component';
 import { MaterialModule } from '../../../material/material.module';
+import { TimePipe } from '../../pipes/time.pipe';
+import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,8 @@ import { MaterialModule } from '../../../material/material.module';
     CommonModule,
     FlexLayoutModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    PipesModule
   ],
   exports: [
   ]
