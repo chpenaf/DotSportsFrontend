@@ -1,0 +1,153 @@
+<div class="content" fxLayout="column">
+
+  <div fxLayout="row">
+    <h1>Créditos</h1>
+    <span class="spacer"></span>
+    <div>
+      <button mat-flat-button
+              color="primary"
+              (click)="showAddCreditForm()">
+      Cargar créditos
+      </button>
+    </div>
+  </div>
+  <br>
+  <div mat-dialog-content
+       fxLayout="column">
+
+    <div *ngIf="showForm">
+
+      <form [formGroup]="creditForm"
+            fxLayout="row wrap"
+            fxLayoutGap="10px"
+            fxLayoutAlign="center center">
+
+        <mat-form-field fxFlex="15" appearance="standard">
+          <mat-label>Cantidad</mat-label>
+          <input matInput formControlName="quantity">
+          <mat-error *ngIf="quantity.hasError">
+            {{ quantityError }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20" appearance="standard">
+          <mat-label>Inicio Validez</mat-label>
+          <input matInput
+                 formControlName="begin_validity"
+                 [matDatepicker]="pickerBegin">
+          <mat-datepicker-toggle matSuffix [for]="pickerBegin">
+          </mat-datepicker-toggle>
+          <mat-datepicker #pickerBegin></mat-datepicker>
+          <mat-error *ngIf="begin_validity.hasError">
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20" appearance="standard">
+          <mat-label>Documento Ref.</mat-label>
+          <input matInput formControlName="doc_ref">
+          <mat-error *ngIf="doc_ref.hasError">
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+
+        <div fxFlex="25"
+             fxLayout="row"
+             fxLayoutGap="5px">
+          <button mat-flat-button
+                  color="primary"
+                  (click)="saveCreditForm()">
+            Guardar
+          </button>
+          <button mat-stroked-button (click)="cancelCreditForm()">
+            <mat-icon matSuffix>close</mat-icon>
+          </button>
+        </div>
+
+
+      </form>
+    </div>
+
+    <div *ngIf="credits.length == 0" fxLayoutAlign="center">
+      <h2>No tiene créditos activos</h2>
+    </div>
+
+    <mat-accordion multi *ngIf="credits.length">
+
+      <mat-expansion-panel  *ngFor="let credit of credits; let i = index;"
+                            [expanded]="i == 0 ? true : false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Documento {{ credit.doc_ref }}
+          </mat-panel-title>
+          <mat-panel-description>
+            Válidez {{ credit.begin_validity | date:'dd/MM/YYYY' }} - {{ credit.end_validity | date:'dd/MM/YYYY' }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <table>
+          <thead>
+            <tr fxLayout="row wrap">
+              <th scope="col" fxFlex="10">Código</th>
+              <th scope="col" fxFlex="10">N°</th>
+              <th scope="col" fxFlex="15">Inicio</th>
+              <th scope="col" fxFlex="15">Fin</th>
+              <th scope="col" fxFlex="25">Usado el</th>
+              <th scope="col" fxFlex="15">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pos of credit.positions;"
+                fxLayout="row wrap">
+              <td fxFlex="10">
+                {{ pos.id }}
+              </td>
+              <td fxFlex="10">
+                {{ pos.pos }}
+              </td>
+              <td fxFlex="15">
+                {{ pos.begin_validity | date:'dd/MM/YYYY' }}
+              </td>
+              <td fxFlex="15">
+                {{ pos.end_validity | date:'dd/MM/YYYY' }}
+              </td>
+              <td fxFlex="25">
+                {{ pos.used_at | date:'dd/MM/YYYY' }}
+              </td>
+              <td fxFlex="15">
+                <div *ngIf="pos.status == 'AV'"
+                     class="status active">
+                  Disponible
+                </div>
+                <div *ngIf="pos.status == 'RE'"
+                     class="status reserved">
+                  Reservada
+                </div>
+                <div *ngIf="pos.status == 'CO'"
+                     class="status completed">
+                  Completado
+                </div>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
+  </div>
+
+  <br>
+
+  <div mat-dialog-actions align="end">
+
+    <button mat-stroked-button
+            [mat-dialog-close]="true">
+      Cerrar
+    </button>
+
+  </div>
+
+</div>

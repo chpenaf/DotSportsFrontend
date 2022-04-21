@@ -1,0 +1,35 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
+
+import { environment } from '../../../environments/environment';
+import { AuthService } from '../../auth/services/auth.service';
+import { Catalog } from '../interfaces/catalog.interface';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CatalogService {
+
+  private _backend = environment.backend;
+  private _catalog: Catalog = {};
+
+  constructor(
+    private _http: HttpClient,
+    private _auth: AuthService
+  ) { }
+
+  get catalog() {
+    return this._catalog;
+  }
+
+  getCatalog( idLocation: number ){
+    const url = `${ this._backend }/catalog/${ idLocation }/`;
+    return this._http.get<Catalog>( url, this._auth.getHttpOptions() )
+      .pipe(
+        tap( resp => this._catalog = resp )
+      );
+  }
+
+
+}

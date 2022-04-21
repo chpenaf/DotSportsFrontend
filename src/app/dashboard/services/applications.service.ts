@@ -27,10 +27,12 @@ export class ApplicationsService {
   }
 
 
-  getApps(){
+  getApps(db?:boolean){
 
-    if( this.Apps.length > 0 ){
-      return of(this.Apps);
+    if( !db ){
+      if( this.Apps.length > 0 ){
+        return of(this.Apps);
+      }
     }
 
     const url = `${ this._backend }/main/apps/`;

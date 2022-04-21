@@ -11,6 +11,7 @@ import { BookingComponent } from './pages/booking/booking.component';
 import { ScheduleComponent } from './pages/schedule/schedule.component';
 import { ApplicationsComponent } from './pages/applications/applications.component';
 import { CalendarComponent } from './pages/calendar/calendar.component';
+import { CatalogComponent } from './pages/catalog/catalog.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'calendar',
         component: CalendarComponent
+      },
+      {
+        path: 'catalog',
+        component: CatalogComponent
       },
       {
         path: 'profile',

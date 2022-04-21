@@ -9,6 +9,8 @@ import { DialogToConfirmComponent } from '../../../../components/dialog-to-confi
 import { ListMembers } from '../../../../interfaces/member.interface';
 import { MembersService } from '../../../../services/members.service';
 import { FormComponent } from '../form/form.component';
+import { CreditsComponent } from '../../../../components/credits/credits.component';
+import { CreditsService } from '../../../../services/credits.service';
 
 @Component({
   selector: 'app-list-members',
@@ -24,6 +26,7 @@ export class ListMembersComponent implements AfterViewInit {
     'age',
     'email',
     'status',
+    'credits',
     'edit',
     'cancel'
   ]
@@ -37,6 +40,7 @@ export class ListMembersComponent implements AfterViewInit {
   constructor(
     private _dialog: MatDialog,
     private _snackBar: MatSnackBar,
+    private _creditService: CreditsService,
     private _memberService: MembersService
 
     ) {
@@ -88,6 +92,31 @@ export class ListMembersComponent implements AfterViewInit {
         }
       }
     );
+
+  }
+
+  credits( member: ListMembers ){
+
+    if(!member.id){
+      return;
+    }
+
+    const dialogRef = this._dialog.open(CreditsComponent,{
+      width: '800px',
+      data: {
+        title: 'Titulo',
+        location: '1',
+        member: member
+      }
+    });
+
+    dialogRef.afterClosed()
+      .subscribe(
+        result => {
+          this._creditService.getQuantCredits( member.id! );
+          return result;
+        }
+      )
 
   }
 

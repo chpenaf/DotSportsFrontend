@@ -12,6 +12,9 @@ import { LocationSelect } from '../../interfaces/location.interface';
 import { MembersService } from '../../services/members.service';
 import { Slot } from '../../interfaces/calendar.interface';
 import { CalendarService } from '../../services/calendar.service';
+import { CreditsService } from '../../services/credits.service';
+import { CreditsComponent } from '../../components/credits/credits.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-booking',
@@ -35,13 +38,19 @@ export class BookingComponent implements OnInit, AfterViewInit {
     status: ''
   }
 
-  dateSelected: Date = new Date()
+  dateSelected: Date = new Date();
+
+  credits: number = 0;
 
   listSlots: Slot[] = [];
 
+  searched: boolean = false;
+
   constructor(
+    private _dialog: MatDialog,
     private _fb: FormBuilder,
     private _calendarService: CalendarService,
+    private _creditService: CreditsService,
     private _locationService: LocationService,
     private _employeeService: EmployeeService,
     private _memberService: MembersService
@@ -108,6 +117,10 @@ export class BookingComponent implements OnInit, AfterViewInit {
   memberChange( event: MatOptionSelectionChange, selected: ListMembers ){
     if( event.isUserInput ) {
       this.memberSelected = selected;
+      this._creditService.getQuantCredits(selected.id!)
+        .subscribe(
+          resp => this.credits = resp.quantity
+        )
     }
   }
 
@@ -127,7 +140,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
   searchSlots(){
 
     const location = this.bookingForm.controls['location'].value;
-
+    this.searched = true;
     this._calendarService.getSlots(location,this.dateSelected)
       .subscribe(
         resp => {
@@ -135,6 +148,30 @@ export class BookingComponent implements OnInit, AfterViewInit {
           this.listSlots = resp;
         }
       );
+  }
+
+  showCredits() {
+
+    const dialogRef = this._dialog.open(CreditsComponent,{
+      width: '800px',
+      data: {
+        title: 'Titulo',
+        location: this.bookingForm.controls['location'].value,
+        member: this.memberSelected
+      }
+    });
+
+    dialogRef.afterClosed()
+      .subscribe(
+        result => {
+          this._creditService.getQuantCredits( this.memberSelected.id! )
+            .subscribe(
+              resp => this.credits = resp.quantity
+            );
+          return result;
+        }
+      )
+
   }
 
 }

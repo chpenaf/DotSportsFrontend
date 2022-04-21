@@ -67,6 +67,16 @@
     </ng-container>
 
      <!-- Actions -->
+     <ng-container matColumnDef="credits">
+      <th mat-header-cell class="col-action" *matHeaderCellDef mat-sort-header> </th>
+      <td mat-cell class="col-action" *matCellDef="let row">
+        <button mat-fab color="accent" (click)="credits(row)">
+          <mat-icon>favorite</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+
      <ng-container matColumnDef="edit">
       <th mat-header-cell class="col-action" *matHeaderCellDef mat-sort-header> </th>
       <td mat-cell class="col-action" *matCellDef="let row">

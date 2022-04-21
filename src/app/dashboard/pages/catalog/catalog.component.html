@@ -1,0 +1,131 @@
+<div class="content"
+     fxLayout="column">
+
+  <div>
+    <h1>Catálogo</h1>
+    <mat-divider></mat-divider>
+  </div>
+
+  <div fxLayout="column">
+    <form [formGroup]="formCatalog"
+          fxLayout="column">
+
+      <div fxLayout="row wrap" class="top_filters">
+        <mat-form-field appearance="fill" fxFlex="40">
+          <mat-label>Sede</mat-label>
+          <mat-select formControlName="location">
+            <mat-option *ngFor="let location of locations"
+                        [value]="location.id">
+              {{ location.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-tab-group mat-align-tabs="center">
+
+        <mat-tab label="Servicios" fxLayout="column">
+          <div fxLayout="row" class="add_master">
+            <span class="spacer"></span>
+            <button mat-flat-button color="primary">Agregar Servicio</button>
+          </div>
+          <mat-accordion>
+            <ng-container formArrayName="services">
+              <ng-container *ngFor="let serviceForm of services.controls; let i = index;">
+                <mat-expansion-panel [formGroupName]="i" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      {{ getServiceTitle(i) }}
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <button mat-flat-button color="primary">Agregar subcategoría</button>
+
+                  <table class="content">
+
+                    <tbody>
+                      <ng-container formArrayName="subcategories">
+                        <ng-container *ngFor="let subcategoryForm of getSubcategoriesControls(serviceForm); let j = index;">
+                          <tbody>
+                            <tr [formGroupName]="j"
+                                fxLayout="row wrap">
+                            <td fXFlex="10">
+                              <mat-form-field appearance="outline">
+                                <input matInput formControlName="level">
+                              </mat-form-field>
+                            </td>
+                            <td fxFlex="40">
+                              <mat-form-field appearance="outline">
+                                <input matInput formControlName="name">
+                              </mat-form-field>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </ng-container>
+                      </ng-container>
+                    </tbody>
+                  </table>
+
+                </mat-expansion-panel>
+              </ng-container>
+            </ng-container>
+          </mat-accordion>
+        </mat-tab>
+
+        <mat-tab label="Cursos">
+          <div fxLayout="row" class="add_master">
+            <span class="spacer"></span>
+            <button mat-flat-button color="primary">Agregar Curso</button>
+          </div>
+          <mat-accordion>
+            <ng-container formArrayName="courses">
+              <ng-container *ngFor="let courseForm of courses.controls; let x = index;">
+                <mat-expansion-panel [formGroupName]="x" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      {{ getCourseTitle(x) }}
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+
+                  <table class="content">
+
+                    <tbody>
+                      <ng-container formArrayName="levels">
+                        <ng-container *ngFor="let levelForm of getLevelsControls(courseForm); let j = index;">
+                          <tbody>
+                            <tr [formGroupName]="j"
+                                fxLayout="row wrap">
+                            <td fXFlex="10">
+                              <mat-form-field appearance="outline">
+                                <input matInput formControlName="level">
+                              </mat-form-field>
+                            </td>
+                            <td fxFlex="40">
+                              <mat-form-field appearance="outline">
+                                <input matInput formControlName="name">
+                              </mat-form-field>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </ng-container>
+                      </ng-container>
+                    </tbody>
+                  </table>
+
+                </mat-expansion-panel>
+              </ng-container>
+            </ng-container>
+          </mat-accordion>
+        </mat-tab>
+      </mat-tab-group>
+
+    </form>
+  </div>
+
+  <!-- <pre>
+    <code>
+      {{ formCatalog.value | json }}
+    </code>
+  </pre> -->
+
+</div>
+

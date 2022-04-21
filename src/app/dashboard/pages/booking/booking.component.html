@@ -83,7 +83,7 @@
 
               <mat-label>
                 <mat-icon class="material-icons-outlined">favorite_border</mat-icon>
-                5 créditos
+                {{ credits }} créditos disponibles
               </mat-label>
 
             </div>
@@ -94,8 +94,15 @@
         </mat-card-content>
 
         <mat-card-actions>
-          <button mat-button color="primary">Ver Créditos</button>
-          <button mat-button color="primary">Ver Reservas</button>
+          <button mat-button
+                  (click)="showCredits()"
+                  color="primary">
+            Ver Créditos
+          </button>
+
+          <button mat-button color="primary">
+            Ver Reservas
+          </button>
         </mat-card-actions>
       </mat-card>
 
@@ -117,7 +124,12 @@
 
   <!-- Contenedor de horas disponibles -->
   <div fxLayout="row wrap"
-       fxLayoutGap="20px">
+       fxLayoutGap="20px"
+       *ngIf="searched">
+
+    <div *ngIf="listSlots.length == 0">
+      <p>No se encontraron horas disponibles</p>
+    </div>
 
     <div *ngFor="let slot of listSlots" fxFlex="15">
       <button mat-stroked-button

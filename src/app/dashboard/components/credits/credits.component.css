@@ -1,0 +1,34 @@
+.content {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+tbody tr td {
+  text-align: center;
+}
+
+.status {
+  width: 100px;
+  text-align: center;
+}
+
+.active {
+  border: 1px #c9e8d0 solid;
+  background-color: #d4edda;
+  color: #1b5c2a;
+}
+
+.reserved {
+  border: 1px #ffecb5 solid;
+  background-color: #fff3cd;
+  color: #755d16;
+}
+
+.completed {
+  border: 1px #f8dbde solid;
+  background-color: #f8d7da;
+  color: #7a272f;
+}
