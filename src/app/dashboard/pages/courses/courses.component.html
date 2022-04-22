@@ -20,10 +20,46 @@
 
       <button mat-raised-button
               class="search_btn"
-              color="primary">
+              color="primary"
+              (click)="searchCourses()">
         Buscar
       </button>
 
   </div>
+
+  <!-- List Courses -->
+  <div *ngIf="listCourses.length" class="courses_list">
+    <table class="courses_list">
+
+      <thead>
+        <tr>
+          <td scope="col">Código</td>
+          <td scope="col">Piscina</td>
+          <td scope="col">N° Carril</td>
+          <td scope="col">Curso</td>
+          <td scope="col">Nivel</td>
+          <td scope="col">Profesor</td>
+          <td scope="col">N° Sesiones</td>
+        </tr>
+      </thead>
+
+      <tbody>
+        <ng-container arrayName="courses">
+          <ng-container *ngFor="let course of courses.controls; let i = index">
+            <tr [formGroupName]="i">
+
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+
+    </table>
+  </div>
+
+  <pre>
+    <code>
+      {{ coursesForm.value | json }}
+    </code>
+  </pre>
 
 </div>
