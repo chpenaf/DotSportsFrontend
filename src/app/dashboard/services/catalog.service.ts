@@ -4,7 +4,8 @@ import { tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
-import { Catalog } from '../interfaces/catalog.interface';
+import { Catalog, Level } from '../interfaces/catalog.interface';
+import { OkResponse } from '../../shared/interfaces/shared.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,11 @@ export class CatalogService {
       .pipe(
         tap( resp => this._catalog = resp )
       );
+  }
+
+  deleteSubcategory( level: Level ){
+    const url = `${ this._backend }/catalog/subcategory/${ level.id }/`;
+    return this._http.delete<OkResponse>( url, this._auth.getHttpOptions() );
   }
 
 

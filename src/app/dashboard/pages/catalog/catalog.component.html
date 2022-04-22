@@ -26,8 +26,9 @@
 
         <mat-tab label="Servicios" fxLayout="column">
           <div fxLayout="row" class="add_master">
+            <button mat-flat-button color="primary">Guardar</button>
             <span class="spacer"></span>
-            <button mat-flat-button color="primary">Agregar Servicio</button>
+            <button mat-stroked-button color="primary">Agregar Servicio</button>
           </div>
           <mat-accordion>
             <ng-container formArrayName="services">
@@ -38,28 +39,44 @@
                       {{ getServiceTitle(i) }}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
-                  <button mat-flat-button color="primary">Agregar subcategoría</button>
+
+                  <div fxLayout="row">
+                    <span class="spacer"></span>
+                    <button mat-flat-button
+                            color="primary"
+                            (click)="addServiceSubcategoryForm(i)">
+                      Agregar subcategoría
+                    </button>
+                  </div>
 
                   <table class="content">
 
                     <tbody>
                       <ng-container formArrayName="subcategories">
                         <ng-container *ngFor="let subcategoryForm of getSubcategoriesControls(serviceForm); let j = index;">
-                          <tbody>
                             <tr [formGroupName]="j"
+                                class="row"
                                 fxLayout="row wrap">
-                            <td fXFlex="10">
+                            <td fXFlex="5" class="col_pos">
                               <mat-form-field appearance="outline">
                                 <input matInput formControlName="level">
                               </mat-form-field>
                             </td>
-                            <td fxFlex="40">
+                            <td fxFlex="30" class="col_name">
                               <mat-form-field appearance="outline">
                                 <input matInput formControlName="name">
                               </mat-form-field>
                             </td>
+                            <td>
+                              <button mat-stroked-button
+                                      color="warn"
+                                      (click)="deleteSubcategory(i,j)">
+                                <mat-icon>
+                                  clear
+                                </mat-icon>
+                              </button>
+                            </td>
                           </tr>
-                          </tbody>
                         </ng-container>
                       </ng-container>
                     </tbody>
@@ -121,11 +138,11 @@
     </form>
   </div>
 
-  <!-- <pre>
+  <pre>
     <code>
       {{ formCatalog.value | json }}
     </code>
-  </pre> -->
+  </pre>
 
 </div>
 

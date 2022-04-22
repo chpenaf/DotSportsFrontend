@@ -1,0 +1,29 @@
+<h1>Cursos</h1>
+<mat-divider></mat-divider>
+
+<div class="content"
+     fxLayout="column">
+
+  <div class="search"
+       fxLayout="row"
+       [formGroup]="searchForm">
+
+      <mat-form-field appearance="fill"
+                      class="location">
+        <mat-label>Sede</mat-label>
+        <mat-select formControlName="location">
+          <mat-option *ngFor="let item of listLocations" [value]="item.id">
+            {{ item.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button
+              class="search_btn"
+              color="primary">
+        Buscar
+      </button>
+
+  </div>
+
+</div>

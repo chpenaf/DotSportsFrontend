@@ -6,6 +6,7 @@ import { LocationSelect as Location } from '../../interfaces/location.interface'
 import { CatalogService } from '../../services/catalog.service';
 import { EmployeeService } from '../../services/employee.service';
 import { LocationService } from '../../services/location.service';
+import { DialogsService } from '../../components/dialogs.service';
 
 @Component({
   selector: 'app-catalog',
@@ -20,6 +21,7 @@ export class CatalogComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _catalogService: CatalogService,
+    private _dialogService: DialogsService,
     private _locationService: LocationService,
     private _employeeService: EmployeeService
   ) { }
@@ -95,6 +97,10 @@ export class CatalogComponent implements OnInit {
     return this.getServiceForm( index ).controls['subcategories'] as FormArray;
   }
 
+  getSubcategories2( form: FormGroup ){
+    return form.controls['subcategories'] as FormArray;
+  }
+
   getLevels( index: number ){
     return this.getCourseForm( index ).controls['levels'] as FormArray;
   }
@@ -118,23 +124,30 @@ export class CatalogComponent implements OnInit {
       }
     );
 
-    service?.subcategories.forEach( subcat => {
-      ( serviceForm.controls['subcategories'] as FormArray )
-        .push(this.addServiceSubcategoryForm(subcat));
+    service?.subcategories.forEach( level => {
+      this.getSubcategories2(serviceForm).push(
+        this.buildServiceSubcategoryForm(level)
+      )
     });
 
     this.services.push(serviceForm);
   }
 
-  addServiceSubcategoryForm(level?: Level){
+  buildServiceSubcategoryForm(level?: Level){
     const subcategoryForm: FormGroup = this._fb.group(
       {
         id: [ level?.id, [] ],
-        level: [ level?.level, [] ],
-        name: [ level?.name, [] ]
+        level: [ level?.level, [ Validators.required ] ],
+        name: [ level?.name, [ Validators.required ] ]
       }
     );
     return subcategoryForm;
+  }
+
+  addServiceSubcategoryForm(index: number){
+    this.getSubcategories(index).push(
+      this.buildServiceSubcategoryForm()
+    );
   }
 
   addCourseForm(course?: Course){
@@ -171,6 +184,39 @@ export class CatalogComponent implements OnInit {
 
   getCourseTitle(index: number){
     return this.getCourseForm(index).controls['name'].value
+  }
+
+  deleteSubcategory(index: number, subindex: number){
+
+    const subcategoryForm = this.getSubcategories(index)
+                              .at(subindex) as FormGroup;
+
+    const subcategory: Level = subcategoryForm.value
+
+    if( !subcategory.id ){
+      this.getSubcategories(index).removeAt(subindex);
+      return;
+    }
+
+    this._dialogService.dialogToConfirm(
+      'Eliminar subcategoría',
+      '¿Desea eliminar la subcategoría seleccionada?')
+      .subscribe(
+        result => {
+          if ( result ){
+            this._catalogService.deleteSubcategory(subcategory)
+              .subscribe(
+                resp => {
+                  this.getSubcategories(index).removeAt(subindex);
+                  this._dialogService.openSnackBar(
+                    'Subcategoría borrada correctamente','Cerrar');
+                });
+          } else {
+            this._dialogService.openSnackBar(
+              'Acción cancelada','Cerrar');
+          }
+        }
+      );
   }
 
 }
