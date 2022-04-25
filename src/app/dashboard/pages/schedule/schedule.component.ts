@@ -8,7 +8,7 @@ import { LocationSelect } from '../../interfaces/location.interface';
 import { EmployeeService } from '../../services/employee.service';
 import { LocationService } from '../../services/location.service';
 import { ScheduleService } from '../../services/schedule.service';
-import { Schedule, Slot, DayType, DayTypeKey } from '../../interfaces/schedule.interface';
+import { Schedule } from '../../interfaces/schedule.interface';
 import * as moment from 'moment';
 import { Time } from '@angular/common';
 

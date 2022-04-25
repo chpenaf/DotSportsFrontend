@@ -66,14 +66,17 @@ export class ScheduleService {
 
   saveDay(days: DayType[]){
     const url = `${ this._backend }/schedules/day/`;
-    console.log(days)
     return this._http.post<DayType[]>(url, days, this._authService.getHttpOptions());
   }
 
   saveSlots(slots: Slot[]){
     const url = `${ this._backend }/schedules/day/slots/`;
-    console.log(slots)
     return this._http.post<Slot[]>(url,slots, this._authService.getHttpOptions());
+  }
+
+  getWeekSchedule(idLocation:number){
+    const url = `${ this._backend }/schedules/day/${ idLocation }/`;
+    return this._http.get<DayType[]>(url, this._authService.getHttpOptions());
   }
 
 }

@@ -18,5 +18,27 @@
 
 .courses_list{
   width: 100%;
+  margin-top: 30px;
 }
 
+.w-100 {
+  width: 100%;
+}
+
+td mat-form-field {
+  width: 100%;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.btn_schedule {
+  margin-top: 3px;
+  width: 50px;
+  height: 50px;
+}
+
+td mat-button-toggle {
+  width: 100%;
+}

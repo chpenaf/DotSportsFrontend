@@ -28,26 +28,136 @@
   </div>
 
   <!-- List Courses -->
-  <div *ngIf="listCourses.length" class="courses_list">
+  <div class="courses_list"
+       *ngIf="courses.length"
+       [formGroup]="coursesForm"
+       fxLayout="column">
+
+    <h2>Cursos {{ catalog.location?.name }}</h2>
+    <mat-divider></mat-divider>
+
+    <div class="mt-10"
+         fxLayout="row"
+         fxLayoutGap="10px">
+      <button mat-raised-button
+              color="primary">
+        Guardar
+      </button>
+      <button mat-raised-button
+              (click)="appendCourseForm()">
+        Agregar curso
+      </button>
+    </div>
+
     <table class="courses_list">
 
       <thead>
-        <tr>
-          <td scope="col">Código</td>
-          <td scope="col">Piscina</td>
-          <td scope="col">N° Carril</td>
-          <td scope="col">Curso</td>
-          <td scope="col">Nivel</td>
-          <td scope="col">Profesor</td>
-          <td scope="col">N° Sesiones</td>
+        <tr fxLayout="row wrap">
+          <th fxFlex="3" scope="col">Cód</th>
+          <th fxFlex="15" scope="col">Piscina</th>
+          <th fxFlex="5" scope="col">N° Carril</th>
+          <th fxFlex="10" scope="col">Curso</th>
+          <th fxFlex="10" scope="col">Nivel</th>
+          <th fxFlex="5" scope="col">Sesiones</th>
+          <th fxFlex="15" scope="col">Profesor</th>
+          <th fxFlex="10" scope="col">Inicio</th>
+          <th fxFlex="10" scope="col">Fin</th>
+          <th fxFlex="10" scope="col"></th>
         </tr>
       </thead>
 
       <tbody>
-        <ng-container arrayName="courses">
-          <ng-container *ngFor="let course of courses.controls; let i = index">
-            <tr [formGroupName]="i">
-
+        <ng-container formArrayName="courses">
+          <ng-container *ngFor="let courseForm of courses.controls; let i = index;">
+            <tr [formGroupName]="i"  fxLayout="row wrap">
+              <td fxFlex="3">
+                <mat-form-field appearance="outline">
+                  <input matInput formControlName="id">
+                </mat-form-field>
+              </td>
+              <td fxFlex="15">
+                <mat-form-field appearance="outline">
+                  <mat-select formControlName="pool">
+                    <mat-option *ngFor="let pool of listPools"
+                                [value]="pool.id"
+                                (selectionChange)="selectPool(pool.id)">
+                      {{ pool.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td fxFlex="5">
+                <mat-form-field appearance="outline">
+                  <mat-select formControlName="lane">
+                    <mat-option *ngFor="let lane of listLanes" [value]="lane.id">
+                      {{ lane.lane_no }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td fxFlex="10">
+                <mat-form-field appearance="outline">
+                  <mat-select formControlName="course">
+                    <mat-option *ngFor="let course of listCoursesCatalog"
+                                [value]="course.id"
+                                (onSelectionChange)="selectCourse(course.id)">
+                      {{ course.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td fxFlex="10">
+                <mat-form-field appearance="outline">
+                  <mat-select formControlName="level">
+                    <mat-option *ngFor="let level of listCourseLevels"
+                                [value]="level.id">
+                      {{ level.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td fxFlex="5">
+                <mat-form-field appearance="outline">
+                  <input matInput formControlName="num_sessions">
+                </mat-form-field>
+              </td>
+              <td fxFlex="15">
+                <mat-form-field appearance="outline">
+                  <input matInput formControlName="teacher">
+                </mat-form-field>
+              </td>
+              <td fxFlex="10">
+                <mat-form-field appearance="outline">
+                  <input matInput
+                         formControlName="startdate"
+                         [matDatepicker]="pickerStartDate">
+                  <mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerStartDate></mat-datepicker>
+                </mat-form-field>
+              </td>
+              <td fxFlex="10">
+                <mat-form-field appearance="outline">
+                  <input matInput formControlName="enddate" [matDatepicker]="pickerEndDate">
+                  <mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerEndDate></mat-datepicker>
+                </mat-form-field>
+              </td>
+              <td fxFlex="10">
+                <button mat-stroked-button
+                        class="btn_schedule"
+                        (click)="showSchedule(i)">
+                  <mat-icon aria-label="Horario">
+                    schedule
+                  </mat-icon>
+                </button>
+                <button mat-stroked-button
+                        color="warn"
+                        class="btn_schedule">
+                  <mat-icon class="material-icons-outlined">
+                    clear
+                  </mat-icon>
+                </button>
+              </td>
             </tr>
           </ng-container>
         </ng-container>
@@ -55,6 +165,64 @@
 
     </table>
   </div>
+
+  <!-- Schedule Course -->
+  <mat-card *ngIf="weekSchedule.length"
+            class="w-100"
+            fxLayout="column">
+    <table>
+      <thead>
+        <tr>
+          <th>Lunes</th>
+          <th>Martes</th>
+          <th>Miércoles</th>
+          <th>Jueves</th>
+          <th>Viernes</th>
+          <th>Sábado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of weekSchedule">
+          <td>
+            <mat-button-toggle>
+              {{ item.monday?.starttime }}
+            </mat-button-toggle>
+          </td>
+          <td>
+            <mat-button-toggle>
+              {{ item.tuesday?.starttime }}
+            </mat-button-toggle>
+          </td>
+          <td>
+            <mat-button-toggle>
+              {{ item.wednesday?.starttime }}
+            </mat-button-toggle>
+          </td>
+          <td>
+            <mat-button-toggle>
+              {{ item.thursday?.starttime }}
+            </mat-button-toggle>
+          </td>
+          <td>
+            <mat-button-toggle>
+              {{ item.friday?.starttime }}
+            </mat-button-toggle>
+          </td>
+          <td>
+            <mat-button-toggle>
+              {{ item.saturday?.starttime }}
+            </mat-button-toggle>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <mat-card-actions align="end">
+      <button mat-raised-button
+              color="primary">
+        Guardar
+      </button>
+    </mat-card-actions>
+  </mat-card>
 
   <pre>
     <code>

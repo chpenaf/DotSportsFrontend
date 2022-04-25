@@ -22,6 +22,13 @@ export interface Location {
 export interface LocationSelect {
   id: number;
   name: string;
+  pools?: PoolSelect[];
+}
+
+export interface PoolSelect {
+  id: number;
+  name: string;
+  lanes?: Lane[]
 }
 
 export interface Pool {
@@ -38,8 +45,8 @@ export interface Pool {
 
 export interface Lane {
   id?: number;
-  id_pool: number;
-  lane_no: number;
+  id_pool?: number;
+  lane_no?: number;
 }
 
 export interface LocationResponse {

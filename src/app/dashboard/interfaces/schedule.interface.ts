@@ -38,3 +38,12 @@ export interface ScheduleResponse {
   end_validity?: Date | string;
   days: DayType[];
 }
+
+export interface WeekSchedule {
+  monday?: Slot;
+  tuesday?: Slot;
+  wednesday?: Slot;
+  thursday?: Slot;
+  friday?: Slot;
+  saturday?: Slot;
+}
