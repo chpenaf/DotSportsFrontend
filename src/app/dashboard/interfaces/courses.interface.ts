@@ -1,5 +1,6 @@
 import { LocationSelect, Pool, Lane } from './location.interface';
 import { Course as CourseCatalog, Level } from './catalog.interface';
+import { Slot } from './schedule.interface';
 
 export interface Course {
   id?: number;
@@ -12,4 +13,12 @@ export interface Course {
   teacher?: string;
   startdate?: Date | string;
   enddate?: Date | string;
+  schedule?: Schedule[];
+}
+
+export interface Schedule {
+  id?: number;
+  course_assigned?: number;
+  slot?: number | Slot;
+  weekday?: number;
 }

@@ -47,3 +47,8 @@ export interface WeekSchedule {
   friday?: Slot;
   saturday?: Slot;
 }
+
+export interface CourseSchedule {
+  day: number;
+  slot: Slot;
+}

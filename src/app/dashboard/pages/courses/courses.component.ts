@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { tap } from 'rxjs/operators';
 
@@ -8,11 +8,13 @@ import { EmployeeService } from '../../services/employee.service';
 import { LocationService } from '../../services/location.service';
 import { Lane, LocationSelect, PoolSelect } from '../../interfaces/location.interface';
 import { CourseService } from '../../services/course.service';
-import { Course } from '../../interfaces/courses.interface';
+import { Course, Schedule } from '../../interfaces/courses.interface';
 import { CatalogService } from '../../services/catalog.service';
 import { Catalog, Course as CourseCatalog, Level } from '../../interfaces/catalog.interface';
 import { ScheduleService } from '../../services/schedule.service';
-import { WeekSchedule } from '../../interfaces/schedule.interface';
+import { Slot, WeekSchedule, CourseSchedule } from '../../interfaces/schedule.interface';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { DialogsService } from '../../components/dialogs.service';
 
 @Component({
   selector: 'app-courses',
@@ -33,12 +35,16 @@ export class CoursesComponent implements OnInit {
   listCourseLevels: Level[] = [];
   listPools: PoolSelect[] = [];
   listLanes: Lane[] = [];
-  weekSchedule: WeekSchedule[] = []
+  weekSchedule: WeekSchedule[] = [];
+  courseSchedule: CourseSchedule[] = [];
+
+  courseSelected: Course = {};
 
   constructor(
     private _fb: FormBuilder,
     private _catalogService: CatalogService,
     private _courseService: CourseService,
+    private _dialogService: DialogsService,
     private _employeeService: EmployeeService,
     private _locationService: LocationService,
     private _scheduleService: ScheduleService
@@ -95,6 +101,7 @@ export class CoursesComponent implements OnInit {
               .subscribe(
                 resp => {
                   this.listCourses = resp;
+                  console.log(this.listCourses);
                   this.fillCoursesForm();
                 });
           }
@@ -175,6 +182,12 @@ export class CoursesComponent implements OnInit {
 
   showSchedule(index: number){
     const idLocation = this.location.value;
+
+    const formCourse = this.courses.at(index) as FormGroup;
+
+    this.courseSelected = formCourse.value;
+    this.courseSelected.id = formCourse.controls['id'].value;
+
     this._scheduleService.getWeekSchedule(idLocation)
       .subscribe(
         resp => {
@@ -201,10 +214,75 @@ export class CoursesComponent implements OnInit {
             }
           });
           this.weekSchedule = week;
+          console.log(week);
         }
       )
   }
 
+  toggle(event: MatButtonToggleChange, day: number){
 
+    const slot: Slot = event.value;
+
+    if( event.source.checked ){
+      this.courseSchedule.push({ day, slot });
+    } else {
+      this.courseSchedule.forEach( (item, index) => {
+        if( ( item.day == day ) && ( item.slot.starttime == slot.starttime ) ){
+          this.courseSchedule.splice(index,1);
+        }
+      });
+    }
+
+  }
+
+  checked(day: number, slot?: Slot){
+
+    if(!slot){
+      return false;
+    }
+
+    const course: Course | undefined = this.listCourses.find(
+      item => item.id == this.courseSelected.id
+    );
+
+    if(!course){
+      return false;
+    }
+
+    const schedule: Schedule | undefined = course.schedule?.find(
+      item => item.slot == slot.id && item.weekday == day
+    )
+
+    if(schedule){
+      return true;
+    }
+
+
+    return false;
+  }
+
+  saveSchedule(){
+
+    const schedule: Schedule[] = [];
+
+    if( this.courseSchedule.length == 0 ){
+      this._dialogService.informativo(
+        'Error',
+        'Debe seleccionar horario del curso'
+      )
+      return;
+    }
+
+    this.courseSchedule.forEach(item => {
+      schedule.push({
+        course_assigned: this.courseSelected.id,
+        slot: item.slot,
+        weekday: item.day
+      })
+    });
+
+    console.log(schedule);
+
+  }
 
 }

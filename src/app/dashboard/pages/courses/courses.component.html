@@ -39,10 +39,10 @@
     <div class="mt-10"
          fxLayout="row"
          fxLayoutGap="10px">
-      <button mat-raised-button
+      <!-- <button mat-raised-button
               color="primary">
         Guardar
-      </button>
+      </button> -->
       <button mat-raised-button
               (click)="appendCourseForm()">
         Agregar curso
@@ -60,9 +60,9 @@
           <th fxFlex="10" scope="col">Nivel</th>
           <th fxFlex="5" scope="col">Sesiones</th>
           <th fxFlex="15" scope="col">Profesor</th>
-          <th fxFlex="10" scope="col">Inicio</th>
-          <th fxFlex="10" scope="col">Fin</th>
-          <th fxFlex="10" scope="col"></th>
+          <th fxFlex="15" scope="col">Inicio</th>
+          <!-- <th fxFlex="10" scope="col">Fin</th> -->
+          <th fxFlex="12" scope="col"></th>
         </tr>
       </thead>
 
@@ -126,7 +126,7 @@
                   <input matInput formControlName="teacher">
                 </mat-form-field>
               </td>
-              <td fxFlex="10">
+              <td fxFlex="15">
                 <mat-form-field appearance="outline">
                   <input matInput
                          formControlName="startdate"
@@ -135,14 +135,14 @@
                   <mat-datepicker #pickerStartDate></mat-datepicker>
                 </mat-form-field>
               </td>
-              <td fxFlex="10">
+              <!-- <td fxFlex="10">
                 <mat-form-field appearance="outline">
                   <input matInput formControlName="enddate" [matDatepicker]="pickerEndDate">
                   <mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
                   <mat-datepicker #pickerEndDate></mat-datepicker>
                 </mat-form-field>
-              </td>
-              <td fxFlex="10">
+              </td> -->
+              <td fxFlex="12">
                 <button mat-stroked-button
                         class="btn_schedule"
                         (click)="showSchedule(i)">
@@ -170,6 +170,7 @@
   <mat-card *ngIf="weekSchedule.length"
             class="w-100"
             fxLayout="column">
+    <h2>Horario</h2>
     <table>
       <thead>
         <tr>
@@ -184,32 +185,50 @@
       <tbody>
         <tr *ngFor="let item of weekSchedule">
           <td>
-            <mat-button-toggle>
+            <mat-button-toggle  *ngIf="item.monday?.starttime"
+                                [checked]="checked(1,item.monday)"
+                                [value]="item.monday"
+                                (change)="toggle($event,1)">
               {{ item.monday?.starttime }}
             </mat-button-toggle>
           </td>
           <td>
-            <mat-button-toggle>
+            <mat-button-toggle  *ngIf="item.tuesday?.starttime"
+                                [checked]="checked(2,item.tuesday)"
+                                [value]="item.tuesday"
+                                (change)="toggle($event,2)">
               {{ item.tuesday?.starttime }}
             </mat-button-toggle>
           </td>
           <td>
-            <mat-button-toggle>
+            <mat-button-toggle  *ngIf="item.wednesday?.starttime"
+                                [checked]="checked(3,item.wednesday)"
+                                [value]="item.wednesday"
+                                (change)="toggle($event,3)">
               {{ item.wednesday?.starttime }}
             </mat-button-toggle>
           </td>
           <td>
-            <mat-button-toggle>
+            <mat-button-toggle  *ngIf="item.thursday?.starttime"
+                                [checked]="checked(4,item.thursday)"
+                                [value]="item.thursday"
+                                (change)="toggle($event,4)">
               {{ item.thursday?.starttime }}
             </mat-button-toggle>
           </td>
           <td>
-            <mat-button-toggle>
+            <mat-button-toggle  *ngIf="item.friday?.starttime"
+                                [checked]="checked(5,item.friday)"
+                                [value]="item.friday"
+                                (change)="toggle($event,5)">
               {{ item.friday?.starttime }}
             </mat-button-toggle>
           </td>
           <td>
-            <mat-button-toggle>
+            <mat-button-toggle  *ngIf="item.saturday?.starttime"
+                                [checked]="checked(6,item.saturday)"
+                                [value]="item.saturday"
+                                (change)="toggle($event,6)">
               {{ item.saturday?.starttime }}
             </mat-button-toggle>
           </td>
@@ -218,6 +237,7 @@
     </table>
     <mat-card-actions align="end">
       <button mat-raised-button
+              (click)="saveSchedule()"
               color="primary">
         Guardar
       </button>

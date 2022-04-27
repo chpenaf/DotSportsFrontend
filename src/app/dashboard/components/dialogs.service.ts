@@ -35,6 +35,22 @@ export class DialogsService {
     return dialogRef.afterClosed();
   }
 
+  informativo(title: string, message: string){
+    const dialogRef = this._dialog.open(
+      DialogToConfirmComponent, {
+        data: {
+          title: title,
+          message: message,
+          confirm: {
+            text: 'Cerrar',
+            color: 'primary'
+          }
+        }
+      }
+    );
+    return dialogRef.afterClosed();
+  }
+
   openSnackBar(message: string, action: string){
     this._snackBar.open(message, action, {
       duration: 2500

@@ -7,7 +7,6 @@
 
 <mat-card-content>
   <form [formGroup]="signinForm"
-        (ngSubmit)="signin()"
         autocomplete="on"
         fxLayout="column">
 
@@ -20,8 +19,14 @@
       <input matInput
             type="email"
             formControlName="email"
+            (keyup.enter)="enter($event)"
             placeholder="Ingrese correo">
-      <button *ngIf="this.email.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.email.setValue('')">
+      <button mat-icon-button
+              *ngIf="this.email.value"
+              matSuffix
+              aria-label="Clear"
+              (cdkAutofill)="false"
+              (click)="this.email.setValue('')">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="emailErrorMsg">
@@ -36,8 +41,12 @@
       <input matInput
             type="password"
             formControlName="password"
+            (keyup.enter)="enter($event)"
             placeholder="Ingrese contraseña">
-      <button *ngIf="this.password.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.password.setValue('')">
+      <button mat-icon-button aria-label="Clear"
+              matSuffix *ngIf="this.password.value"
+              (cdkAutofill)="false"
+              (click)="this.password.setValue('')">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="this.password.hasError">
@@ -49,6 +58,7 @@
 
     <!-- Iniciar sesion -->
     <button mat-flat-button
+            (click)="signin()"
             color="primary">
       Iniciar sesión
     </button>

@@ -73,6 +73,16 @@ export class LoginComponent implements OnInit {
 
   }
 
+  enter(event: any){
+    console.log(event);
+    if( event.key != 'Enter' ){
+      return;
+    }
+    if( this.signinForm.valid ){
+      this.signin();
+    }
+  }
+
   openSnackBar() {
     this._snackBar.open('Usuario y/o Contraseña incorrectos','Cerrar',{
       duration: 5000,
