@@ -39,13 +39,14 @@
     <div class="mt-10"
          fxLayout="row"
          fxLayoutGap="10px">
-      <!-- <button mat-raised-button
-              color="primary">
+      <button mat-raised-button
+              color="primary"
+              (click)="saveCourse()">
         Guardar
-      </button> -->
+      </button>
       <button mat-raised-button
               (click)="appendCourseForm()">
-        Agregar curso
+        Agregar
       </button>
     </div>
 
@@ -243,11 +244,5 @@
       </button>
     </mat-card-actions>
   </mat-card>
-
-  <pre>
-    <code>
-      {{ coursesForm.value | json }}
-    </code>
-  </pre>
 
 </div>

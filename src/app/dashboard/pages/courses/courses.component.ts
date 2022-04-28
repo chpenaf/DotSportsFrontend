@@ -15,6 +15,7 @@ import { ScheduleService } from '../../services/schedule.service';
 import { Slot, WeekSchedule, CourseSchedule } from '../../interfaces/schedule.interface';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { DialogsService } from '../../components/dialogs.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-courses',
@@ -101,7 +102,6 @@ export class CoursesComponent implements OnInit {
               .subscribe(
                 resp => {
                   this.listCourses = resp;
-                  console.log(this.listCourses);
                   this.fillCoursesForm();
                 });
           }
@@ -145,7 +145,7 @@ export class CoursesComponent implements OnInit {
         num_sessions: [ course?.num_sessions, [ Validators.required ] ],
         teacher: [ course?.teacher, [ Validators.required ] ],
         startdate: [ course?.startdate, [ Validators.required ] ],
-        enddate: [ course?.enddate, [ Validators.required ] ]
+        enddate: [ course?.enddate, [ ] ]
       }
     );
 
@@ -185,8 +185,15 @@ export class CoursesComponent implements OnInit {
 
     const formCourse = this.courses.at(index) as FormGroup;
 
-    this.courseSelected = formCourse.value;
-    this.courseSelected.id = formCourse.controls['id'].value;
+    this.courseSelected = formCourse.getRawValue();
+
+    if( !this.courseSelected.id ){
+      this._dialogService.informativo(
+        'Curso no guardado',
+        'Para revisar horario debe primero guardar curso'
+      )
+      return;
+    }
 
     this._scheduleService.getWeekSchedule(idLocation)
       .subscribe(
@@ -276,12 +283,82 @@ export class CoursesComponent implements OnInit {
     this.courseSchedule.forEach(item => {
       schedule.push({
         course_assigned: this.courseSelected.id,
-        slot: item.slot,
+        slot: item.slot.id,
         weekday: item.day
       })
     });
 
-    console.log(schedule);
+    this._courseService.saveSchedule(schedule)
+      .subscribe(
+        resp => {
+          console.log(resp);
+          this._dialogService.openSnackBar(
+            'Datos guardados correctamente','Cerrar'
+          );
+        }
+      );
+
+  }
+
+  saveCourse(){
+
+    if( this.coursesForm.invalid ){
+      this.coursesForm.markAllAsTouched();
+      this._dialogService.openSnackBar(
+        'Formulario con errores','Cerrar'
+      );
+      return;
+    }
+
+    const courses: Course[] = [];
+
+    this.courses.controls.forEach( item => {
+      const courseForm = item as FormGroup;
+      const course: Course = courseForm.getRawValue();
+      courses.push(course);
+    });
+
+    courses.forEach( (course, index) => {
+
+      course.location = this.location.value;
+
+      if( !course.id ){
+        course.startdate = moment(course.startdate).format('YYYY-MM-DD');
+        this._courseService.saveCourse(course)
+          .subscribe(
+            resp => {
+              const form = this.courses.at(index) as FormGroup;
+              form.controls['id'].setValue(resp.id);
+              this._dialogService.openSnackBar(
+                'Datos guardados correctamente','Cerrar'
+              );
+            }
+          );
+      } else {
+        const old: Course = this.listCourses[index];
+        if( ( old.location != course.location ) ||
+            ( old.pool != course.pool ) ||
+            ( old.lane != course.lane ) ||
+            ( old.course != course.course ) ||
+            ( old.level != course.level ) ||
+            ( old.num_sessions != course.num_sessions ) ||
+            ( old.teacher != course.teacher ) ||
+            ( old.startdate != course.startdate )
+         ){
+          this._courseService.updateCourse(course.id, course)
+            .subscribe(
+              resp => {
+                this._dialogService.openSnackBar(
+                  'Datos guardados correctamente','Cerrar'
+                );
+              }
+            );
+         }
+      }
+
+    });
+
+      this._dialogService.openSnackBar('No se detectaron cambios','Cerrar');
 
   }
 
