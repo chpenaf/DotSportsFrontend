@@ -22,3 +22,8 @@ export interface Schedule {
   slot?: number | Slot;
   weekday?: number;
 }
+
+export interface DialogSchedule {
+  course: Course;
+  list: Course[];
+}

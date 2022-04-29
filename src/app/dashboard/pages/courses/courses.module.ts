@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CoursesComponent } from './courses.component';
 import { MaterialModule } from '../../../material/material.module';
 import { PipesModule } from '../../pipes/pipes.module';
+import { ScheduleModule } from './schedule/schedule.module';
 
 
 
@@ -18,7 +19,8 @@ import { PipesModule } from '../../pipes/pipes.module';
     FlexLayoutModule,
     ReactiveFormsModule,
     MaterialModule,
-    PipesModule
+    PipesModule,
+    ScheduleModule
   ]
 })
 export class CoursesModule { }

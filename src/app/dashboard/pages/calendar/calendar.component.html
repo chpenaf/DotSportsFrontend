@@ -1,4 +1,79 @@
-<div fxLayoyt="content">
-  <h1>Calendario</h1>
-  <mat-divider></mat-divider>
+<div class="w-100"
+     fxLayout="column">
+
+  <div>
+    <h1>Calendario</h1>
+    <mat-divider></mat-divider>
+  </div>
+
+  <div class="mt-10"
+       fxLayout="row"
+       fxLayoutGap="10px"
+       [formGroup]="searchForm">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Sede</mat-label>
+      <mat-select formControlName="location">
+        <mat-option *ngFor="let location of listLocations"
+                    [value]="location.id">
+          {{ location.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Año</mat-label>
+      <input matInput formControlName="year">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Mes</mat-label>
+      <mat-select formControlName="month">
+        <mat-option *ngFor="let month of months"
+                    [value]="month.key">
+          {{ month.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-flat-button
+            class="btn_search"
+            color="primary"
+            (click)="search()">
+      Buscar
+    </button>
+
+  </div>
+
+  <mat-card *ngIf="calendarMonth.length">
+    <mat-card-header>
+      <mat-card-title>
+        {{ months[ month.value - 1 ].value }} {{ year.value }}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content fxLayout="row wrap">
+      <div *ngFor="let weekday of weekdays"
+           fxFlex="14"
+           class="dayname">
+        <h4>{{ weekday.value }}</h4>
+      </div>
+      <ng-container *ngFor="let day of calendarMonth; let i = index;">
+        <ng-container *ngIf="i == 0 && day.day_week && day.day_week > 1">
+          <ng-container *ngFor="let weekday of weekdays">
+            <div *ngIf="weekday.key < day.day_week"
+                 fxFlex="14"
+                 class="day_off">
+            </div>
+          </ng-container>
+        </ng-container>
+        <div fxFlex="14"
+             (click)="clickDay(day)"
+             [class]="day.daytype == 'HO' || day.daytype == 'SU' ? 'holiday' : 'day'">
+          {{ day.day }}
+        </div>
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
+
+
 </div>

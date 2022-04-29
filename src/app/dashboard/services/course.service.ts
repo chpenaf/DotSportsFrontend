@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
 import { Course, Schedule } from '../interfaces/courses.interface';
+import { OkResponse } from '../../shared/interfaces/shared.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,11 @@ export class CourseService {
   updateCourse(id: number, course: Course){
     const url = `${ this._backend }/courses/${ id }/`;
     return this._http.put<Course>(url,course,this._auth.getHttpOptions());
+  }
+
+  deleteCourse(id: number){
+    const url = `${ this._backend }/courses/${ id }/`;
+    return this._http.delete<OkResponse>(url, this._auth.getHttpOptions());
   }
 
   saveSchedule(schedule: Schedule[]){

@@ -1,0 +1,39 @@
+.btn_search {
+  width: 150px;
+  height: 50px;
+}
+
+.dayname {
+  text-align: center;
+}
+
+.day, .day_off, .holiday {
+  width: 100%;
+  height: 50px;
+  margin: 1px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.day_off {
+  border: 1px solid transparent;
+}
+
+.day, .holiday {
+  border: 1px solid rgb(205, 205, 205);
+  cursor: pointer;
+  text-align: center;
+  padding-top: 15px;
+}
+
+.day {
+  color: black;
+}
+
+.holiday {
+  color: red;
+}
+
+.day:hover{
+  background-color: rgb(231, 255, 255);
+}

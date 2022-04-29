@@ -7,3 +7,14 @@ export interface Slot {
   starttime: Time;
   endtime: Time;
 }
+
+export interface Calendar {
+  id?: number;
+  location?: number;
+  schedule?: number;
+  date?: Date | string;
+  holiday?: boolean;
+  day?: number;
+  daytype?: string;
+  day_week?: number;
+}

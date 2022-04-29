@@ -1,0 +1,93 @@
+<div class="w-100">
+
+
+  <h1 mat-dialog-title>Horario</h1>
+
+  <div mat-dialog-content>
+    <!-- Schedule Course -->
+    <table class="w-100">
+      <thead>
+        <tr>
+          <th>Lunes</th>
+          <th>Martes</th>
+          <th>Miércoles</th>
+          <th>Jueves</th>
+          <th>Viernes</th>
+          <th>Sábado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of weekSchedule">
+          <td>
+            <mat-button-toggle  *ngIf="item.monday?.starttime"
+                                [checked]="checked(1,item.monday)"
+                                [value]="item.monday"
+              (change)="toggle($event,1)">
+              {{ item.monday?.starttime }}
+            </mat-button-toggle>
+          </td>
+          <td>
+            <mat-button-toggle  *ngIf="item.tuesday?.starttime"
+                                [checked]="checked(2,item.tuesday)"
+                                [value]="item.tuesday"
+                                (change)="toggle($event,2)">
+              {{ item.tuesday?.starttime }}
+            </mat-button-toggle>
+          </td>
+          <td>
+            <mat-button-toggle  *ngIf="item.wednesday?.starttime"
+                                [checked]="checked(3,item.wednesday)"
+                                [value]="item.wednesday"
+                                (change)="toggle($event,3)">
+              {{ item.wednesday?.starttime }}
+            </mat-button-toggle>
+          </td>
+          <td>
+            <mat-button-toggle  *ngIf="item.thursday?.starttime"
+                                [checked]="checked(4,item.thursday)"
+                                [value]="item.thursday"
+                                (change)="toggle($event,4)">
+              {{ item.thursday?.starttime }}
+            </mat-button-toggle>
+          </td>
+          <td>
+            <mat-button-toggle  *ngIf="item.friday?.starttime"
+                                [checked]="checked(5,item.friday)"
+                                [value]="item.friday"
+                                (change)="toggle($event,5)">
+              {{ item.friday?.starttime }}
+            </mat-button-toggle>
+          </td>
+          <td>
+            <mat-button-toggle  *ngIf="item.saturday?.starttime"
+                                [checked]="checked(6,item.saturday)"
+                                [value]="item.saturday"
+                                (change)="toggle($event,6)">
+              {{ item.saturday?.starttime }}
+            </mat-button-toggle>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <div mat-dialog-actions align="end">
+
+    <button mat-stroked-button
+            [mat-dialog-close]="true">
+      Cerrar
+    </button>
+
+    <button mat-raised-button
+            color="primary"
+            [mat-dialog-close]="true"
+            (click)="saveSchedule()"
+            cdkFocusInitial>
+      Guardar
+    </button>
+
+  </div>
+
+
+</div>

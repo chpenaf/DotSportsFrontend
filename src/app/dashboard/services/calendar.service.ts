@@ -5,7 +5,7 @@ import * as moment from 'moment';
 
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
-import { Slot } from '../interfaces/calendar.interface';
+import { Calendar, Slot } from '../interfaces/calendar.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,11 @@ export class CalendarService {
     const day = oneDate.format('D');
     const url = `${ this._backend }/planning/${ idLocation }/calendar/${ year }/${ month }/${ day }/slots/`;
     return this._http.get<Slot[]>(url,this._auth.getHttpOptions());
+  }
+
+  getPlanningMonth(idLocation: number, year: number, month: number){
+    const url = `${ this._backend }/planning/${ idLocation }/calendar/${ year }/${ month }/`;
+    return this._http.get<Calendar[]>(url,this._auth.getHttpOptions());
   }
 
 }

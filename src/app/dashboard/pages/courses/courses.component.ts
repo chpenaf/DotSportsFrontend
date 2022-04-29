@@ -13,9 +13,10 @@ import { CatalogService } from '../../services/catalog.service';
 import { Catalog, Course as CourseCatalog, Level } from '../../interfaces/catalog.interface';
 import { ScheduleService } from '../../services/schedule.service';
 import { Slot, WeekSchedule, CourseSchedule } from '../../interfaces/schedule.interface';
-import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { DialogsService } from '../../components/dialogs.service';
 import * as moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { ScheduleComponent } from './schedule/schedule.component';
 
 @Component({
   selector: 'app-courses',
@@ -36,19 +37,18 @@ export class CoursesComponent implements OnInit {
   listCourseLevels: Level[] = [];
   listPools: PoolSelect[] = [];
   listLanes: Lane[] = [];
-  weekSchedule: WeekSchedule[] = [];
   courseSchedule: CourseSchedule[] = [];
 
   courseSelected: Course = {};
 
   constructor(
+    private _dialog: MatDialog,
     private _fb: FormBuilder,
     private _catalogService: CatalogService,
     private _courseService: CourseService,
     private _dialogService: DialogsService,
     private _employeeService: EmployeeService,
-    private _locationService: LocationService,
-    private _scheduleService: ScheduleService
+    private _locationService: LocationService
   ) { }
 
   searchForm = this._fb.group(
@@ -88,6 +88,11 @@ export class CoursesComponent implements OnInit {
   }
 
   searchCourses(){
+
+    this.listCourses = [];
+
+    this.courses.clear();
+
     if(this.searchForm.invalid){
       this.searchForm.markAllAsTouched();
       return;
@@ -181,11 +186,12 @@ export class CoursesComponent implements OnInit {
   }
 
   showSchedule(index: number){
-    const idLocation = this.location.value;
 
+    const idLocation = this.location.value;
     const formCourse = this.courses.at(index) as FormGroup;
 
     this.courseSelected = formCourse.getRawValue();
+    this.courseSelected.location = idLocation;
 
     if( !this.courseSelected.id ){
       this._dialogService.informativo(
@@ -195,108 +201,22 @@ export class CoursesComponent implements OnInit {
       return;
     }
 
-    this._scheduleService.getWeekSchedule(idLocation)
-      .subscribe(
-        resp => {
-          const week: WeekSchedule[] = []
-          resp.forEach( item => {
-            if( item.daytype == 'WD' ){
-              item.slots.forEach(slot => {
-                week.push({
-                  monday: slot,
-                  tuesday: slot,
-                  wednesday: slot,
-                  thursday: slot,
-                  friday: slot
-                });
-              });
-            } else if( item.daytype == 'SA' ){
-              item.slots.forEach(slot => {
-                week.forEach( day => {
-                    if( day.monday?.starttime == slot.starttime ){
-                      day.saturday = slot;
-                    }
-                });
-              });
-            }
-          });
-          this.weekSchedule = week;
-          console.log(week);
+    const dialogRef = this._dialog.open(
+      ScheduleComponent,
+      {
+        width: '1000px',
+        data: {
+          course: this.courseSelected,
+          list: this.listCourses
         }
-      )
-  }
-
-  toggle(event: MatButtonToggleChange, day: number){
-
-    const slot: Slot = event.value;
-
-    if( event.source.checked ){
-      this.courseSchedule.push({ day, slot });
-    } else {
-      this.courseSchedule.forEach( (item, index) => {
-        if( ( item.day == day ) && ( item.slot.starttime == slot.starttime ) ){
-          this.courseSchedule.splice(index,1);
-        }
-      });
-    }
-
-  }
-
-  checked(day: number, slot?: Slot){
-
-    if(!slot){
-      return false;
-    }
-
-    const course: Course | undefined = this.listCourses.find(
-      item => item.id == this.courseSelected.id
+      }
     );
 
-    if(!course){
-      return false;
-    }
-
-    const schedule: Schedule | undefined = course.schedule?.find(
-      item => item.slot == slot.id && item.weekday == day
-    )
-
-    if(schedule){
-      return true;
-    }
-
-
-    return false;
-  }
-
-  saveSchedule(){
-
-    const schedule: Schedule[] = [];
-
-    if( this.courseSchedule.length == 0 ){
-      this._dialogService.informativo(
-        'Error',
-        'Debe seleccionar horario del curso'
-      )
-      return;
-    }
-
-    this.courseSchedule.forEach(item => {
-      schedule.push({
-        course_assigned: this.courseSelected.id,
-        slot: item.slot.id,
-        weekday: item.day
-      })
-    });
-
-    this._courseService.saveSchedule(schedule)
-      .subscribe(
-        resp => {
-          console.log(resp);
-          this._dialogService.openSnackBar(
-            'Datos guardados correctamente','Cerrar'
-          );
-        }
-      );
+    dialogRef.afterClosed().subscribe(
+      result => {
+        console.log(result);
+      }
+    );
 
   }
 
@@ -358,7 +278,39 @@ export class CoursesComponent implements OnInit {
 
     });
 
-      this._dialogService.openSnackBar('No se detectaron cambios','Cerrar');
+  }
+
+  deleteCourse(index: number){
+
+    const formCourse = this.courses.at(index) as FormGroup;
+    const course: Course = formCourse.getRawValue();
+
+    if( course.id ){
+      this._dialogService.dialogToConfirm(
+        'Borrar curso',
+        '¿Está seguro que desea borrar el curso?')
+        .subscribe(
+        result => {
+          if(result){
+            this._courseService.deleteCourse( course.id! )
+              .subscribe(
+                resp => {
+                  this._dialogService.openSnackBar(
+                    'Curso borrado correctamente','Cerrar'
+                  );
+                  this.courses.removeAt(index);
+                }
+              );
+          } else {
+            this._dialogService.openSnackBar(
+              'Acción canelada por el usuario','Cerrar'
+            );
+          }
+        }
+      )
+    } else {
+      this.courses.removeAt(index);
+    }
 
   }
 
