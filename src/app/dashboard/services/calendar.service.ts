@@ -30,6 +30,17 @@ export class CalendarService {
     return this._http.get<Slot[]>(url,this._auth.getHttpOptions());
   }
 
+  getAllSlots(idLocation: number, date: Date){
+
+    const oneDate = moment(date,'YYYY-MM-DD');
+
+    const year = oneDate.year();
+    const month = oneDate.format('M');
+    const day = oneDate.format('D');
+    const url = `${ this._backend }/planning/${ idLocation }/calendar/${ year }/${ month }/${ day }/1/`;
+    return this._http.get<Slot[]>(url,this._auth.getHttpOptions());
+  }
+
   getPlanningMonth(idLocation: number, year: number, month: number){
     const url = `${ this._backend }/planning/${ idLocation }/calendar/${ year }/${ month }/`;
     return this._http.get<Calendar[]>(url,this._auth.getHttpOptions());

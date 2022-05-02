@@ -2,11 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 
+import * as moment from 'moment';
+
 import { LocationSelect } from '../../interfaces/location.interface';
 import { EmployeeService } from '../../services/employee.service';
 import { LocationService } from '../../services/location.service';
 import { CalendarService } from '../../services/calendar.service';
 import { Calendar } from '../../interfaces/calendar.interface';
+import { DialogsService } from '../../components/dialogs.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { SlotsComponent } from './slots/slots.component';
 
 @Component({
   selector: 'app-calendar',
@@ -44,7 +49,9 @@ export class CalendarComponent implements OnInit {
   calendarMonth: Calendar[] = [];
 
   constructor(
+    private _dialog: MatDialog,
     private _fb: FormBuilder,
+    private _dialogService: DialogsService,
     private _calendarService: CalendarService,
     private _employeeService: EmployeeService,
     private _locationService: LocationService
@@ -114,7 +121,32 @@ export class CalendarComponent implements OnInit {
   }
 
   clickDay(day: Calendar){
-    console.log(day);
+
+    if(!day.location){
+      return;
+    }
+
+    if(!day.date){
+      return;
+    }
+
+    const date = moment(day.date).toDate();
+
+    this._calendarService.getAllSlots(day.location, date)
+      .subscribe(
+        resp => {
+          if( resp.length ){
+            // const dialogRef: MatDialogRef<SlotsComponent>;
+            // this._dialog.open(
+
+            // )
+          } else {
+            this._dialogService.informativo(
+              'Información','No existen horas para el día seleccionado'
+            )
+          }
+        }
+      );
   }
 
 }
