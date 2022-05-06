@@ -1,0 +1,7 @@
+.lane {
+  width: 100%;
+  border: 1px solid grey;
+  border-radius: 5px;
+  text-align: center;
+  padding: 10px 0 10px 0;
+}

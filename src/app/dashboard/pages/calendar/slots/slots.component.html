@@ -1,1 +1,49 @@
-<p>slots works!</p>
+<div class="w-100">
+  <h1 mat-dialog-title>Disponibilidad {{ day?.date | date: 'dd/MM/YYYY' }}</h1>
+
+  <div mat-dialog-content>
+
+    <mat-accordion multi>
+      <mat-expansion-panel *ngFor="let slot of slots">
+        <mat-expansion-panel-header>
+          <mat-panel-description>
+            {{ slot.starttime }} - {{ slot.endtime }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!-- Contenido  -->
+
+        <h3>Pistas</h3>
+        <table class="w-100">
+          <thead>
+            <tr>
+              <th scope="col" *ngFor="let lane of pool.lanes">
+                # {{ lane.lane_no }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td *ngFor="let lane of pool.lanes">
+                <div class="lane">
+                  Nado Libre
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-flat-button
+            [mat-dialog-close]="true"
+            color="primary">
+      Cerrar
+    </button>
+  </div>
+
+</div>

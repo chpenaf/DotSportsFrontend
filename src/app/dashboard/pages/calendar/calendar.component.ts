@@ -4,13 +4,13 @@ import { tap } from 'rxjs/operators';
 
 import * as moment from 'moment';
 
-import { LocationSelect } from '../../interfaces/location.interface';
+import { LocationSelect, PoolSelect } from '../../interfaces/location.interface';
 import { EmployeeService } from '../../services/employee.service';
 import { LocationService } from '../../services/location.service';
 import { CalendarService } from '../../services/calendar.service';
 import { Calendar } from '../../interfaces/calendar.interface';
 import { DialogsService } from '../../components/dialogs.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { SlotsComponent } from './slots/slots.component';
 
 @Component({
@@ -46,6 +46,7 @@ export class CalendarComponent implements OnInit {
   ]
 
   listLocations: LocationSelect[] = [];
+  listPools: PoolSelect[] = [];
   calendarMonth: Calendar[] = [];
 
   constructor(
@@ -60,6 +61,7 @@ export class CalendarComponent implements OnInit {
   searchForm = this._fb.group(
     {
       location: [ , [ Validators.required ] ],
+      pool: [ , [ Validators.required ] ],
       year: [ , [ Validators.required, Validators.minLength(4) ] ],
       month: [ , [ Validators.required ] ]
     }
@@ -67,6 +69,10 @@ export class CalendarComponent implements OnInit {
 
   get location(){
     return this.searchForm.controls['location'];
+  }
+
+  get pool(){
+    return this.searchForm.controls['pool'];
   }
 
   get year(){
@@ -87,6 +93,20 @@ export class CalendarComponent implements OnInit {
             .subscribe(
               resp => {
                 this.location.setValue(resp.location?.id);
+                if( resp.location?.id ){
+                  const location = this.listLocations.find(
+                    element => element.id = resp.location?.id!
+                  );
+                  if( location?.pools ){
+                    this.listPools = location?.pools;
+                    if( this.listPools.length === 1 ){
+                      const pool = this.listPools.find(
+                        element => element.id != 0
+                      )
+                      this.pool.setValue(pool?.id);
+                    }
+                  }
+                }
               }
             );
           }
@@ -117,7 +137,7 @@ export class CalendarComponent implements OnInit {
         resp => {
           this.calendarMonth = resp;
         }
-      )
+      );
   }
 
   clickDay(day: Calendar){
@@ -132,21 +152,56 @@ export class CalendarComponent implements OnInit {
 
     const date = moment(day.date).toDate();
 
+    const pool = this.listPools.find(
+      pool => pool.id === this.pool.value );
+
     this._calendarService.getAllSlots(day.location, date)
       .subscribe(
         resp => {
           if( resp.length ){
-            // const dialogRef: MatDialogRef<SlotsComponent>;
-            // this._dialog.open(
-
-            // )
+            const dialogRef = this._dialog.open(SlotsComponent,{
+              width: '1000px',
+              data: {
+                day: day,
+                pool: pool,
+                slots: resp
+              }
+            });
+            dialogRef.afterClosed()
+              .subscribe(
+                result => {
+                  console.log(result);
+                }
+              );
           } else {
             this._dialogService.informativo(
               'Información','No existen horas para el día seleccionado'
-            )
+            );
           }
         }
       );
+  }
+
+  changeLocation(id: number, event?: any){
+
+    if( !event ){
+      return;
+    }
+
+    const location = this.listLocations.find(
+      element => element.id = id!
+    );
+
+    if( location?.pools ){
+      this.listPools = location?.pools;
+      if( this.listPools.length === 1 ){
+        const pool = this.listPools.find(
+          element => element.id != 0
+        )
+        this.pool.setValue(pool?.id);
+      }
+    }
+
   }
 
 }

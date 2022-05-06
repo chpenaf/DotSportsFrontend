@@ -15,8 +15,19 @@
       <mat-label>Sede</mat-label>
       <mat-select formControlName="location">
         <mat-option *ngFor="let location of listLocations"
-                    [value]="location.id">
+                    [value]="location.id"
+                    (onSelectionChange)="changeLocation(location.id, $event)">
           {{ location.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Piscina</mat-label>
+      <mat-select formControlName="pool">
+        <mat-option *ngFor="let pool of listPools"
+                    [value]="pool.id">
+          {{ pool.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>

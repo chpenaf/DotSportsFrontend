@@ -1,4 +1,5 @@
 import { Time } from "@angular/common";
+import { PoolSelect } from './location.interface';
 
 export interface Slot {
   id?: number;
@@ -17,4 +18,10 @@ export interface Calendar {
   day?: number;
   daytype?: string;
   day_week?: number;
+}
+
+export interface SlotDialog {
+  day?: Calendar;
+  pool?: PoolSelect;
+  slots?: Slot[];
 }
