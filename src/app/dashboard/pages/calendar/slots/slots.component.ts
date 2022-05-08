@@ -25,6 +25,8 @@ export class SlotsComponent implements OnInit {
 
   ngOnInit(): void {
 
+    console.log(this.data);
+
     if( this.data.day ){
       this.day = this.data.day;
     }
