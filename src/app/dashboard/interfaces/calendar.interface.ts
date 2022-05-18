@@ -7,6 +7,7 @@ export interface Slot {
   slot?: number;
   starttime: Time;
   endtime: Time;
+  desc?: string;
 }
 
 export interface Calendar {

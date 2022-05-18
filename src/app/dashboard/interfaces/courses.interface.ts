@@ -27,3 +27,10 @@ export interface DialogSchedule {
   course: Course;
   list: Course[];
 }
+
+export interface CourseSession {
+  id?: number;
+  date?: number;
+  slot?: number;
+  desc?: string;
+}

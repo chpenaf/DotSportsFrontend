@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
-import { Course, Schedule } from '../interfaces/courses.interface';
+import { Course, Schedule, CourseSession } from '../interfaces/courses.interface';
 import { OkResponse } from '../../shared/interfaces/shared.interface';
 
 @Injectable({
@@ -17,6 +17,10 @@ export class CourseService {
     private _http: HttpClient,
     private _auth: AuthService
   ) { }
+
+  get httpOptions(){
+    return this._auth.getHttpOptions();
+  }
 
   getCourses(idLocation: number){
     const url = `${ this._backend }/courses/location/${ idLocation }/`;
@@ -41,6 +45,14 @@ export class CourseService {
   saveSchedule(schedule: Schedule[]){
     const url = `${ this._backend }/courses/schedule/`;
     return this._http.post<Schedule[]>(url,schedule,this._auth.getHttpOptions());
+  }
+
+  getSessions(date: Date){
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const url = `${ this._backend }/courses/session/${ year }/${ month }/${ day }`;
+    return this._http.get<CourseSession[]>(url, this.httpOptions);
   }
 
 }

@@ -18,7 +18,7 @@
             {{ slot.starttime | time }} - {{ slot.endtime | time }}
           </td>
           <td *ngFor="let lane of pool.lanes">
-            Nado Libre
+            {{ slot.desc }}
           </td>
         </tr>
       </tbody>
