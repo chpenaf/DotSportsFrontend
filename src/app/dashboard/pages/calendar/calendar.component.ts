@@ -160,7 +160,7 @@ export class CalendarComponent implements OnInit {
         resp => {
           if( resp.length ){
             const dialogRef = this._dialog.open(SlotsComponent,{
-              width: '1000px',
+              width: '1600px',
               data: {
                 day: day,
                 pool: pool,

@@ -46,4 +46,12 @@ export class CalendarService {
     return this._http.get<Calendar[]>(url,this._auth.getHttpOptions());
   }
 
+  getPlanningDay(location: number, pool: number, date: Date){
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const url = `${ this._backend }/planning/${ location }/${ pool }/calendar/${ year }/${ month }/${ day }`;
+    return this._http.get<Slot[]>(url, this._auth.getHttpOptions());
+  }
+
 }

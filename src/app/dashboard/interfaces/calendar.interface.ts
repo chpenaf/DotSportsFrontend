@@ -1,5 +1,5 @@
 import { Time } from "@angular/common";
-import { PoolSelect } from './location.interface';
+import { Location, PoolSelect } from './location.interface';
 
 export interface Slot {
   id?: number;
@@ -7,7 +7,7 @@ export interface Slot {
   slot?: number;
   starttime: Time;
   endtime: Time;
-  desc?: string;
+  lanes?: Lane[];
 }
 
 export interface Calendar {
@@ -23,6 +23,13 @@ export interface Calendar {
 
 export interface SlotDialog {
   day?: Calendar;
+  location?: Location;
   pool?: PoolSelect;
   slots?: Slot[];
+}
+
+export interface Lane {
+  id:      number;
+  lane_no: number;
+  desc:    null | string;
 }

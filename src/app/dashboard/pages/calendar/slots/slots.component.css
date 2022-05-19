@@ -5,3 +5,21 @@
   text-align: center;
   padding: 10px 0 10px 0;
 }
+
+.hora {
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+  width: 80px;
+  height: 40px;
+  text-align: center;
+}
+
+.slot {
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+  width: 120px;
+  height: 40px;
+  text-align: center;
+}

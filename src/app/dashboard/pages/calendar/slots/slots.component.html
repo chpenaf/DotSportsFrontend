@@ -15,10 +15,14 @@
       <tbody>
         <tr *ngFor="let slot of slots">
           <td>
-            {{ slot.starttime | time }} - {{ slot.endtime | time }}
+            <div class="hora">
+              {{ slot.starttime | time }}
+            </div>
           </td>
-          <td *ngFor="let lane of pool.lanes">
-            {{ slot.desc }}
+          <td *ngFor="let lane of slot.lanes">
+            <div class="slot">
+              {{ lane.desc }}
+            </div>
           </td>
         </tr>
       </tbody>
