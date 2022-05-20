@@ -1,20 +1,23 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { startWith, map, tap } from 'rxjs/operators';
 
+import { Booking } from '../../interfaces/booking.interface';
+import { BookingService } from '../../services/booking.service';
+import { CalendarService } from '../../services/calendar.service';
+import { CreditsComponent } from '../../components/credits/credits.component';
+import { CreditsService } from '../../services/credits.service';
 import { EmployeeService } from '../../services/employee.service';
 import { ListMembers } from '../../interfaces/member.interface';
 import { LocationService } from '../../services/location.service';
-import { LocationSelect } from '../../interfaces/location.interface';
+import { LocationSelect, PoolSelect } from '../../interfaces/location.interface';
 import { MembersService } from '../../services/members.service';
 import { Slot } from '../../interfaces/calendar.interface';
-import { CalendarService } from '../../services/calendar.service';
-import { CreditsService } from '../../services/credits.service';
-import { CreditsComponent } from '../../components/credits/credits.component';
-import { MatDialog } from '@angular/material/dialog';
+import { DialogsService } from '../../components/dialogs.service';
 
 @Component({
   selector: 'app-booking',
@@ -24,6 +27,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class BookingComponent implements OnInit, AfterViewInit {
 
   listLocations: LocationSelect[] = [];
+  listPools: PoolSelect[] = [];
 
   autoCompleteControl = new FormControl();
   listMembers: ListMembers[] = [];
@@ -49,8 +53,10 @@ export class BookingComponent implements OnInit, AfterViewInit {
   constructor(
     private _dialog: MatDialog,
     private _fb: FormBuilder,
+    private _bookingService: BookingService,
     private _calendarService: CalendarService,
     private _creditService: CreditsService,
+    private _dialogService: DialogsService,
     private _locationService: LocationService,
     private _employeeService: EmployeeService,
     private _memberService: MembersService
@@ -63,12 +69,17 @@ export class BookingComponent implements OnInit, AfterViewInit {
   bookingForm: FormGroup = this._fb.group(
     {
       location: [, [ Validators.required ] ],
+      pool: [, [ Validators.required ] ],
       member: [ , [ Validators.required ] ]
     }
   )
 
   get location(){
     return this.bookingForm.controls['location'];
+  }
+
+  get pool(){
+    return this.bookingForm.controls['pool'];
   }
 
   get member(){
@@ -89,18 +100,39 @@ export class BookingComponent implements OnInit, AfterViewInit {
         }
       );
 
-    this._employeeService.getLogged()
-      .subscribe(
-        resp => {
-          this.location.setValue(resp.location?.id);
-        }
-      )
-
     this._locationService.getLocationToSelect()
+      .pipe(
+        tap( resp =>{
+          this.listLocations = resp;
+          this._employeeService.getLogged()
+            .subscribe(
+              resp => {
+                this.location.setValue(resp.location?.id);
+                this.fillPools();
+              }
+            )
+        })
+      )
       .subscribe(
         resp => this.listLocations = resp
       );
 
+
+  }
+
+  fillPools(){
+    if( this.location.value ){
+      const filtered = this.listLocations
+        .filter(
+          item => item.id === this.location.value
+        );
+      if( filtered[0].pools ){
+        this.listPools = filtered[0].pools;
+        if( this.listPools.length === 1 ){
+          this.pool.setValue(this.listPools[0].id)
+        }
+      }
+    }
   }
 
   private _filter(value: string): ListMembers[] {
@@ -144,7 +176,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
     this._calendarService.getSlots(location,this.dateSelected)
       .subscribe(
         resp => {
-          console.log(resp);
           this.listSlots = resp;
         }
       );
@@ -171,6 +202,48 @@ export class BookingComponent implements OnInit, AfterViewInit {
           return result;
         }
       )
+
+  }
+
+  booking(slot: Slot){
+
+    if( this.bookingForm.invalid ){
+      this.bookingForm.markAllAsTouched();
+      return;
+    }
+
+    const booking: Booking = {
+      member: this.member.value.id,
+      calendar: slot.calendar,
+      slot: slot.id,
+      location: this.location.value,
+      pool: this.pool.value
+    }
+
+    this._dialogService.dialogToConfirm(
+      'Reservar',
+      '¿Confirma que desea reservar hora?'
+    ).subscribe(
+      result => {
+        if( result ){
+          this._bookingService.create(booking)
+            .subscribe({
+              next: (resp) => {
+                this._dialogService.openSnackBar(resp.message,'Cerrar');
+                this._creditService.getQuantCredits( this.memberSelected.id! )
+                  .subscribe(
+                    resp => this.credits = resp.quantity
+                  );
+              },
+              error: (err) => {
+                this._dialogService.openSnackBar(err.error.message,'Cerrar');
+              }
+            });
+        }
+      }
+    )
+
+
 
   }
 

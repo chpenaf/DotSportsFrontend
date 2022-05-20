@@ -1,0 +1,78 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>
+
+  <form [formGroup]="form"
+        fxLayout="row wrap"
+        fxLayoutGap="10px">
+
+    <mat-form-field appearance="fill" fxFlex="10">
+      <mat-label>#</mat-label>
+      <input matInput formControlName="id">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" fxFlex="40">
+      <mat-label>Sede</mat-label>
+      <mat-select formControlName="location">
+        <mat-option *ngFor="let item of listLocations;" [value]="item.id">
+          {{ item.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="location.hasError">
+        Campo obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" fxFlex="40">
+      <mat-label>Piscina</mat-label>
+      <mat-select formControlName="pool">
+        <mat-option *ngFor="let item of listPools;" [value]="item.id">
+          {{ item.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="pool.hasError">
+        Campo obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" fxFlex="30">
+      <mat-label>Aforo por carril</mat-label>
+      <input matInput formControlName="capacity_lane">
+      <mat-error *ngIf="capacity_lane.hasError">
+        Campo obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" fxFlex="30">
+      <mat-label>Inicio validez</mat-label>
+      <input matInput [matDatepicker]="ini_picker" formControlName="begin_validity">
+      <mat-datepicker-toggle matSuffix [for]="ini_picker"></mat-datepicker-toggle>
+      <mat-datepicker #ini_picker></mat-datepicker>
+      <mat-error *ngIf="begin_validity.hasError">
+        Campo obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" fxFlex="30">
+      <mat-label>Fin validez</mat-label>
+      <input matInput [matDatepicker]="fin_picker" formControlName="end_validity">
+      <mat-datepicker-toggle matSuffix [for]="fin_picker"></mat-datepicker-toggle>
+      <mat-datepicker #fin_picker></mat-datepicker>
+      <mat-error *ngIf="end_validity.hasError">
+        Campo obligatorio
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button
+          [mat-dialog-close]="false">
+    Cerrar
+  </button>
+  <button mat-flat-button
+          color="primary"
+          (click)="save()">
+    Guardar
+  </button>
+</mat-dialog-actions>

@@ -24,6 +24,19 @@
         </mat-error>
       </mat-form-field>
 
+      <!-- Piscina -->
+      <mat-form-field appearance="fill" id="pool">
+        <mat-label>Piscina</mat-label>
+        <mat-select formControlName="pool">
+          <mat-option *ngFor="let item of listPools" [value]="item.id">
+            {{ item.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="pool.hasError">
+          Piscina es obligatoria
+        </mat-error>
+      </mat-form-field>
+
       <!-- Buscar -->
       <mat-form-field appearance="fill" id="search">
         <mat-label>Buscar...</mat-label>
@@ -115,6 +128,7 @@
       </mat-card>
       <button mat-flat-button
               color="primary"
+              style="margin: 10px"
               (click)="searchSlots()">
       Buscar
       </button>
@@ -134,7 +148,8 @@
     <div *ngFor="let slot of listSlots" fxFlex="15">
       <button mat-stroked-button
               class="btn_slot"
-              color="primary">
+              color="primary"
+              (click)="booking(slot)">
         {{ slot.starttime | time }}
       </button>
     </div>

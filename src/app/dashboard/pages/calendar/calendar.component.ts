@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { tap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 
 import * as moment from 'moment';
 
@@ -10,7 +11,6 @@ import { LocationService } from '../../services/location.service';
 import { CalendarService } from '../../services/calendar.service';
 import { Calendar } from '../../interfaces/calendar.interface';
 import { DialogsService } from '../../components/dialogs.service';
-import { MatDialog } from '@angular/material/dialog';
 import { SlotsComponent } from './slots/slots.component';
 
 @Component({

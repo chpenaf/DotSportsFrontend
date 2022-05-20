@@ -11,6 +11,7 @@ import { BookingModule } from './pages/booking/booking.module';
 import { CalendarModule } from './pages/calendar/calendar.module';
 import { CatalogModule } from './pages/catalog/catalog.module';
 import { ComponentsModule } from './components/components.module';
+import { ConfigModule } from './pages/config/config.module';
 import { CoursesModule } from './pages/courses/courses.module';
 import { CreateFormComponent } from './pages/locations/create-form/create-form.component';
 import { EmployeesComponent } from './pages/employees/employees.component';
@@ -50,6 +51,7 @@ import { UserComponent } from './pages/user/user.component';
     BookingModule,
     CalendarModule,
     CatalogModule,
+    ConfigModule,
     CoursesModule,
     ScheduleModule,
     DashboardRoutingModule,

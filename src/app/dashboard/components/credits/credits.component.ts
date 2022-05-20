@@ -81,7 +81,9 @@ export class CreditsComponent implements OnInit {
 
     this._creditService.getCredits( this.data.member.id )
       .subscribe(
-        resp => this._credits = resp
+        resp => {
+          this._credits = resp;
+        }
       )
   }
 

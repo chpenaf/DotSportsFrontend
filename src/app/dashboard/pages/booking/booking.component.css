@@ -1,10 +1,10 @@
 #location {
-  width: 400px;
+  width: 432px;
   margin-top: 10px;
 }
 
-#search {
-  width: 400px;
+#search, #pool {
+  width: 432px;
 }
 
 .img_search {

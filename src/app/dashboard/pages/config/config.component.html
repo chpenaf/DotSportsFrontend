@@ -1,0 +1,78 @@
+<h1>Configuración</h1>
+<mat-divider></mat-divider>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Aforo Piscina</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table [dataSource]="capacityPool" class="w-100">
+
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef>Sede</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.location.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="pool">
+        <th mat-header-cell *matHeaderCellDef>Piscina</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.pool.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="capacity_lane">
+        <th mat-header-cell *matHeaderCellDef>Aforo por carril</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.capacity_lane }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="begin_validity">
+        <th mat-header-cell *matHeaderCellDef>Inicio validez</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.begin_validity | date : 'dd/MM/YYYY' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="end_validity">
+        <th mat-header-cell *matHeaderCellDef>Fin Validez</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.end_validity | date : 'dd/MM/YYYY' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="editCapacity(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="deleteCapacity(element)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="capacityColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: capacityColumns;"></tr>
+
+      <tr *matNoDataRow>
+        <td colspan="7">Sin datos para mostrar</td>
+      </tr>
+
+    </table>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-flat-button color="primary" (click)="addCapacity()">
+      Agregar
+    </button>
+  </mat-card-actions>
+</mat-card>

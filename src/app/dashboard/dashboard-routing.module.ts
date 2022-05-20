@@ -13,6 +13,7 @@ import { LocationsComponent } from './pages/locations/locations.component';
 import { MembersComponent } from './pages/members/members.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ScheduleComponent } from './pages/schedule/schedule.component';
+import { ConfigComponent } from './pages/config/config.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
       {
         path: 'courses',
         component: CoursesComponent
+      },
+      {
+        path: 'config',
+        component: ConfigComponent
       },
       {
         path: 'profile',
