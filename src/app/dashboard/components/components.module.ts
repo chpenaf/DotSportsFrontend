@@ -7,12 +7,14 @@ import { MaterialModule } from '../../material/material.module';
 import { PipesModule } from '../pipes/pipes.module';
 import { DialogToConfirmComponent } from './dialog-to-confirm/dialog-to-confirm.component';
 import { DialogsService } from './dialogs.service';
+import { BookingsComponent } from './bookings/bookings.component';
 
 
 @NgModule({
   declarations: [
     CreditsComponent,
-    DialogToConfirmComponent
+    DialogToConfirmComponent,
+    BookingsComponent
   ],
   imports: [
     CommonModule,

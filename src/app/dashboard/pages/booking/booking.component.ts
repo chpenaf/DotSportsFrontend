@@ -18,6 +18,7 @@ import { LocationSelect, PoolSelect } from '../../interfaces/location.interface'
 import { MembersService } from '../../services/members.service';
 import { Slot } from '../../interfaces/calendar.interface';
 import { DialogsService } from '../../components/dialogs.service';
+import { BookingsComponent } from '../../components/bookings/bookings.component';
 
 @Component({
   selector: 'app-booking',
@@ -200,6 +201,27 @@ export class BookingComponent implements OnInit, AfterViewInit {
               resp => this.credits = resp.quantity
             );
           return result;
+        }
+      )
+
+  }
+
+  showBookings(){
+
+    const dialogRef = this._dialog.open(BookingsComponent,{
+      width: '800px',
+      data: {
+        title: 'Reservas',
+        member: this.memberSelected.id
+      }
+    });
+
+    dialogRef.afterClosed()
+      .subscribe(
+        result => {
+          if( result ){
+
+          }
         }
       )
 

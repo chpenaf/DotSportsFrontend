@@ -24,4 +24,9 @@ export class BookingService {
     return this._http.post<OkResponse>(url, body, this._auth.getHttpOptions());
   }
 
+  getByMember(idMember:number){
+    const url = `${ this._backend }/booking/${ idMember }/`;
+    return this._http.get<Booking[]>(url, this._auth.getHttpOptions());
+  }
+
 }
