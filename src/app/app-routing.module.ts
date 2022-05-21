@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardModule )
   },
   {
+    path: 'dashboard-member',
+    loadChildren: () => import('./dashboard-member/dashboard-member.module').then( m => m.DashboardMemberModule )
+  },
+  {
     path: '**',
     redirectTo: 'auth/login'
   }

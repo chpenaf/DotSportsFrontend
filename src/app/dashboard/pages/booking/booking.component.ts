@@ -44,6 +44,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
   }
 
   dateSelected: Date = new Date();
+  dateSearched: Date = new Date();
 
   credits: number = 0;
 
@@ -178,6 +179,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
       .subscribe(
         resp => {
           this.listSlots = resp;
+          this.dateSearched = this.dateSelected;
         }
       );
   }

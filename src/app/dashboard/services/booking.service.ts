@@ -24,9 +24,19 @@ export class BookingService {
     return this._http.post<OkResponse>(url, body, this._auth.getHttpOptions());
   }
 
-  getByMember(idMember:number){
-    const url = `${ this._backend }/booking/${ idMember }/`;
+  getById(id: number){
+    const url = `${ this._backend }/booking/${ id }/`;
     return this._http.get<Booking[]>(url, this._auth.getHttpOptions());
+  }
+
+  getByMember(idMember:number){
+    const url = `${ this._backend }/booking/member/${ idMember }/`;
+    return this._http.get<Booking[]>(url, this._auth.getHttpOptions());
+  }
+
+  delete(id: number){
+    const url = `${ this._backend }/booking/${ id }/`;
+    return this._http.delete<OkResponse>(url, this._auth.getHttpOptions());
   }
 
 }

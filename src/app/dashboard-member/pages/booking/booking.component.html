@@ -1,0 +1,52 @@
+<h1>Reservar</h1>
+<mat-divider></mat-divider>
+
+<div [formGroup]="bookingForm"
+     fxLayout="row wrap"
+     fxLayout.lt-sm="column"
+     fxLayoutGap="10px"
+     fxLayoutGap.lt-sm="1px"
+     class="mt-10">
+
+  <mat-form-field appearance="fill" fxFlex="40">
+    <mat-label>Sede</mat-label>
+    <mat-select formControlName="location">
+      <mat-option *ngFor="let item of listLocation" [value]="item.id">
+        {{ item.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" fxFlex="40">
+    <mat-label>Piscina</mat-label>
+    <mat-select formControlName="pool">
+      <mat-option *ngFor="let item of listPools" [value]="item.id">
+        {{ item.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-tab-group>
+    <mat-tab *ngFor="let item of listCalendar"
+             [label]="item.date ? item.date.toString() : ''">
+
+      <div fxLayout="row wrap"
+           fxLayout.lt-sm="column"
+           fxLayoutGap="10px"
+           fxLayoutGap.lt-sm="1px"
+           class="mt-10">
+        <ng-container *ngFor="let slot of item.slots">
+          <button mat-stroked-button
+                  color="primary"
+                  (click)="booking(item,slot)">
+            {{ slot.starttime | time }}
+          </button>
+        </ng-container>
+
+
+      </div>
+
+    </mat-tab>
+  </mat-tab-group>
+
+</div>

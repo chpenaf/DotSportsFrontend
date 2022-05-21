@@ -147,6 +147,10 @@
       <p>No se encontraron horas disponibles</p>
     </div>
 
+    <div fxFlex="100">
+      <h3>{{ dateSearched | date : 'MMMM d, y' | titlecase }}</h3>
+    </div>
+
     <div *ngFor="let slot of listSlots" fxFlex="15">
       <button mat-stroked-button
               class="btn_slot"

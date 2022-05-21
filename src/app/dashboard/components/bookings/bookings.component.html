@@ -7,13 +7,89 @@
 
       <mat-tab label="Pasadas">
 
+        <table mat-table [dataSource]="oldBookings" class="w-100">
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Código</th>
+            <td mat-cell *matCellDef="let element">{{ element.id }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Fecha</th>
+            <td mat-cell *matCellDef="let element">{{ element.credit_pos.used_at | date : 'dd/MM/YYYY' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="starttime">
+            <th mat-header-cell *matHeaderCellDef>Hora</th>
+            <td mat-cell *matCellDef="let element">{{ element.slot.starttime | time }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="location">
+            <th mat-header-cell *matHeaderCellDef>Sede</th>
+            <td mat-cell *matCellDef="let element">{{ element.location }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="pool">
+            <th mat-header-cell *matHeaderCellDef>Piscina</th>
+            <td mat-cell *matCellDef="let element">{{ element.pool }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="oldColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: oldColumns;"></tr>
+
+        </table>
+
       </mat-tab>
 
       <mat-tab label="Actuales">
 
+        <table mat-table [dataSource]="currentBookings" class="w-100">
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Código</th>
+            <td mat-cell *matCellDef="let element">{{ element.id }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Fecha</th>
+            <td mat-cell *matCellDef="let element">{{ element.credit_pos.used_at | date : 'dd/MM/YYYY' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="starttime">
+            <th mat-header-cell *matHeaderCellDef>Hora</th>
+            <td mat-cell *matCellDef="let element">{{ element.slot.starttime | time }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="location">
+            <th mat-header-cell *matHeaderCellDef>Sede</th>
+            <td mat-cell *matCellDef="let element">{{ element.location }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="pool">
+            <th mat-header-cell *matHeaderCellDef>Piscina</th>
+            <td mat-cell *matCellDef="let element">{{ element.pool }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="cancel">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button (click)="delete(element)">
+                <mat-icon class="material-icons-outlined">
+                  delete_forever
+                </mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="currentColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: currentColumns;"></tr>
+
+        </table>
+
       </mat-tab>
 
     </mat-tab-group>
+
   </div>
 
   <div mat-dialog-actions align="end">

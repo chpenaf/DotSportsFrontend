@@ -6,10 +6,11 @@ export interface Booking {
   member?: number;
   calendar?: number;
   slot?: number | Slot;
-  location?: number;
-  pool?: number;
+  location?: number | string;
+  pool?: number | string;
   credit_header?: number;
   credit_pos?: number | CreditPos;
+  old?: boolean;
 }
 
 export interface BookingDialog {

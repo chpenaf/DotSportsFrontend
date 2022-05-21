@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar'
 
 import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../../dashboard/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -43,9 +44,10 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    private _authService: AuthService,
     private _router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _authService: AuthService,
+    private _userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -62,14 +64,24 @@ export class LoginComponent implements OnInit {
     const { email, password } = this.signinForm.value;
 
     this._authService.signin(email,password)
-      .subscribe(
-        resp => {
-          this._router.navigate(['/dashboard/home/']);
+      .subscribe({
+        next: resp => {
+          this._userService.getCurretUser()
+            .subscribe(
+              current => {
+                console.log(current);
+                if( current.is_staff ){
+                  this._router.navigate(['/dashboard/home/']);
+                } else {
+                  this._router.navigate(['/dashboard-member/home/']);
+                }
+              }
+            )
         },
-        error => {
+        error: error => {
           this.openSnackBar();
         }
-      );
+      });
 
   }
 

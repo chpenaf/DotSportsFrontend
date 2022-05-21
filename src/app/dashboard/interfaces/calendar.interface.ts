@@ -33,3 +33,15 @@ export interface Lane {
   lane_no: number;
   desc:    null | string;
 }
+
+export interface CalendarMember {
+  id?: number;
+  date?: Date | string;
+  slots?: SlotMember[];
+}
+
+export interface SlotMember{
+  id?: number;
+  starttime: Time;
+  endtime: Time;
+}

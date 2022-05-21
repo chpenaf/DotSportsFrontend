@@ -21,14 +21,6 @@
             formControlName="email"
             (keyup.enter)="enter($event)"
             placeholder="Ingrese correo">
-      <button mat-icon-button
-              *ngIf="this.email.value"
-              matSuffix
-              aria-label="Clear"
-              (cdkAutofill)="false"
-              (click)="this.email.setValue('')">
-        <mat-icon>close</mat-icon>
-      </button>
       <mat-error *ngIf="emailErrorMsg">
         {{ this.emailErrorMsg }}
       </mat-error>
@@ -43,12 +35,6 @@
             formControlName="password"
             (keyup.enter)="enter($event)"
             placeholder="Ingrese contraseña">
-      <button mat-icon-button aria-label="Clear"
-              matSuffix *ngIf="this.password.value"
-              (cdkAutofill)="false"
-              (click)="this.password.setValue('')">
-        <mat-icon>close</mat-icon>
-      </button>
       <mat-error *ngIf="this.password.hasError">
         Contraseña es obligatoria
       </mat-error>

@@ -1,0 +1,60 @@
+
+.example-container {
+  position: absolute;
+  top: 60px;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+}
+
+.example-sidenav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  padding: 0 5px 0 5px;
+  background: #fafafa;
+  border: none;
+}
+
+.img_profile_toolbar {
+  margin: 5px;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+}
+
+mat-toolbar {
+  min-height: 65px;
+}
+
+mat-card img {
+  margin: 5px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+}
+
+mat-card {
+  text-align: center;
+  margin: 15px;
+}
+
+.logo {
+  height: 40px;
+}
+
+mat-nav-list a {
+  font-size: 14px;
+  color: #525252;
+}
+
+.active {
+  background-color: #FFF !important;
+  border-left: #3f51b5 5px solid;
+  border-radius: 0 5px 5px 0 !important;
+}
+
+.content {
+  padding: 20px;
+}
