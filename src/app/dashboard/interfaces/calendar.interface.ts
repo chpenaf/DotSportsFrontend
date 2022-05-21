@@ -36,7 +36,7 @@ export interface Lane {
 
 export interface CalendarMember {
   id?: number;
-  date?: Date | string;
+  date: Date | string;
   slots?: SlotMember[];
 }
 

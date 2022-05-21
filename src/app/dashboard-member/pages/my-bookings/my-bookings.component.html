@@ -1,0 +1,81 @@
+<div fxLayout="row">
+  <button mat-icon-button
+          (click)="back()">
+    <mat-icon>
+      arrow_back
+    </mat-icon>
+  </button>
+  <h1>Mis Reservas</h1>
+</div>
+<mat-divider></mat-divider>
+
+<mat-tab-group mat-align-tabs="center"
+               selectedIndex="1"
+               class="mt-10 w-100 mat-elevation-z8">
+
+  <!-- Horas pasadas -->
+  <mat-tab label="Pasadas">
+
+    <table mat-table [dataSource]="oldBookings" class="w-100">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>Código</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let element">{{ element.credit_pos.used_at | date : 'dd/MM/YYYY' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="starttime">
+        <th mat-header-cell *matHeaderCellDef>Hora</th>
+        <td mat-cell *matCellDef="let element">{{ element.slot.starttime | time }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="oldColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: oldColumns;"></tr>
+
+    </table>
+
+  </mat-tab>
+
+  <!-- Horas vigentes -->
+  <mat-tab label="Actuales">
+
+    <table mat-table [dataSource]="currentBookings" class="w-100">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>Código</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let element">{{ element.credit_pos.used_at | date : 'dd/MM/YYYY' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="starttime">
+        <th mat-header-cell *matHeaderCellDef>Hora</th>
+        <td mat-cell *matCellDef="let element">{{ element.slot.starttime | time }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cancel">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;">
+          <button mat-icon-button (click)="delete(element)">
+            <mat-icon class="material-icons-outlined">
+              delete_forever
+            </mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="currentColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: currentColumns;"></tr>
+
+    </table>
+
+  </mat-tab>
+
+</mat-tab-group>

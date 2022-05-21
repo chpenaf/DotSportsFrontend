@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { tap } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { LocationSelect, PoolSelect } from '../../../dashboard/interfaces/location.interface';
 import { LocationService } from '../../../dashboard/services/location.service';
@@ -9,6 +13,8 @@ import { BookingService } from '../../../dashboard/services/booking.service';
 import { DialogsService } from '../../../dashboard/components/dialogs.service';
 import { Booking } from '../../../dashboard/interfaces/booking.interface';
 import { MembersService } from '../../../dashboard/services/members.service';
+import { Member } from '../../../dashboard/interfaces/member.interface';
+import { CreditsService } from '../../../dashboard/services/credits.service';
 
 @Component({
   selector: 'app-booking',
@@ -20,15 +26,20 @@ export class BookingComponent implements OnInit {
   listLocation: LocationSelect[] = [];
   listPools: PoolSelect[] = [];
   listCalendar: CalendarMember[] = [];
+  credits: number = 0;
 
   constructor(
     private _fb: FormBuilder,
+    private _router: Router,
     private _bookingService: BookingService,
-    // private _dialogService: DialogsService,
+    private _creditService: CreditsService,
+    private _dialogService: DialogsService,
     private _locationService: LocationService,
     private _memberService: MembersService,
     private _calendarService: CalendarService
   ) { }
+
+  selfInfo: Member = this._memberService.myInfo;
 
   bookingForm = this._fb.group(
     {
@@ -48,6 +59,28 @@ export class BookingComponent implements OnInit {
   ngOnInit(): void {
 
     this._locationService.getLocationToSelect()
+      .pipe(
+        tap(
+          resp => {
+            this._memberService.selfInfo()
+              .pipe(
+                tap(
+                  resp => {
+                    this._creditService.getQuantCredits(resp.id)
+                      .subscribe(
+                        quant => this.credits = quant.quantity
+                      )
+                  }
+                )
+              )
+              .subscribe(
+                selfInfo => {
+                  this.selfInfo = selfInfo;
+                }
+              )
+          }
+        )
+      )
       .subscribe({
         next: response => {
           this.listLocation = response;
@@ -76,27 +109,55 @@ export class BookingComponent implements OnInit {
       .subscribe(
         resp => {
           this.listCalendar = resp;
+          this.listCalendar.forEach( item => {
+            item.date = moment(item.date).locale('es').format('DD MMMM')
+          });
         }
       )
   }
 
   booking(calendar: CalendarMember, slot: SlotMember){
     const booking: Booking = {
-      member: 1, // TODO crear servicio para obtener miembro logueado
+      member: this.selfInfo.id,
       calendar: calendar.id,
       slot: slot.id,
       location: this.location.value,
       pool: this.pool.value
     }
-    this._bookingService.create(booking)
-      .subscribe({
-        next: resp => {
-          console.log(resp);
-        },
-        error: err => {
-          console.log(err);
+
+    this._dialogService.dialogToConfirm(
+      'Reservar',
+      '¿Confirma reserva?'
+    ).subscribe(
+      result => {
+        if( result ){
+          this._bookingService.create(booking)
+            .subscribe({
+              next: resp => {
+                this._dialogService.openSnackBar(resp.message,'Cerrar');
+              },
+              error: err => {
+                this._dialogService.openSnackBar(err.error.message,'Cerrar');
+              }
+            });
+        } else {
+          this._dialogService.openSnackBar('Acción cancelada','Cerrar');
         }
-      });
+      }
+    )
+
+  }
+
+  back(){
+    this._router.navigate(['/dashboard-member/home'])
+  }
+
+  myBookings(){
+    this._router.navigate(['/dashboard-member/my-bookings'])
+  }
+
+  myCredits(){
+    this._router.navigate(['/dashboard-member/my-credits'])
   }
 
 }

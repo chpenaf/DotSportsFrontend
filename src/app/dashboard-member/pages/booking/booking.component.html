@@ -1,4 +1,19 @@
-<h1>Reservar</h1>
+<div fxLayout="row">
+  <button mat-icon-button
+          (click)="back()">
+    <mat-icon>
+      arrow_back
+    </mat-icon>
+  </button>
+  <h1 class="mt-10">Reservar</h1>
+  <span class="spacer"></span>
+  <button mat-flat-button
+          color="primary"
+          class="btn_mybookings"
+          (click)="myBookings()">
+    Mis Reservas
+  </button>
+</div>
 <mat-divider></mat-divider>
 
 <div [formGroup]="bookingForm"
@@ -26,15 +41,29 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-tab-group>
+  <div class="w-100"
+       fxLayoutAlign="center center">
+      <mat-label>
+        <mat-icon class="material-icons-outlined">favorite_border</mat-icon>
+        {{ credits }} creditos disponibles
+      </mat-label>
+      <span class="spacer"></span>
+      <button mat-stroked-button
+              (click)="myCredits()">
+        Mis Créditos
+      </button>
+  </div>
+
+  <mat-tab-group class="mt-10">
     <mat-tab *ngFor="let item of listCalendar"
-             [label]="item.date ? item.date.toString() : ''">
+             [label]="item.date.toString() | titlecase">
 
       <div fxLayout="row wrap"
            fxLayout.lt-sm="column"
            fxLayoutGap="10px"
            fxLayoutGap.lt-sm="1px"
-           class="mt-10">
+           class="mt-10"
+           *ngIf="item.slots">
         <ng-container *ngFor="let slot of item.slots">
           <button mat-stroked-button
                   color="primary"
@@ -42,8 +71,16 @@
             {{ slot.starttime | time }}
           </button>
         </ng-container>
+      </div>
 
-
+      <div fxLayout="row wrap"
+           fxLayout.lt-sm="column"
+           fxLayoutGap="10px"
+           fxLayoutGap.lt-sm="1px"
+           fxLayoutAlign="center center"
+           class="mt-10"
+           *ngIf="!item.slots?.length">
+        <p>No existen horas disponibles</p>
       </div>
 
     </mat-tab>

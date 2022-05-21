@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
+import { of } from 'rxjs';
 import * as moment from 'moment';
+
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
 import { ListMembers, FormMember, ResponseMember, Member } from '../interfaces/member.interface';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +15,22 @@ import { ListMembers, FormMember, ResponseMember, Member } from '../interfaces/m
 export class MembersService {
 
   private _backend = environment.backend;
+  private _myInfo: Member = {
+    id: 0,
+    doc_num: '',
+    first_name: '',
+    last_name: '',
+    date_of_birth: '',
+    sex: '',
+    status: '',
+    user: {
+      email: '',
+      first_name: '',
+      last_name: '',
+      full_name: '',
+      is_staff: false
+    }
+  }
 
   constructor(
     private _http: HttpClient,
@@ -20,6 +39,10 @@ export class MembersService {
 
   get auth(){
     return this._authService;
+  }
+
+  get myInfo(){
+    return {...this._myInfo};
   }
 
   list(status?:string){
@@ -100,6 +123,23 @@ export class MembersService {
     const url = `${ this._backend }/members/cancel/${ id }/`;
 
     return this._http.delete<ResponseMember>(url, this.auth.getHttpOptions());
+  }
+
+  selfInfo(){
+
+    if(this.myInfo.id){
+      return of(this.myInfo);
+    }
+
+    const url = `${ this._backend }/members/self/info/`;
+    return this._http.get<Member>(url,this.auth.getHttpOptions())
+      .pipe(
+        tap(
+          resp => {
+            this._myInfo = resp;
+          }
+        )
+      );
   }
 
 }
