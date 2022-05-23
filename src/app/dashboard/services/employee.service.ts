@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { of, Observable } from 'rxjs';
 
 import { AuthService } from '../../auth/services/auth.service';
 import { environment } from '../../../environments/environment';
@@ -126,6 +126,30 @@ export class EmployeeService {
     const url = `${ this._backend }/employees/cancel/${ id }/`;
 
     return this._http.delete<EmployeeResponse>( url, this._authService.getHttpOptions());
+  }
+
+  getAdmin(): Observable<boolean> {
+
+    if( this.myInfo.id ) {
+      if( this.myInfo.job === 'AD' ){
+        return of(true);
+      } else {
+        return of(false);
+      }
+    }
+
+    const url = `${ this._backend }/employees/get/logged/`;
+    return this._http.get<Employee>( url, this._authService.getHttpOptions())
+      .pipe(
+        map( resp => {
+          if( resp.job === 'AD' ){
+            return true;
+          } else {
+            return false;
+          }
+        })
+      );
+
   }
 
 }

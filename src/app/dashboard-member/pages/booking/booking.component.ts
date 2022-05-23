@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { tap } from 'rxjs/operators';
@@ -30,6 +31,7 @@ export class BookingComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
+    private _location: Location,
     private _router: Router,
     private _bookingService: BookingService,
     private _creditService: CreditsService,
@@ -149,7 +151,7 @@ export class BookingComponent implements OnInit {
   }
 
   back(){
-    this._router.navigate(['/dashboard-member/home'])
+    this._location.back();
   }
 
   myBookings(){

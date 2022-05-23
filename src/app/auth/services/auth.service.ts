@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { Token, SignupForm, Refresh, Response, SetNewPasswordResponse, Response2 } from '../interfaces/auth.interface';
+import { ApplicationsService } from '../../dashboard/services/applications.service';
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +61,6 @@ export class AuthService {
         map( resp => {
           this.Token.access = resp.access;
           localStorage.setItem('access',resp.access);
-          console.log(true);
           return true;
         } )
       );

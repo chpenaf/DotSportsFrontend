@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { tap } from 'rxjs/operators';
 
@@ -8,6 +8,7 @@ import { MembersService } from '../../../dashboard/services/members.service';
 import { Member } from '../../../dashboard/interfaces/member.interface';
 import { Booking } from '../../../dashboard/interfaces/booking.interface';
 import { DialogsService } from '../../../dashboard/components/dialogs.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-my-bookings',
@@ -37,7 +38,7 @@ export class MyBookingsComponent implements OnInit {
     private _bookingService: BookingService,
     private _dialogService: DialogsService,
     private _memberService: MembersService,
-    private _router: Router
+    private _location: Location,
   ) { }
 
   myInfo: Member = this._memberService.myInfo;
@@ -101,7 +102,7 @@ export class MyBookingsComponent implements OnInit {
   }
 
   back(){
-    this._router.navigate(['/dashboard-member/booking/'])
+    this._location.back();
   }
 
 }

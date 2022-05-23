@@ -14,6 +14,7 @@ import { MembersComponent } from './pages/members/members.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ScheduleComponent } from './pages/schedule/schedule.component';
 import { ConfigComponent } from './pages/config/config.component';
+import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -26,47 +27,73 @@ const routes: Routes = [
       },
       {
         path: 'calendar',
-        component: CalendarComponent
+        component: CalendarComponent,
+        canLoad: [ AdminGuard ],
+        canActivate: [ AdminGuard ]
       },
       {
         path: 'catalog',
-        component: CatalogComponent
+        component: CatalogComponent,
+        canLoad: [ AdminGuard ],
+        canActivate: [ AdminGuard ]
       },
       {
         path: 'courses',
-        component: CoursesComponent
+        component: CoursesComponent,
+        canLoad: [ AdminGuard ],
+        canActivate: [ AdminGuard ]
       },
       {
         path: 'config',
-        component: ConfigComponent
+        component: ConfigComponent,
+        canLoad: [ AdminGuard ],
+        canActivate: [ AdminGuard ]
       },
       {
         path: 'profile',
-        component: ProfileComponent
+        component: ProfileComponent,
+        canLoad: [ AdminGuard ],
+        canActivate: [ AdminGuard ]
       },
       {
         path: 'members',
-        component: MembersComponent
+        component: MembersComponent,
+        canLoad: [ AdminGuard ],
+        canActivate: [ AdminGuard ]
       },
       {
         path: 'employees',
-        component: EmployeesComponent
+        component: EmployeesComponent,
+        canLoad: [ AdminGuard ],
+        canActivate: [ AdminGuard ]
       },
       {
         path: 'locations',
-        component: LocationsComponent
+        component: LocationsComponent,
+        canLoad: [ AdminGuard ],
+        canActivate: [ AdminGuard ]
       },
       {
         path: 'booking',
-        component: BookingComponent
+        component: BookingComponent,
+        canLoad: [ AdminGuard ],
+        canActivate: [ AdminGuard ]
       },
       {
         path: 'schedule',
-        component: ScheduleComponent
+        component: ScheduleComponent,
+        canLoad: [ AdminGuard ],
+        canActivate: [ AdminGuard ]
       },
       {
         path: 'applications',
-        component: ApplicationsComponent
+        component: ApplicationsComponent,
+        canLoad: [ AdminGuard ],
+        canActivate: [ AdminGuard ]
+      },
+      {
+        path: '**',
+        redirectTo: 'home'
       }
     ]
   }

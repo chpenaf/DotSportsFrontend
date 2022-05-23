@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+
+import { of, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { App } from '../interfaces/application.interface';
 import { AuthService } from '../../auth/services/auth.service';
-import { tap } from 'rxjs/operators';
 import { OkResponse } from '../../shared/interfaces/shared.interface';
 
 @Injectable({
@@ -29,17 +30,21 @@ export class ApplicationsService {
 
   getApps(db?:boolean){
 
-    if( !db ){
-      if( this.Apps.length > 0 ){
-        return of(this.Apps);
-      }
-    }
+    // if( !db ){
+    //   if( this.Apps.length > 0 ){
+    //     return of(this.Apps);
+    //   }
+    // }
 
     const url = `${ this._backend }/main/apps/`;
     return this._http.get<App[]>(url,this._authService.getHttpOptions() )
       .pipe(
         tap( resp => this._apps = resp )
       )
+  }
+
+  clearApps(){
+    this._apps = [];
   }
 
   saveApps(apps: App[]){
@@ -55,6 +60,20 @@ export class ApplicationsService {
 
     return this._http.delete<OkResponse>(url, this._authService.getHttpOptions());
 
+  }
+
+  canExecute( appName: string ): Observable<boolean>{
+
+    const url = `${ this._backend }/main/apps/check/${ appName }/`;
+
+    return this._http.get<OkResponse>(url,this._authService.getHttpOptions() )
+      .pipe(
+        map(
+          resp => {
+            return resp.ok
+          }
+        )
+      )
   }
 
 }

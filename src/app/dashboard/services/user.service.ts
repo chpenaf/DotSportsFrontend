@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { of, tap, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../interfaces/user.interface';
-import { tap } from 'rxjs';
 import { EmployeeService } from './employee.service';
 
 @Injectable({
@@ -23,7 +25,7 @@ export class UserService {
   };
 
   get Current(){
-    return this._current;
+    return {...this._current};
   }
 
   constructor(
@@ -33,6 +35,10 @@ export class UserService {
   ) { }
 
   getCurretUser() {
+
+    if( this.Current.id ){
+      return of( this.Current );
+    }
 
     const url = `${ this._backend }/users/current/`
 
@@ -45,6 +51,32 @@ export class UserService {
           }
         })
       );
+  }
+
+  getStaff(): Observable<boolean>{
+
+    const url = `${ this._backend }/users/current/`
+
+    return this._http.get<User>( url, this._authService.getHttpOptions() )
+      .pipe(
+        map( resp => {
+          return resp.is_staff;
+        })
+      );
+
+  }
+
+  getMember(): Observable<boolean>{
+
+    const url = `${ this._backend }/users/current/`
+
+    return this._http.get<User>( url, this._authService.getHttpOptions() )
+      .pipe(
+        map( resp => {
+          return !resp.is_staff;
+        })
+      );
+
   }
 
 }

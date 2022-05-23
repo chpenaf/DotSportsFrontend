@@ -69,7 +69,6 @@ export class LoginComponent implements OnInit {
           this._userService.getCurretUser()
             .subscribe(
               current => {
-                console.log(current);
                 if( current.is_staff ){
                   this._router.navigate(['/dashboard/home/']);
                 } else {
@@ -86,7 +85,6 @@ export class LoginComponent implements OnInit {
   }
 
   enter(event: any){
-    console.log(event);
     if( event.key != 'Enter' ){
       return;
     }
