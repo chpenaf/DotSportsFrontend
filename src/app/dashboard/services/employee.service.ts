@@ -152,4 +152,24 @@ export class EmployeeService {
 
   }
 
+  clearMyInfo(){
+    this._myInfo = {
+      doc_num: '',
+      first_name: '',
+      last_name: '',
+      date_of_birth: null,
+      sex: '',
+      job: '',
+      hire_date: null,
+      user: {
+        email: '',
+        first_name: '',
+        last_name: '',
+        full_name: '',
+        is_staff: false
+      },
+      is_active: false
+    };
+  }
+
 }

@@ -8,3 +8,63 @@
   <h1>Mis Créditos</h1>
 </div>
 <mat-divider></mat-divider>
+
+<div *ngIf="credits.length == 0" fxLayoutAlign="center">
+  <h2>No tiene créditos activos</h2>
+</div>
+
+<mat-accordion multi *ngIf="credits.length">
+
+  <mat-expansion-panel  *ngFor="let credit of credits; let i = index;"
+                        [expanded]="i == 0 ? true : false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Documento {{ credit.doc_ref }}
+      </mat-panel-title>
+      <mat-panel-description>
+        Válidez {{ credit.begin_validity | date:'dd/MM/YYYY' }} - {{ credit.end_validity | date:'dd/MM/YYYY' }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <table class="w-100">
+      <thead>
+        <tr>
+          <th scope="col">Código</th>
+          <th scope="col">N°</th>
+          <th scope="col">Usado el</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pos of credit.positions;">
+          <td>
+            {{ pos.id }}
+          </td>
+          <td>
+            {{ pos.pos }}
+          </td>
+          <td>
+            {{ pos.used_at | date:'dd/MM/YYYY' }}
+          </td>
+          <td>
+            <div *ngIf="pos.status == 'AV'"
+                 class="status active">
+              Disponible
+            </div>
+            <div *ngIf="pos.status == 'RE'"
+                 class="status reserved">
+              Reservada
+            </div>
+            <div *ngIf="pos.status == 'CO'"
+                 class="status completed">
+              Completado
+            </div>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </mat-expansion-panel>
+
+</mat-accordion>

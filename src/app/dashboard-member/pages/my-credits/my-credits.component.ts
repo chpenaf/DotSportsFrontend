@@ -1,5 +1,12 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+
+import { tap } from 'rxjs/operators';
+
+import { CreditHeader } from '../../../dashboard/interfaces/credits.interface';
+import { CreditsService } from '../../../dashboard/services/credits.service';
+import { Member } from '../../../dashboard/interfaces/member.interface';
+import { MembersService } from '../../../dashboard/services/members.service';
 
 @Component({
   selector: 'app-my-credits',
@@ -9,14 +16,35 @@ import { Router } from '@angular/router';
 export class MyCreditsComponent implements OnInit {
 
   constructor(
-    private _router: Router
+    private _location: Location,
+    private _creditService: CreditsService,
+    private _memberService: MembersService
   ) { }
 
+  myInfo: Member = this._memberService.myInfo;
+  credits: CreditHeader[] = [];
+
   ngOnInit(): void {
+    this._memberService.selfInfo()
+      .pipe(
+        tap(
+          resp => this.getCredits(resp.id)
+        )
+      )
+      .subscribe(
+        resp => this.myInfo = resp
+      );
   }
 
-  back(){
-    this._router.navigate(['/dashboard-member/booking/'])
+  getCredits(id: number) {
+    this._creditService.getCredits(id)
+      .subscribe(
+        resp => this.credits = resp
+      );
+  }
+
+  back() {
+    this._location.back();
   }
 
 }

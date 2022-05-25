@@ -65,9 +65,10 @@
            class="mt-10"
            *ngIf="item.slots">
         <ng-container *ngFor="let slot of item.slots">
-          <button mat-stroked-button
+          <button class="btn_slot" mat-stroked-button
                   color="primary"
-                  (click)="booking(item,slot)">
+                  (click)="booking(item,slot)"
+                  fxFlex="15">
             {{ slot.starttime | time }}
           </button>
         </ng-container>

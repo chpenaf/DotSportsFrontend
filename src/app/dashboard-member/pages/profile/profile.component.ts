@@ -1,12 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
+import { MembersService } from '../../../dashboard/services/members.service';
+import { Member, FormMember } from '../../../dashboard/interfaces/member.interface';
+import { FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
-
-import { DialogsService } from '../../components/dialogs.service';
-import { EmployeeService } from '../../services/employee.service';
-import { Employee, EditEmployee } from '../../interfaces/employee.interface';
+import { DialogsService } from '../../../dashboard/components/dialogs.service';
 
 @Component({
   selector: 'app-profile',
@@ -26,10 +25,10 @@ export class ProfileComponent implements OnInit {
     private _fb: FormBuilder,
     private _location: Location,
     private _dialogService: DialogsService,
-    private _employeeService: EmployeeService
+    private _memberService: MembersService
   ) { }
 
-  myInfo: Employee = this._employeeService.myInfo;
+  myInfo: Member = this._memberService.myInfo;
 
   profileForm = this._fb.group({
     id: [ this.myInfo.id, [ Validators.required ] ],
@@ -66,7 +65,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this._employeeService.getLogged()
+    this._memberService.selfInfo()
       .subscribe({
         next: resp => {
           this.myInfo = resp
@@ -93,22 +92,19 @@ export class ProfileComponent implements OnInit {
 
   save(){
 
-    const updEmployee: EditEmployee = {
+    const updMember: FormMember = {
       id: this.profileForm.getRawValue().id,
       doc_num: this.profileForm.getRawValue().doc_num,
       first_name: this.profileForm.getRawValue().first_name,
       last_name: this.profileForm.getRawValue().last_name,
-      date_of_birth: moment(this.myInfo.date_of_birth).format('YYYY-MM-DD'),
+      date_of_birth: moment(this.myInfo.date_of_birth).toDate(),
       sex: this.myInfo.sex,
-      job: this.myInfo.job,
-      hire_date: moment(this.myInfo.hire_date).format('YYYY-MM-DD'),
-      id_location: this.myInfo.location?.id!,
-      is_active: this.myInfo.is_active ? 'true' : 'false',
+      status: this.myInfo.status,
       email: this.profileForm.getRawValue().email
     }
 
     if( this.file ){
-      updEmployee.avatar = this.file;
+      updMember.avatar = this.file;
     }
 
     this._dialogService.dialogToConfirm(
@@ -117,7 +113,7 @@ export class ProfileComponent implements OnInit {
     ).subscribe(
       result => {
         if( result ) {
-          this._employeeService.update(updEmployee)
+          this._memberService.update(updMember)
             .subscribe({
               next: resp => {
                 this._dialogService.openSnackBar('Datos actualizados','Cerrar');

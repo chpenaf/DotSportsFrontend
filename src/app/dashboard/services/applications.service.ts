@@ -30,11 +30,11 @@ export class ApplicationsService {
 
   getApps(db?:boolean){
 
-    // if( !db ){
-    //   if( this.Apps.length > 0 ){
-    //     return of(this.Apps);
-    //   }
-    // }
+    if( !db ){
+      if( this.Apps.length > 0 ){
+        return of(this.Apps);
+      }
+    }
 
     const url = `${ this._backend }/main/apps/`;
     return this._http.get<App[]>(url,this._authService.getHttpOptions() )

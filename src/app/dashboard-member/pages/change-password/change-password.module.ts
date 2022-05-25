@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomeComponent } from './home.component';
+import { ChangePasswordComponent } from './change-password.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../../material/material.module';
-import { PipesModule } from '../../../dashboard/pipes/pipes.module';
 
 
 
 @NgModule({
   declarations: [
-    HomeComponent
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,
     FlexLayoutModule,
-    MaterialModule,
-    PipesModule
+    ReactiveFormsModule,
+    MaterialModule
   ]
 })
-export class HomeModule { }
+export class ChangePasswordModule { }

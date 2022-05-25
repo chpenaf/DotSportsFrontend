@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../interfaces/user.interface';
 import { EmployeeService } from './employee.service';
+import { OkResponse } from '../../shared/interfaces/shared.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -77,6 +78,27 @@ export class UserService {
         })
       );
 
+  }
+
+  changePassword(current: string, newpass: string){
+
+    const url = `${ this._backend }/users/current/change-password/`
+    const body = {
+      current: current,
+      newpass: newpass
+    }
+
+    return this._http.post<OkResponse>(url, body, this._authService.getHttpOptions());
+  }
+
+  clearCurrent(){
+    this._current = {
+      first_name: '',
+      last_name: '',
+      full_name: '',
+      email: '',
+      is_staff: false
+    };
   }
 
 }

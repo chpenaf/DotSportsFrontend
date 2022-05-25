@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../auth/services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../interfaces/user.interface';
-import { MembersService } from '../../services/members.service';
 import { EmployeeService } from '../../services/employee.service';
 import { ApplicationsService } from '../../services/applications.service';
 import { App } from '../../interfaces/application.interface';
+import { DialogsService } from '../../components/dialogs.service';
 
 @Component({
   selector: 'app-base',
@@ -49,8 +49,8 @@ export class BaseComponent implements OnInit {
     private _router: Router,
     private _applicationsService: ApplicationsService,
     private _authService: AuthService,
+    private _dialogService: DialogsService,
     private _employeeService: EmployeeService,
-    private _memberService: MembersService,
     private _userService: UserService
   ) {
     this.onWindowsResize();
@@ -74,9 +74,34 @@ export class BaseComponent implements OnInit {
   }
 
   signout(){
-    this._authService.signout();
-    console.log('saliendo...');
-    this._router.navigate(['/auth/login/']);
+
+    this._dialogService.dialogToConfirm('Cerrar sesión','¿Desea cerrar sesión?')
+      .subscribe(
+        result => {
+          if( result ){
+            this._authService.signout();
+            this.clear();
+            this._dialogService.openSnackBar('Nos vemos!','Cerrar');
+            this._router.navigate(['/auth/login/']);
+          } else {
+            this._dialogService.openSnackBar('Acción cancelada','Cerrar');
+          }
+        }
+      )
+
+  }
+
+  clear(){
+    this._applicationsService.clearApps();
+    this._userService.clearCurrent();
+    this._employeeService.clearMyInfo();
+    this.current = {
+      first_name: '',
+      last_name: '',
+      full_name: '',
+      email: '',
+      is_staff: false
+    };
   }
 
 }

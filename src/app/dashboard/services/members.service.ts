@@ -142,4 +142,23 @@ export class MembersService {
       );
   }
 
+  clearMyInfo() {
+    this._myInfo = {
+      id: 0,
+      doc_num: '',
+      first_name: '',
+      last_name: '',
+      date_of_birth: '',
+      sex: '',
+      status: '',
+      user: {
+        email: '',
+        first_name: '',
+        last_name: '',
+        full_name: '',
+        is_staff: false
+      }
+    }
+  }
+
 }

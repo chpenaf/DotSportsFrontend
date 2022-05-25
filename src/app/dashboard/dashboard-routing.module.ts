@@ -6,6 +6,7 @@ import { BaseComponent } from './pages/base/base.component';
 import { BookingComponent } from './pages/booking/booking.component';
 import { CalendarComponent } from './pages/calendar/calendar.component';
 import { CatalogComponent } from './pages/catalog/catalog.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { CoursesComponent } from './pages/courses/courses.component';
 import { EmployeesComponent } from './pages/employees/employees.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -38,6 +39,10 @@ const routes: Routes = [
         canActivate: [ AdminGuard ]
       },
       {
+        path: 'change-password',
+        component: ChangePasswordComponent,
+      },
+      {
         path: 'courses',
         component: CoursesComponent,
         canLoad: [ AdminGuard ],
@@ -51,9 +56,7 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        component: ProfileComponent,
-        canLoad: [ AdminGuard ],
-        canActivate: [ AdminGuard ]
+        component: ProfileComponent
       },
       {
         path: 'members',

@@ -10,6 +10,7 @@ import { BaseComponent } from './pages/base/base.component';
 import { BookingModule } from './pages/booking/booking.module';
 import { CalendarModule } from './pages/calendar/calendar.module';
 import { CatalogModule } from './pages/catalog/catalog.module';
+import { ChangePasswordModule } from './pages/change-password/change-password.module';
 import { ComponentsModule } from './components/components.module';
 import { ConfigModule } from './pages/config/config.module';
 import { CoursesModule } from './pages/courses/courses.module';
@@ -51,6 +52,7 @@ import { UserComponent } from './pages/user/user.component';
     BookingModule,
     CalendarModule,
     CatalogModule,
+    ChangePasswordModule,
     ConfigModule,
     CoursesModule,
     ScheduleModule,

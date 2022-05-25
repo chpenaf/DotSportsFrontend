@@ -39,4 +39,9 @@ export class BookingService {
     return this._http.delete<OkResponse>(url, this._auth.getHttpOptions());
   }
 
+  getNextBook(){
+    const url = `${ this._backend }/booking/member/next/`;
+    return this._http.get<Booking>(url, this._auth.getHttpOptions());
+  }
+
 }

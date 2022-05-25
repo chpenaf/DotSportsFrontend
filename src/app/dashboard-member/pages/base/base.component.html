@@ -12,7 +12,7 @@
       <img class="img_profile_toolbar" [src]=" current | avatar ">
   </button>
   <mat-menu #menu="matMenu">
-      <button mat-menu-item [routerLink]="(['/dashboard/profile'])">
+      <button mat-menu-item [routerLink]="(['/dashboard-member/profile'])">
           <!-- <mat-icon>account_circle</mat-icon> -->
           <span class="material-icons-outlined">account_circle</span>
           Perfil
@@ -21,7 +21,7 @@
           <mat-icon>dark_mode</mat-icon>
           Dark Mode
       </button> -->
-      <button mat-menu-item>
+      <button mat-menu-item [routerLink]="(['/dashboard-member/change-password'])">
         <span class="material-icons-outlined">password</span>
         Cambiar clave
     </button>

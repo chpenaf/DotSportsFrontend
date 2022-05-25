@@ -6,12 +6,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DashboardMemberRoutingModule } from './dashboard-member-routing.module';
 import { BaseModule } from './pages/base/base.module';
 import { BookingModule } from './pages/booking/booking.module';
+import { ChangePasswordModule } from './pages/change-password/change-password.module';
+import { ComponentsModule } from '../dashboard/components/components.module';
 import { CreditsModule } from './pages/credits/credits.module';
 import { HomeModule } from './pages/home/home.module';
-import { PipesModule } from '../dashboard/pipes/pipes.module';
-import { ComponentsModule } from '../dashboard/components/components.module';
 import { MyBookingsModule } from './pages/my-bookings/my-bookings.module';
 import { MyCreditsModule } from './pages/my-credits/my-credits.module';
+import { PipesModule } from '../dashboard/pipes/pipes.module';
+import { ProfileModule } from './pages/profile/profile.module';
 
 
 @NgModule({
@@ -23,12 +25,14 @@ import { MyCreditsModule } from './pages/my-credits/my-credits.module';
     DashboardMemberRoutingModule,
     BaseModule,
     BookingModule,
+    ChangePasswordModule,
     ComponentsModule,
     CreditsModule,
     HomeModule,
     MyBookingsModule,
     MyCreditsModule,
-    PipesModule
+    PipesModule,
+    ProfileModule
   ]
 })
 export class DashboardMemberModule { }

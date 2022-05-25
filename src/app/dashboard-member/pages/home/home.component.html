@@ -1,1 +1,67 @@
-<p>home works!</p>
+<h1>Home</h1>
+<mat-divider></mat-divider>
+<div fxLayout="row wrap"
+     fxLayout.lt-md="column"
+     fxLayoutGap="10px"
+     class="mt-10">
+
+  <!-- Resumen perfil -->
+  <mat-card fxFlex="30">
+    <mat-card-header>
+      <img mat-card-avatar [src]="myInfo.user | avatar">
+      <mat-card-title>{{ myInfo.first_name }} {{ myInfo.last_name }}</mat-card-title>
+      <mat-card-subtitle>{{ myInfo.user.email }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>N° Socio:</strong> {{ myInfo.id }}</p>
+      <p><strong>Status: </strong>
+        <strong *ngIf="myInfo.status == 'AC'" class="active">
+          ACTIVO
+        </strong>
+        <strong *ngIf="myInfo.status == 'PE'" class="pending">
+          PENDIENTE
+        </strong>
+        <strong *ngIf="myInfo.status == 'IN'" class="inactive">
+          PENDIENTE
+        </strong>
+      </p>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-icon-button (click)="profile()">
+        <mat-icon class="material-icons-outlined">account_circle</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Proxima hora -->
+  <mat-card fxFlex="30">
+    <mat-card-header>
+      <mat-icon mat-card-avatar class="material-icons-outlined">bookmarks</mat-icon>
+      <mat-card-title>Próxima hora reservada</mat-card-title>
+      <mat-card-subtitle>{{ date | titlecase }} de {{ starttime | time }} a {{ endtime | time }} horas</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions align="end">
+      <!-- <button mat-button color="primary">RESERVAR</button>
+      <button mat-button color="accent">MIS RESERVAS</button> -->
+      <button mat-icon-button (click)="cancel()">
+        <mat-icon class="material-icons-outlined">delete</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Créditos -->
+  <mat-card fxFlex="30">
+    <mat-card-header>
+      <mat-icon mat-card-avatar class="material-icons-outlined">favorite_outlined</mat-icon>
+      <mat-card-title>Mis Créditos</mat-card-title>
+      <mat-card-subtitle>Tienes {{ credits }} créditos disponibles</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions align="end">
+      <button mat-icon-button (click)="viewCredits()">
+        <mat-icon class="material-icons-outlined">info</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+</div>
+
