@@ -161,7 +161,7 @@
               <button *ngIf="this.email.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.email.setValue('')">
                 <mat-icon>close</mat-icon>
               </button>
-              <mat-error *ngIf="this.email">
+              <mat-error *ngIf="this.email.hasError">
               {{ emailErrorMsg }}
               </mat-error>
             </mat-form-field>
@@ -196,7 +196,6 @@
             Cerrar
     </button>
     <button mat-flat-button
-            [mat-dialog-close]="true"
             [disabled]="memberForm.invalid"
             color="primary"
             (click)="submit()">

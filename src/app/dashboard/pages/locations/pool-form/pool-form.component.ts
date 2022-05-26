@@ -137,7 +137,7 @@ export class PoolFormComponent implements OnInit {
     this._locationService.savePool(pools)
       .subscribe(
         resp =>{
-          this._dialogRef.disableClose = false;
+          this._dialogRef.close( true )
         }
       )
 

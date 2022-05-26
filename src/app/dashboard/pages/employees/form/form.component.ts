@@ -57,7 +57,7 @@ export class FormComponent implements OnInit {
       this.doc_num.disable();
       this.password.disable();
       this.password2.disable();
-      this.email.clearValidators();
+
       this.email.clearAsyncValidators();
     }
    }
@@ -222,7 +222,12 @@ export class FormComponent implements OnInit {
         password: this.password.value
       }
 
-      this._employeeService.createEmployee(newEmployee).subscribe();
+      this._employeeService.createEmployee(newEmployee)
+        .subscribe({
+          next: resp => {
+            this.dialogRef.close(true);
+          }
+        });
 
     }
 
@@ -245,7 +250,12 @@ export class FormComponent implements OnInit {
         email: this.email.value,
       }
 
-      this._employeeService.update(editEmployee).subscribe();
+      this._employeeService.update(editEmployee)
+        .subscribe({
+          next: resp => {
+            this.dialogRef.close(true);
+          }
+        });
 
     }
 

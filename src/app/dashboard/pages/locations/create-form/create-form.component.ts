@@ -216,6 +216,7 @@ export class CreateFormComponent implements OnInit {
       this._locationService.createLocation( location )
         .subscribe(
           resp => {
+            this.dialogRef.close( true );
             return true;
           }
         )
@@ -226,6 +227,7 @@ export class CreateFormComponent implements OnInit {
       this._locationService.updateLocation( location, this.location?.id! )
         .subscribe(
           resp => {
+            this.dialogRef.close( true );
             return true;
           }
         )
