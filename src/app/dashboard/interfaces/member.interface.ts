@@ -16,6 +16,7 @@ export interface ListMembers {
   age: number;
   email: string;
   status: string;
+  user?: User;
 }
 
 export interface FormMember {

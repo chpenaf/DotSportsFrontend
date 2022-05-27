@@ -34,7 +34,7 @@
   </mat-card>
 
   <!-- Proxima hora -->
-  <mat-card fxFlex="30">
+  <mat-card fxFlex="30" *ngIf="nextBook.id">
     <mat-card-header>
       <mat-icon mat-card-avatar class="material-icons-outlined">bookmarks</mat-icon>
       <mat-card-title>Próxima hora reservada</mat-card-title>
@@ -49,12 +49,27 @@
     </mat-card-actions>
   </mat-card>
 
+  <mat-card fxFlex="30" *ngIf="!nextBook.id">
+    <mat-card-header>
+      <mat-icon mat-card-avatar class="material-icons-outlined">bookmarks</mat-icon>
+      <mat-card-title>No tiene horas reservadas</mat-card-title>
+      <mat-card-subtitle></mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions align="end">
+      <!-- <button mat-button color="primary">RESERVAR</button>
+      <button mat-button color="accent">MIS RESERVAS</button> -->
+      <button mat-icon-button (click)="cancel()" disabled>
+        <mat-icon class="material-icons-outlined">delete</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
   <!-- Créditos -->
   <mat-card fxFlex="30">
     <mat-card-header>
       <mat-icon mat-card-avatar class="material-icons-outlined">favorite_outlined</mat-icon>
       <mat-card-title>Mis Créditos</mat-card-title>
-      <mat-card-subtitle>Tienes {{ credits }} créditos disponibles</mat-card-subtitle>
+      <mat-card-subtitle>{{ creditsMsg }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-actions align="end">
       <button mat-icon-button (click)="viewCredits()">

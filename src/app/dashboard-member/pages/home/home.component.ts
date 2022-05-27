@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
     minutes: 0
   }
   credits: number = 0;
+  creditsMsg: string = '';
 
   ngOnInit(): void {
     this._memberService.selfInfo()
@@ -91,11 +92,13 @@ export class HomeComponent implements OnInit {
               .subscribe({
                 next: resp => {
                   this._dialogService.openSnackBar(resp.message,'Cerrar');
-                  this.getNextBook();
-                  this.getCredits(this.myInfo.id);
                 },
                 error: err => {
                   this._dialogService.openSnackBar(err.error.message,'Cerrar');
+                },
+                complete: () => {
+                  this.getNextBook();
+                  this.getCredits(this.myInfo.id);
                 }
               });
           }
@@ -109,7 +112,16 @@ export class HomeComponent implements OnInit {
   getCredits(id: number){
     this._creditService.getQuantCredits(id)
       .subscribe(
-        resp => this.credits = resp.quantity
+        resp => {
+          this.credits = resp.quantity;
+          if( this.credits === 0 ){
+            this.creditsMsg = 'No tienes créditos disponibles';
+          } else if( this.credits === 1 ){
+            this.creditsMsg = 'Tienes un crédito disponible';
+          } else {
+            this.creditsMsg = `Tienes ${ this.credits } créditos disponibles`;
+          }
+        }
       );
   }
 

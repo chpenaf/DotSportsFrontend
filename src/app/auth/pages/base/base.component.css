@@ -2,6 +2,8 @@
   height: 100%;
   width: 100%;
   background-image: url('/assets/img/background_1600x1200.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .form-container {
@@ -18,6 +20,8 @@ h5 {
 
   .container {
     background: url('/assets/img/background_640x1136.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .form-container {

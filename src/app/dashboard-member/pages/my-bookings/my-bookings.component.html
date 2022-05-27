@@ -74,6 +74,10 @@
       <tr mat-header-row *matHeaderRowDef="currentColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: currentColumns;"></tr>
 
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4" style="text-align:center;">Sin datos para mostrar</td>
+      </tr>
+
     </table>
 
   </mat-tab>

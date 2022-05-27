@@ -101,6 +101,11 @@ export class ListMembersComponent implements AfterViewInit {
       return;
     }
 
+    if( member.status != 'AC' ){
+      this.openSnackBar('Miembro debe estar activo','Cerrar');
+      return;
+    }
+
     const dialogRef = this._dialog.open(CreditsComponent,{
       width: '800px',
       data: {

@@ -19,6 +19,7 @@ import { MembersService } from '../../services/members.service';
 import { Slot } from '../../interfaces/calendar.interface';
 import { DialogsService } from '../../components/dialogs.service';
 import { BookingsComponent } from '../../components/bookings/bookings.component';
+import { User } from '../../interfaces/user.interface';
 
 @Component({
   selector: 'app-booking',
@@ -40,7 +41,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
     full_name: '',
     age: 0,
     email: '',
-    status: ''
+    status: '',
+    user: undefined,
   }
 
   dateSelected: Date = new Date();
@@ -94,6 +96,16 @@ export class BookingComponent implements OnInit, AfterViewInit {
       .subscribe(
         data => {
           this.listMembers = data;
+          this.listMembers.forEach( item => {
+            item.user = {
+              email: item.email,
+              first_name: item.full_name,
+              last_name: item.full_name,
+              full_name: item.full_name,
+              is_staff: false,
+              avatar: item.avatar
+            }
+          });
           this.filteredMembers = this.member.valueChanges.pipe(
             startWith(''),
             map(value => ( typeof value === 'string' ? value : value.full_name ) ),
@@ -167,7 +179,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
       full_name: '',
       age: 0,
       email: '',
-      status: ''
+      status: '',
+      user: undefined
     }
   }
 

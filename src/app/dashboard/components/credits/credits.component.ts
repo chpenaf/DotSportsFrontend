@@ -8,6 +8,8 @@ import * as moment from 'moment';
 import { MY_DATE_FORMATS } from '../../../app.component';
 import { CreditsService } from '../../services/credits.service';
 import { CreditDialog, CreditHeader } from '../../interfaces/credits.interface';
+import { MembersService } from '../../services/members.service';
+import { DialogsService } from '../dialogs.service';
 
 @Component({
   selector: 'app-credits',
@@ -28,7 +30,8 @@ export class CreditsComponent implements OnInit {
     private _fb: FormBuilder,
     public dialogRef: MatDialogRef<CreditsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CreditDialog,
-    private _creditService: CreditsService
+    private _creditService: CreditsService,
+    private _dialogService: DialogsService
   ) { }
 
   creditForm = this._fb.group(
@@ -71,6 +74,7 @@ export class CreditsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.getCredits();
   }
 

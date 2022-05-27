@@ -4,6 +4,8 @@
   <mat-card-title>
     <h1>{{ title }}</h1>
   </mat-card-title>
-  <mat-card-subtitle *ngIf="subtitle">{{subtitle}} <a [href]="[route]">{{link}}</a></mat-card-subtitle>
+  <mat-card-subtitle *ngIf="subtitle">{{subtitle}}
+    <a [routerLink]="[route]">{{link}}</a>
+  </mat-card-subtitle>
 
 </mat-card-header>

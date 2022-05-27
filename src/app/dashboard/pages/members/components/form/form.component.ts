@@ -220,7 +220,7 @@ export class FormComponent implements OnInit {
       }
 
       this._memberService.update(editMember).subscribe(
-        resp => this.dialogRef.close()
+        resp => this.dialogRef.close(true)
       );
 
     }

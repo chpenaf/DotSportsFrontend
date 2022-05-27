@@ -55,7 +55,7 @@
                       [value]="selected"
                       (onSelectionChange)="memberChange($event, selected)">
             <div fxLayout="row">
-              <img class="img_search" [src]="selected.avatar">
+              <img *ngIf="selected.user" class="img_search" [src]="selected.user | avatar">
               {{ selected.full_name }}
             </div>
           </mat-option>
@@ -101,7 +101,7 @@
 
             </div>
             <div fxFlex="30">
-              <img class="img_card" [src]="memberSelected.avatar">
+              <img class="img_card" *ngIf="memberSelected.user" [src]="memberSelected.user | avatar">
             </div>
           </div>
         </mat-card-content>
