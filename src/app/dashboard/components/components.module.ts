@@ -8,13 +8,15 @@ import { PipesModule } from '../pipes/pipes.module';
 import { DialogToConfirmComponent } from './dialog-to-confirm/dialog-to-confirm.component';
 import { DialogsService } from './dialogs.service';
 import { BookingsComponent } from './bookings/bookings.component';
+import { DialogFormComponent } from './dialog-form/dialog-form.component';
 
 
 @NgModule({
   declarations: [
     CreditsComponent,
     DialogToConfirmComponent,
-    BookingsComponent
+    BookingsComponent,
+    DialogFormComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +27,8 @@ import { BookingsComponent } from './bookings/bookings.component';
   ],
   exports: [
     CreditsComponent,
-    DialogToConfirmComponent
+    DialogToConfirmComponent,
+    DialogFormComponent
   ],
   providers: [
     DialogsService

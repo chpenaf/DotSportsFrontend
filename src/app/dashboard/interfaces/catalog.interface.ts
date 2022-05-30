@@ -25,3 +25,8 @@ export interface Service {
   name:          string;
   subcategories: Level[];
 }
+
+export interface CourseAdd{
+  id?: number;
+  name: string;
+}

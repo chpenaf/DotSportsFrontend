@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { DialogToConfirmComponent } from './dialog-to-confirm/dialog-to-confirm.component';
+import { DialogForm } from '../interfaces/dialog.interface';
+import { DialogFormComponent } from './dialog-form/dialog-form.component';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +57,19 @@ export class DialogsService {
     this._snackBar.open(message, action, {
       duration: 2500
     });
+  }
+
+  dialogForm(dialogForm: DialogForm){
+
+    const dialogRef = this._dialog.open(
+      DialogFormComponent, {
+        width: '400px',
+        data: dialogForm
+      }
+    );
+
+    return dialogRef.afterClosed();
+
   }
 
 }

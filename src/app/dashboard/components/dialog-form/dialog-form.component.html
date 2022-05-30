@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>
+
+  <form [formGroup]="form" fxLayout="column">
+
+    <mat-form-field *ngIf="data.input1" appearance="fill">
+      <mat-label>{{ data.input1.label }}</mat-label>
+      <input matInput formControlName="input1">
+      <mat-error *ngIf="input1.hasError">
+        Campo obligatorio
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+  <button mat-stroked-button
+          [mat-dialog-close]="false">
+    Cerrar
+  </button>
+
+  <button mat-flat-button
+          color="primary"
+          (click)="save()">
+    Guardar
+  </button>
+
+</mat-dialog-actions>

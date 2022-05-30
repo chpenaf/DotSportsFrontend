@@ -6,7 +6,19 @@ export interface DialogToConfirm {
   confirm: Button;
 }
 
-export interface Button{
+export interface Button {
   text: string;
   color?: string;
+}
+
+export interface DialogForm {
+  title: string;
+  input1: Input;
+}
+
+export interface Input {
+  id?: number;
+  label: string;
+  input: string;
+  value: string;
 }

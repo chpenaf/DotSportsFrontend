@@ -7,6 +7,7 @@ import { CatalogService } from '../../services/catalog.service';
 import { EmployeeService } from '../../services/employee.service';
 import { LocationService } from '../../services/location.service';
 import { DialogsService } from '../../components/dialogs.service';
+import { DialogForm } from '../../interfaces/dialog.interface';
 
 @Component({
   selector: 'app-catalog',
@@ -27,19 +28,8 @@ export class CatalogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this._employeeService.getLogged()
-      .subscribe(
 
-        resp => {
-          if( resp.location?.id ){
-            this._catalogService.getCatalog( resp.location?.id )
-              .subscribe(
-                resp => {
-                  this.catalog = resp;
-                  this.fillFormCatalog();
-                });
-          }
-        });
+    this.getCatalog()
 
     this._locationService.getLocationToSelect()
         .subscribe(
@@ -69,11 +59,35 @@ export class CatalogComponent implements OnInit {
     return this.formCatalog.controls['courses'] as FormArray;
   }
 
+  getCatalog(){
+    this._employeeService.getLogged()
+      .subscribe(
+
+        resp => {
+          if( resp.location?.id ){
+            this._catalogService.getCatalog( resp.location?.id )
+              .subscribe(
+                resp => {
+                  this.catalog = resp;
+                  this.fillFormCatalog();
+                });
+          }
+        });
+  }
+
   fillFormCatalog(){
 
     if( this.catalog.location?.id){
       this.location.setValue(this.catalog.location.id)
     }
+
+    // if( this.catalog.services ){
+    //   this.catalog.services = [];
+    // }
+
+    // if( this.catalog.courses ){
+    //   this.catalog.courses = [];
+    // }
 
     this.catalog.services?.forEach( service => {
       this.addServiceForm(service);
@@ -217,6 +231,43 @@ export class CatalogComponent implements OnInit {
           }
         }
       );
+  }
+
+  addCourseDialog(){
+
+    const dialog: DialogForm = {
+      title: 'Agregar curso',
+      input1: {
+        label: 'Nombre curso',
+        input: 'courseName',
+        value: ''
+      }
+    }
+
+    this._dialogService.dialogForm(dialog)
+      .subscribe(
+        result => {
+          if( result ){
+            const input = dialog.input1;
+            if( input.value ){
+              this._catalogService.createCourse({
+                name: input.value
+              }).subscribe({
+                next: resp => {
+                  this._dialogService.openSnackBar('Curso guardado correctamente','Cerrar');
+                  this.getCatalog();
+                },
+                error: err => {
+                  this._dialogService.openSnackBar('Ha ocurrido un error mientras se guardaba','Cerrar');
+                }
+              });
+            }
+          } else {
+            this._dialogService.openSnackBar('Acción cancelada','Cerrar');
+          }
+        }
+    );
+
   }
 
 }

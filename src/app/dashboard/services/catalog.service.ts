@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
-import { Catalog, Level } from '../interfaces/catalog.interface';
+import { Catalog, CourseAdd, Level } from '../interfaces/catalog.interface';
 import { OkResponse } from '../../shared/interfaces/shared.interface';
 
 @Injectable({
@@ -37,5 +37,11 @@ export class CatalogService {
     return this._http.delete<OkResponse>( url, this._auth.getHttpOptions() );
   }
 
+
+  createCourse( course: CourseAdd ){
+    const url = `${ this._backend }/catalog/courses/`;
+    const body = course;
+    return this._http.post<CourseAdd>( url, body, this._auth.getHttpOptions() );
+  }
 
 }

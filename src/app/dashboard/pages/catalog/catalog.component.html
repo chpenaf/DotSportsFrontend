@@ -2,7 +2,7 @@
      fxLayout="column">
 
   <div>
-    <h1>Catálogo</h1>
+    <h1>Catálogo de Cursos</h1>
     <mat-divider></mat-divider>
   </div>
 
@@ -22,7 +22,55 @@
         </mat-form-field>
       </div>
 
-      <mat-tab-group mat-align-tabs="center">
+      <div fxLayout="row" class="add_master">
+        <span class="spacer"></span>
+        <button mat-flat-button
+                color="primary"
+                (click)="addCourseDialog()">
+          Agregar Curso
+        </button>
+      </div>
+      <mat-accordion>
+        <ng-container formArrayName="courses">
+          <ng-container *ngFor="let courseForm of courses.controls; let x = index;">
+            <mat-expansion-panel [formGroupName]="x" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ getCourseTitle(x) }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <table class="content">
+
+                <tbody>
+                  <ng-container formArrayName="levels">
+                    <ng-container *ngFor="let levelForm of getLevelsControls(courseForm); let j = index;">
+                      <tbody>
+                        <tr [formGroupName]="j"
+                            fxLayout="row wrap">
+                        <td fXFlex="10">
+                          <mat-form-field appearance="outline">
+                            <input matInput formControlName="level">
+                          </mat-form-field>
+                        </td>
+                        <td fxFlex="40">
+                          <mat-form-field appearance="outline">
+                            <input matInput formControlName="name">
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </ng-container>
+                  </ng-container>
+                </tbody>
+              </table>
+
+            </mat-expansion-panel>
+          </ng-container>
+        </ng-container>
+      </mat-accordion>
+
+      <!-- <mat-tab-group mat-align-tabs="center">
 
         <mat-tab label="Servicios" fxLayout="column">
           <div fxLayout="row" class="add_master">
@@ -133,16 +181,10 @@
             </ng-container>
           </mat-accordion>
         </mat-tab>
-      </mat-tab-group>
+      </mat-tab-group> -->
 
     </form>
   </div>
-
-  <pre>
-    <code>
-      {{ formCatalog.value | json }}
-    </code>
-  </pre>
 
 </div>
 
