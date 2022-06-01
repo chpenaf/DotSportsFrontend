@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
+
 import { tap } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { MY_DATE_FORMATS } from '../../../app.component';
 import { EmployeeService } from '../../services/employee.service';
 import { LocationService } from '../../services/location.service';
 import { Lane, LocationSelect, PoolSelect } from '../../interfaces/location.interface';
 import { CourseService } from '../../services/course.service';
-import { Course, Schedule } from '../../interfaces/courses.interface';
+import { Course } from '../../interfaces/courses.interface';
 import { CatalogService } from '../../services/catalog.service';
 import { Catalog, Course as CourseCatalog, Level } from '../../interfaces/catalog.interface';
-import { ScheduleService } from '../../services/schedule.service';
-import { Slot, WeekSchedule, CourseSchedule } from '../../interfaces/schedule.interface';
+import { CourseSchedule } from '../../interfaces/schedule.interface';
 import { DialogsService } from '../../components/dialogs.service';
-import * as moment from 'moment';
-import { MatDialog } from '@angular/material/dialog';
 import { ScheduleComponent } from './schedule/schedule.component';
 
 @Component({
@@ -178,6 +178,7 @@ export class CoursesComponent implements OnInit {
 
   selectCourse(id: number){
     this.listCoursesCatalog.forEach( item => {
+      console.log(item);
       if( item.id == id ){
         this.listCourseLevels = item.levels;
       }

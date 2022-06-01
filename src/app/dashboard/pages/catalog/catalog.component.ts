@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, Validators, FormGroup } from '@angular/forms';
 
-import { Catalog, Course, Level, Service } from '../../interfaces/catalog.interface';
+import { Catalog, Course, Level, Service, LevelUpd, CourseAdd } from '../../interfaces/catalog.interface';
 import { LocationSelect as Location } from '../../interfaces/location.interface';
 import { CatalogService } from '../../services/catalog.service';
 import { EmployeeService } from '../../services/employee.service';
@@ -80,14 +80,6 @@ export class CatalogComponent implements OnInit {
     if( this.catalog.location?.id){
       this.location.setValue(this.catalog.location.id)
     }
-
-    // if( this.catalog.services ){
-    //   this.catalog.services = [];
-    // }
-
-    // if( this.catalog.courses ){
-    //   this.catalog.courses = [];
-    // }
 
     this.catalog.services?.forEach( service => {
       this.addServiceForm(service);
@@ -250,12 +242,12 @@ export class CatalogComponent implements OnInit {
           if( result ){
             const input = dialog.input1;
             if( input.value ){
-              this._catalogService.createCourse({
-                name: input.value
-              }).subscribe({
+              this._catalogService.createCourse(
+                { name: input.value }, this.location.value )
+              .subscribe({
                 next: resp => {
                   this._dialogService.openSnackBar('Curso guardado correctamente','Cerrar');
-                  this.getCatalog();
+                  this.addCourseForm(resp);
                 },
                 error: err => {
                   this._dialogService.openSnackBar('Ha ocurrido un error mientras se guardaba','Cerrar');
@@ -267,6 +259,147 @@ export class CatalogComponent implements OnInit {
           }
         }
     );
+
+  }
+
+  editCourseDialog(pos: number){
+
+    const form = this.getCourseForm(pos);
+    const course: Course = form.getRawValue();
+    const dialog: DialogForm = {
+      title: 'Editar curso',
+      input1: {
+        label: 'Nombre curso',
+        input: 'courseName',
+        value: course.name
+      }
+    }
+
+    this._dialogService.dialogForm(dialog)
+      .subscribe(
+        result => {
+          if( result ){
+            const input = dialog.input1;
+            if( input.value ){
+              course.name = input.value
+              this._catalogService.updateCourse(course)
+              .subscribe({
+                next: resp => {
+                  form.controls['name'].setValue(resp.name);
+                  this._dialogService.openSnackBar('Curso guardado correctamente','Cerrar');
+                },
+                error: err => {
+                  this._dialogService.openSnackBar('Ha ocurrido un error mientras se guardaba','Cerrar');
+                }
+              });
+            }
+          } else {
+            this._dialogService.openSnackBar('Acción cancelada','Cerrar');
+          }
+        }
+    );
+
+  }
+
+  deleteCourse(pos: number){
+
+    const form = this.getCourseForm(pos);
+    const course: Course = form.getRawValue();
+
+    this._dialogService.dialogToConfirm('Eliminar curso','¿Desea eliminar el curso?')
+      .subscribe(
+        result => {
+          if( result ){
+            this._catalogService.deleteCourse(course.id)
+              .subscribe({
+                next: resp => {
+                  if( resp.ok ){
+                    this.courses.removeAt(pos);
+                    this._dialogService.openSnackBar('Curso eliminado correctamente','Cerrar');
+                  } else {
+                    this._dialogService.openSnackBar(resp.message,'Cerrar');
+                  }
+                },
+                error: err => {
+                  this._dialogService.openSnackBar('Ha ocurrido un error, intente mas tarde','Cerrar');
+                }
+              })
+          } else {
+            this._dialogService.openSnackBar('Acción cancelada','Cerrar');
+          }
+        }
+      );
+
+  }
+
+  addCourseLevel(pos: number){
+    const form = this.getCourseForm(pos);
+    const formArray = form.controls['levels'] as FormArray;
+    formArray.push( this.addCourseLevelForm() );
+  }
+
+  saveCourseLevels(pos: number){
+    const form = this.getCourseForm(pos);
+    const formArray = form.controls['levels'] as FormArray;
+
+    const course: CourseAdd = form.getRawValue();
+    const levels: LevelUpd[] = formArray.getRawValue();
+
+    const levelApi: Level[] = [];
+
+    levels.forEach( item => {
+      levelApi.push({
+        id: item.id,
+        course: course.id,
+        name: item.name,
+        level: item.level
+      });
+    });
+
+    this._catalogService.updateCourseLevels(levelApi)
+      .subscribe({
+        next: resp => {
+          this._dialogService.openSnackBar('Datos guardados correctamente','Cerrar');
+        },
+        error: err => {
+          this._dialogService.openSnackBar(err.error.message,'Cerrar');
+        }
+      });
+  }
+
+  deleteCourseLevel(posX: number, posJ: number){
+    const form = this.getCourseForm(posX);
+    const formArray = form.controls['levels'] as FormArray;
+    const levelForm = formArray.at(posJ) as FormGroup;
+    const level: LevelUpd = levelForm.getRawValue();
+
+
+    if( level.id ){
+      this._dialogService.dialogToConfirm('Eliminar nivel','¿Desea borrar nivel?')
+        .subscribe(
+          result => {
+            if( result ){
+              this._catalogService.deleteCourseLevel(level.id)
+                .subscribe({
+                  next: resp => {
+                    if( resp.ok ){
+                      this._dialogService.openSnackBar('Nivel borrado correctamente','Cerrar');
+                      formArray.removeAt(posJ);
+                    } else {
+                      this._dialogService.openSnackBar(resp.message,'Cerrar');
+                    }
+                  },
+                  error: err => {
+                    this._dialogService.openSnackBar(err.error.message,'Cerrar');
+                  }
+                })
+
+            }
+          }
+        )
+    } else {
+      formArray.removeAt(posJ);
+    }
 
   }
 

@@ -1,5 +1,6 @@
 import { Time } from "@angular/common";
 import { Location, PoolSelect } from './location.interface';
+import { Member } from "./member.interface";
 
 export interface Slot {
   id?: number;
@@ -26,6 +27,10 @@ export interface SlotDialog {
   location?: Location;
   pool?: PoolSelect;
   slots?: Slot[];
+}
+
+export interface SlotMemberDialog {
+  members: Member[];
 }
 
 export interface Lane {

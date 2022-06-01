@@ -7,7 +7,7 @@
   text-align: center;
 }
 
-.day, .day_off, .holiday {
+.day, .day_off, .holiday, .today {
   width: 100%;
   height: 50px;
   margin: 1px;
@@ -19,7 +19,7 @@
   border: 1px solid transparent;
 }
 
-.day, .holiday {
+.day, .holiday, .today {
   border: 1px solid rgb(205, 205, 205);
   cursor: pointer;
   text-align: center;
@@ -34,6 +34,14 @@
   color: red;
 }
 
-.day:hover{
-  background-color: rgb(231, 255, 255);
+.today {
+  background-color: #D6DBDF;
+  color: black;
+}
+
+.day:hover, .today:hover{
+  background-color: #EBF5FB;
+}
+.holiday:hover{
+  background-color: #F9EBEA;
 }

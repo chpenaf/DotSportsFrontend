@@ -21,3 +21,12 @@
   height: 40px;
   text-align: center;
 }
+
+.nadolibre {
+  background-color: #FDFEFE;
+  cursor: pointer;
+}
+
+.curso {
+  background-color: #FEF9E7;
+}

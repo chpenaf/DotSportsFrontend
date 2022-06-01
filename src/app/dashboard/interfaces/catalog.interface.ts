@@ -13,7 +13,7 @@ export interface Course {
 }
 
 export interface Level {
-  id:       number;
+  id?:       number;
   course?:  number;
   name:     string;
   level:    number;
@@ -29,4 +29,10 @@ export interface Service {
 export interface CourseAdd{
   id?: number;
   name: string;
+}
+
+export interface LevelUpd {
+  id:       number;
+  level:    number;
+  name:     string;
 }

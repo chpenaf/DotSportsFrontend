@@ -79,7 +79,7 @@
         </ng-container>
         <div fxFlex="14"
              (click)="clickDay(day)"
-             [class]="day.daytype == 'HO' || day.daytype == 'SU' ? 'holiday' : 'day'">
+             [class]="getCssClassDay(day)">
           {{ day.day }}
         </div>
       </ng-container>

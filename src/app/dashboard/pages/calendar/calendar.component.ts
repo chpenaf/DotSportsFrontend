@@ -83,6 +83,19 @@ export class CalendarComponent implements OnInit {
     return this.searchForm.controls['month'];
   }
 
+  getCssClassDay(day: Calendar){
+    const today = moment(new Date()).format('YYYY-MM-DD');
+    const date = moment(day.date).format('YYYY-MM-DD');
+
+    if( ( day.daytype == 'HO') || ( day.daytype == 'SU' ) ){
+      return 'holiday';
+    } else if( date === today ){
+      return 'today';
+    } else {
+      return 'day';
+    }
+  }
+
   ngOnInit(): void {
 
     this._locationService.getLocationToSelect()

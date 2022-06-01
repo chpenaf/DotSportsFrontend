@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/services/auth.service';
-import { Catalog, CourseAdd, Level } from '../interfaces/catalog.interface';
+import { Catalog, Course, CourseAdd, Level, LevelUpd } from '../interfaces/catalog.interface';
 import { OkResponse } from '../../shared/interfaces/shared.interface';
 
 @Injectable({
@@ -38,10 +38,32 @@ export class CatalogService {
   }
 
 
-  createCourse( course: CourseAdd ){
+  createCourse( course: CourseAdd, idLocation: number ){
+    const url = `${ this._backend }/catalog/courses/${ idLocation }/`;
+    const body = course;
+    return this._http.post<Course>( url, body, this._auth.getHttpOptions() );
+  }
+
+  updateCourse( course: CourseAdd ){
     const url = `${ this._backend }/catalog/courses/`;
     const body = course;
-    return this._http.post<CourseAdd>( url, body, this._auth.getHttpOptions() );
+    return this._http.put<Course>( url, body, this._auth.getHttpOptions() );
+  }
+
+  deleteCourse( idCourse: number ){
+    const url = `${ this._backend }/catalog/courses/id/${ idCourse }/`;
+    return this._http.delete<OkResponse>( url, this._auth.getHttpOptions() );
+  }
+
+  updateCourseLevels( levels: Level[] ){
+    const url = `${ this._backend }/catalog/courses/levels/`;
+    const body = levels;
+    return this._http.post<LevelUpd[]>( url, body, this._auth.getHttpOptions() );
+  }
+
+  deleteCourseLevel( id: number ){
+    const url = `${ this._backend }/catalog/courses/levels/${ id }/`;
+    return this._http.delete<OkResponse>( url, this._auth.getHttpOptions() );
   }
 
 }

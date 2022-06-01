@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../../material/material.module';
 import { CalendarComponent } from './calendar.component';
 import { SlotsModule } from './slots/slots.module';
+import { MembersModule } from './members/members.module';
 
 
 
@@ -18,7 +19,8 @@ import { SlotsModule } from './slots/slots.module';
     FlexLayoutModule,
     ReactiveFormsModule,
     MaterialModule,
-    SlotsModule
+    SlotsModule,
+    MembersModule
   ]
 })
 export class CalendarModule { }

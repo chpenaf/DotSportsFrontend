@@ -20,7 +20,8 @@
             </div>
           </td>
           <td *ngFor="let lane of slot.lanes">
-            <div class="slot">
+            <div [class]="getSlotCssClass(lane)"
+                 (click)="slotClick(slot)">
               {{ lane.desc }}
             </div>
           </td>

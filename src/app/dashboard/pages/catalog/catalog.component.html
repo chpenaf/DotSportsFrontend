@@ -38,11 +38,24 @@
                 <mat-panel-title>
                   {{ getCourseTitle(x) }}
                 </mat-panel-title>
+                <mat-panel-description>
+                  <span class="spacer"></span>
+                  <button mat-icon-button>
+                    <mat-icon class="material-icons-outlined" (click)="editCourseDialog(x)">edit</mat-icon>
+                  </button>
+                  <button mat-icon-button>
+                    <mat-icon class="material-icons-outlined" (click)="deleteCourse(x)">delete_forever</mat-icon>
+                  </button>
+                </mat-panel-description>
               </mat-expansion-panel-header>
 
               <table class="content">
 
                 <tbody>
+                  <div class="w-100" fxLayout="row" fxLayoutGap="10px">
+                    <button mat-stroked-button (click)="addCourseLevel(x)">Agregar nivel</button>
+                    <button mat-flat-button color="primary" (click)="saveCourseLevels(x)">Guardar</button>
+                  </div>
                   <ng-container formArrayName="levels">
                     <ng-container *ngFor="let levelForm of getLevelsControls(courseForm); let j = index;">
                       <tbody>
@@ -57,6 +70,11 @@
                           <mat-form-field appearance="outline">
                             <input matInput formControlName="name">
                           </mat-form-field>
+                        </td>
+                        <td fxFlex="10">
+                          <button mat-icon-button (click)="deleteCourseLevel(x,j)">
+                            <mat-icon class="material-icons-outlined">delete_forever</mat-icon>
+                          </button>
                         </td>
                       </tr>
                       </tbody>

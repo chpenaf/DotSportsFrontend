@@ -19,7 +19,7 @@ export class DialogFormComponent implements OnInit {
 
   form = this._fb.group(
     {
-      input1: [ , [ Validators.required ] ]
+      input1: [ this.data.input1.value, [ Validators.required ] ]
     }
   )
 
