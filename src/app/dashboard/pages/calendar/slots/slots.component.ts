@@ -58,6 +58,7 @@ export class SlotsComponent implements OnInit {
       this._calendarService.getPlanningDay(this.day.location, this.pool.id, date)
         .subscribe(
           resp => {
+            console.log(resp)
             this.slots = resp;
           }
         );

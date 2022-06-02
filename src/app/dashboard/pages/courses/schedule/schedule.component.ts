@@ -30,8 +30,8 @@ export class ScheduleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.listCourses = this.data.list;
+    console.log(this.listCourses)
     this.courseSelected = this.data.course;
 
     if( typeof this.courseSelected.location != 'number'){

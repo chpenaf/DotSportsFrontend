@@ -1,4 +1,4 @@
-import { LocationSelect, Pool, Lane } from './location.interface';
+import { LocationSelect, Pool, Lane, PoolSelect } from './location.interface';
 import { Course as CourseCatalog, Level } from './catalog.interface';
 import { Slot } from './schedule.interface';
 
@@ -33,4 +33,21 @@ export interface CourseSession {
   date?: number;
   slot?: number;
   desc?: string;
+}
+
+export interface FormCourses {
+  id?: number;
+  pool?: number;
+  lane?: number;
+  course?: number;
+  level?: number;
+  num_sessions?: number;
+  teacher?: string;
+  startdate?: string;
+  enddate?: string;
+  listPools?: PoolSelect[];
+  listLanes?: Lane[];
+  listCourses?: Course[];
+  listLevels?: Level[];
+  schedule?: Schedule[];
 }

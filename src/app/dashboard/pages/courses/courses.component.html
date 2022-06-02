@@ -101,7 +101,7 @@
                   <mat-select formControlName="course">
                     <mat-option *ngFor="let course of listCoursesCatalog"
                                 [value]="course.id"
-                                (onSelectionChange)="selectCourse(course.id)">
+                                (onSelectionChange)="selectCourse(i,course.id)">
                       {{ course.name }}
                     </mat-option>
                   </mat-select>
@@ -110,7 +110,7 @@
               <td fxFlex="10">
                 <mat-form-field appearance="outline">
                   <mat-select formControlName="level">
-                    <mat-option *ngFor="let level of listCourseLevels"
+                    <mat-option *ngFor="let level of listCourses[i].listLevels"
                                 [value]="level.id">
                       {{ level.name }}
                     </mat-option>

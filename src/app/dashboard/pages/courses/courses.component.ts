@@ -11,7 +11,7 @@ import { EmployeeService } from '../../services/employee.service';
 import { LocationService } from '../../services/location.service';
 import { Lane, LocationSelect, PoolSelect } from '../../interfaces/location.interface';
 import { CourseService } from '../../services/course.service';
-import { Course } from '../../interfaces/courses.interface';
+import { Course, FormCourses } from '../../interfaces/courses.interface';
 import { CatalogService } from '../../services/catalog.service';
 import { Catalog, Course as CourseCatalog, Level } from '../../interfaces/catalog.interface';
 import { CourseSchedule } from '../../interfaces/schedule.interface';
@@ -32,7 +32,7 @@ export class CoursesComponent implements OnInit {
 
   catalog: Catalog = {};
   listLocations: LocationSelect[] = [];
-  listCourses: Course[] = [];
+  listCourses: FormCourses[] = [];
   listCoursesCatalog: CourseCatalog[] = [];
   listCourseLevels: Level[] = [];
   listPools: PoolSelect[] = [];
@@ -106,7 +106,35 @@ export class CoursesComponent implements OnInit {
             this._courseService.getCourses(idLocation)
               .subscribe(
                 resp => {
-                  this.listCourses = resp;
+                  resp.forEach( item => {
+                    this.listCourses.push({
+                      id: item.id,
+                      pool: typeof item.pool === 'number' ? item.pool : 0,
+                      lane: typeof item.lane === 'number' ? item.lane : 0,
+                      course: typeof item.course === 'number' ? item.course : 0,
+                      level: typeof item.level === 'number' ? item.level : 0,
+                      num_sessions: item.num_sessions,
+                      teacher: item.teacher,
+                      startdate: moment(item.startdate).format('YYYY-MM-DD'),
+                      enddate: moment(item.enddate).format('YYYY-MM-DD'),
+                      schedule: item.schedule
+                    })
+                  });
+
+                  this.listCourses.forEach( item => {
+
+                    if( item.course ){
+
+                      this.listCoursesCatalog.forEach( catalog => {
+                        if( catalog.id === item.course ){
+                          item.listLevels = catalog.levels;
+                        }
+                      });
+
+                    }
+
+                  });
+
                   this.fillCoursesForm();
                 });
           }
@@ -132,13 +160,13 @@ export class CoursesComponent implements OnInit {
       return;
     }
 
-    this.listCourses.forEach(item => {
-      this.appendCourseForm(item);
+    this.listCourses.forEach( ( item, index ) => {
+      this.appendCourseForm(index, item);
     });
 
   }
 
-  appendCourseForm(course?: Course){
+  appendCourseForm(index?: number,course?: Course){
 
     const courseForm = this._fb.group(
       {
@@ -154,12 +182,28 @@ export class CoursesComponent implements OnInit {
       }
     );
 
+    this.listCourses.push({
+      id: course?.id,
+      pool: typeof course?.pool === 'number' ? course.pool : 0,
+      lane: typeof course?.lane === 'number' ? course.lane : 0,
+      course: typeof course?.course === 'number' ? course.course : 0,
+      level: typeof course?.level === 'number' ? course.level : 0,
+      num_sessions: course?.num_sessions,
+      teacher: course?.teacher,
+      startdate: moment(course?.startdate).format('YYYY-MM-DD'),
+      enddate: moment(course?.enddate).format('YYYY-MM-DD')
+    });
+
     if( courseForm.controls['pool'].value ){
       this.selectPool(courseForm.controls['pool'].value);
     }
 
     if( courseForm.controls['course'].value ){
-      this.selectCourse(courseForm.controls['course'].value);
+      if( index ){
+        this.selectCourse(index,courseForm.controls['course'].value);
+      } else {
+        this.selectCourse(this.courses.length, courseForm.controls['course'].value);
+      }
     }
 
     courseForm.controls['id'].disable();
@@ -176,11 +220,10 @@ export class CoursesComponent implements OnInit {
     })
   }
 
-  selectCourse(id: number){
+  selectCourse(index: number, id: number){
     this.listCoursesCatalog.forEach( item => {
-      console.log(item);
       if( item.id == id ){
-        this.listCourseLevels = item.levels;
+        this.listCourses[index].listLevels = item.levels;
       }
     });
 
@@ -201,7 +244,7 @@ export class CoursesComponent implements OnInit {
       )
       return;
     }
-
+    console.log(this.courseSelected)
     const dialogRef = this._dialog.open(
       ScheduleComponent,
       {
